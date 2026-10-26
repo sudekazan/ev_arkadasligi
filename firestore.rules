@@ -1,0 +1,161 @@
+rules_version = '2';
+
+// Membership changes, quotas and external calls happen in Cloud Functions;
+// clients only touch data of households they belong to.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function me() {
+      return request.auth.uid;
+    }
+
+    function householdData(hid) {
+      return get(/databases/$(database)/documents/households/$(hid)).data;
+    }
+
+    function isMember(hid) {
+      return signedIn() && me() in householdData(hid).memberIds;
+    }
+
+    function isAdmin(hid) {
+      return signedIn() && me() in householdData(hid).adminIds;
+    }
+
+    function changesOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    function unchanged(keys) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(keys);
+    }
+
+    match /users/{userId} {
+      allow read: if signedIn() && me() == userId;
+      allow create: if signedIn() && me() == userId
+        && request.resource.data.get('householdIds', []).size() == 0
+        && !('proUntil' in request.resource.data);
+      allow update: if signedIn() && me() == userId
+        && unchanged(['householdIds', 'proUntil']);
+      allow delete: if false;
+    }
+
+    match /households/{hid} {
+      allow read: if signedIn() && me() in resource.data.memberIds;
+      allow update: if signedIn() && me() in resource.data.adminIds
+        && changesOnly(['name', 'currency'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.currency in ['TRY', 'EUR', 'USD', 'GBP'];
+      allow create, delete: if false;
+
+      match /members/{memberId} {
+        allow read: if isMember(hid);
+        allow update: if isMember(hid) && (
+          (memberId == me() && changesOnly(['displayName', 'avatarEmoji'])
+            && request.resource.data.displayName is string
+            && request.resource.data.displayName.size() <= 40)
+          || (isAdmin(hid) && changesOnly(['rentWeight'])
+            && request.resource.data.rentWeight is int
+            && request.resource.data.rentWeight >= 0
+            && request.resource.data.rentWeight <= 100)
+        );
+        allow create, delete: if false;
+      }
+
+      // The sum of shares cannot be checked in rules (no loops); the client
+      // computes it with lib/core/money and the keys are validated here.
+      function validExpense(d) {
+        let members = householdData(hid).memberIds;
+        return d.amountMinor is int && d.amountMinor > 0
+          && d.paidBy in members
+          && d.shares is map && d.shares.size() > 0
+          && d.shares.keys().hasOnly(members)
+          && d.status == 'final'
+          && d.splitType in ['equal', 'exact', 'percent', 'shares']
+          && d.description is string && d.description.size() > 0
+          && d.description.size() <= 100
+          && d.date is timestamp;
+      }
+
+      match /expenses/{eid} {
+        allow read: if isMember(hid);
+        allow create: if isMember(hid)
+          && request.resource.data.createdBy == me()
+          && validExpense(request.resource.data);
+        allow update: if isMember(hid)
+          && (resource.data.createdBy == me() || isAdmin(hid)
+            || resource.data.status == 'pendingAmount')
+          && unchanged(['createdBy', 'createdAt'])
+          && validExpense(request.resource.data);
+        allow delete: if isMember(hid)
+          && (resource.data.createdBy == me() || isAdmin(hid));
+      }
+
+      match /settlements/{sid} {
+        allow read: if isMember(hid);
+        allow create: if isMember(hid)
+          && request.resource.data.createdBy == me()
+          && request.resource.data.amountMinor is int
+          && request.resource.data.amountMinor > 0
+          && request.resource.data.fromUid in householdData(hid).memberIds
+          && request.resource.data.toUid in householdData(hid).memberIds
+          && request.resource.data.fromUid != request.resource.data.toUid
+          && (me() in [request.resource.data.fromUid, request.resource.data.toUid]
+            || isAdmin(hid));
+        allow update: if false;
+        allow delete: if isMember(hid)
+          && (me() in [resource.data.fromUid, resource.data.toUid] || isAdmin(hid));
+      }
+
+      match /recurring/{rid} {
+        allow read, delete: if isMember(hid);
+        allow create, update: if isMember(hid)
+          && request.resource.data.amountMinor is int
+          && request.resource.data.amountMinor >= 0
+          && request.resource.data.paidBy in householdData(hid).memberIds
+          && request.resource.data.frequency in ['monthly', 'weekly']
+          && request.resource.data.nextRunAt is timestamp;
+      }
+
+      match /shoppingItems/{id} {
+        allow read, write: if isMember(hid);
+      }
+
+      match /chores/{id} {
+        allow read, delete: if isMember(hid);
+        allow create, update: if isMember(hid)
+          && request.resource.data.frequency in ['daily', 'weekly', 'biweekly']
+          && request.resource.data.rotation is list
+          && request.resource.data.rotation.size() > 0
+          && request.resource.data.rotation.hasOnly(householdData(hid).memberIds);
+      }
+
+      match /choreLogs/{id} {
+        allow read: if isMember(hid);
+        allow create: if isMember(hid) && request.resource.data.doneBy == me();
+      }
+
+      match /activity/{id} {
+        allow read: if isMember(hid);
+        allow create: if isMember(hid) && request.resource.data.actorUid == me();
+      }
+    }
+
+    match /inviteCodes/{code} {
+      allow read, write: if false;
+    }
+
+    match /usage/{uid} {
+      allow read, write: if false;
+    }
+
+    match /reminders/{id} {
+      allow read, write: if false;
+    }
+  }
+}
