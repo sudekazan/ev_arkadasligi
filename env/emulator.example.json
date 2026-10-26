@@ -1,0 +1,5 @@
+{
+  "APP_ENV": "dev",
+  "USE_EMULATOR": "true",
+  "EMULATOR_HOST": ""
+}
