@@ -1,0 +1,28 @@
+{
+  "name": "evkasa-functions",
+  "private": true,
+  "main": "lib/index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "lint": "tsc --noEmit",
+    "test": "vitest run --dir test/unit",
+    "test:rules": "vitest run --dir test/rules",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.10.0",
+    "firebase-functions": "^7.4.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "@types/node": "^22.20.5",
+    "firebase": "^12.19.0",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.12"
+  }
+}
