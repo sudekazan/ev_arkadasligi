@@ -1,0 +1,799 @@
+{
+  "@@locale": "tr",
+  "appName": "EvKasa",
+  "tabHome": "Ana sayfa",
+  "tabExpenses": "Giderler",
+  "tabHouse": "Ev",
+  "tabAccount": "Hesap",
+  "add": "Ekle",
+  "back": "Geri",
+  "cancel": "Vazgeç",
+  "clear": "Temizle",
+  "close": "Kapat",
+  "copy": "Kopyala",
+  "copied": "Kopyalandı",
+  "delete": "Sil",
+  "edit": "Düzenle",
+  "next": "İleri",
+  "ok": "Tamam",
+  "or": "veya",
+  "remove": "Çıkar",
+  "retry": "Tekrar dene",
+  "save": "Kaydet",
+  "share": "Paylaş",
+  "skip": "Geç",
+  "seeAll": "Tümü",
+  "requiredField": "Bu alan zorunlu",
+  "you": "Sen",
+  "youSuffix": "{name} (sen)",
+  "@youSuffix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownMember": "Bilinmeyen üye",
+  "deletedUser": "Silinmiş kullanıcı",
+  "admin": "Yönetici",
+  "errorNetwork": "Şu an bağlanılamıyor, tekrar dene.",
+  "errorPermission": "Bu işlem için yetkin yok.",
+  "errorNotFound": "Aradığın kayıt bulunamadı.",
+  "errorInvalidCredentials": "E-posta veya şifre hatalı.",
+  "errorEmailInUse": "Bu e-posta ile zaten bir hesap var.",
+  "errorWeakPassword": "Şifre en az 6 karakter olmalı.",
+  "errorInvalidEmail": "Geçerli bir e-posta adresi gir.",
+  "errorTooManyRequests": "Çok fazla deneme yapıldı, biraz sonra tekrar dene.",
+  "errorCancelled": "İşlem iptal edildi.",
+  "errorRequiresRecentLogin": "Güvenlik için çıkış yapıp tekrar giriş yapmalısın.",
+  "errorHouseholdLimit": "Ücretsiz planda tek eve üye olabilirsin. Daha fazlası için Pro'ya geç.",
+  "errorHouseholdFull": "Bu ev dolu (en fazla 12 üye).",
+  "errorInviteInvalid": "Davet kodu geçersiz. Kodu kontrol et.",
+  "errorBalanceNotZero": "Bakiye sıfır değil. Önce ödeşmeniz gerekiyor.",
+  "errorReceiptQuota": "Bu ayki fiş okuma hakkın doldu.",
+  "errorReceiptUnreadable": "Fiş okunamadı.",
+  "errorReminderAlreadySent": "Bugün bu kişiye zaten hatırlatma gönderdin.",
+  "errorNothingOwed": "Bu kişinin borcu yok.",
+  "errorUnknown": "Bir şeyler ters gitti, tekrar dene.",
+  "welcomeTitle1": "Giderleri tek yerde topla",
+  "welcomeBody1": "Kira, faturalar ve market alışverişini ekle; kim ne ödedi hep belli olsun.",
+  "welcomeTitle2": "Kuruşu kuruşuna adil",
+  "welcomeBody2": "Eşit, tutar, yüzde veya oda büyüklüğüne göre bölüş; borçlar en az transferle sadeleşsin.",
+  "welcomeTitle3": "Ev işleri de burada",
+  "welcomeBody3": "Ortak alışveriş listesi ve \"sıra kimde\" takibi. Gider eklemek her zaman ücretsiz ve sınırsız.",
+  "getStarted": "Başla",
+  "pageIndicator": "Sayfa {current} / {total}",
+  "@pageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "authSubtitle": "Ev arkadaşlarınla masrafları adilce bölüş.",
+  "signIn": "Giriş yap",
+  "register": "Kayıt ol",
+  "signOut": "Çıkış yap",
+  "yourName": "Adın",
+  "email": "E-posta",
+  "password": "Şifre",
+  "showPassword": "Şifreyi göster",
+  "hidePassword": "Şifreyi gizle",
+  "forgotPassword": "Şifremi unuttum",
+  "enterEmailFirst": "Önce e-posta adresini yaz.",
+  "passwordResetSent": "Şifre sıfırlama bağlantısı e-postana gönderildi.",
+  "continueWithGoogle": "Google ile devam et",
+  "continueWithApple": "Apple ile devam et",
+  "onboardingTitle": "Evini kur",
+  "onboardingBody": "Yeni bir ev oluştur ya da ev arkadaşının paylaştığı 6 haneli kodla katıl.",
+  "createHousehold": "Ev oluştur",
+  "joinWithCode": "Kodla katıl",
+  "join": "Katıl",
+  "householdName": "Ev adı",
+  "householdNameHint": "ör. Moda'daki ev",
+  "currency": "Para birimi",
+  "inviteCode": "Davet kodu",
+  "inviteCodeLength": "Kod 6 karakter olmalı",
+  "inviteCodeSemantics": "Davet kodu: {code}",
+  "@inviteCodeSemantics": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteTitle": "Evin hazır!",
+  "inviteBody": "Ev arkadaşlarını davet et: bu kodu paylaş, uygulamada \"Kodla katıl\" ile girsinler.",
+  "inviteShareText": "EvKasa'da evimize katıl! Uygulamayı aç, \"Kodla katıl\"a dokun ve şu kodu gir: {code}",
+  "@inviteShareText": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "continueToHome": "Ana sayfaya geç",
+  "regenerateCode": "Kodu yenile",
+  "regenerateCodeBody": "Eski kod çalışmayı bırakır. Yeni kodu ev arkadaşlarınla tekrar paylaşman gerekir.",
+  "addHousehold": "Başka bir ev ekle",
+  "myHouseholds": "Evlerim",
+  "switchHousehold": "Ev değiştir",
+  "houseSettings": "Ev ayarları",
+  "editHousehold": "Evi düzenle",
+  "membersCount": "Üyeler ({count}/{max})",
+  "@membersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "rentWeightHelp": "Kira payı: kira giderleri bu ağırlıklara göre bölünür (ör. büyük oda 3, küçük oda 2).",
+  "rentWeightValue": "Kira payı: {weight}",
+  "@rentWeightValue": {
+    "placeholders": {
+      "weight": {
+        "type": "int"
+      }
+    }
+  },
+  "decreaseRentWeight": "{name} için kira payını azalt",
+  "@decreaseRentWeight": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "increaseRentWeight": "{name} için kira payını artır",
+  "@increaseRentWeight": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "removeMember": "Üyeyi çıkar",
+  "removeMemberBody": "{name} evden çıkarılsın mı?",
+  "@removeMemberBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cannotRemoveTitle": "Önce ödeşilmeli",
+  "cannotRemoveBody": "{name} kişisinin bakiyesi {amount}. Bakiye sıfırlanmadan çıkarılamaz.",
+  "@cannotRemoveBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "leaveHousehold": "Evden ayrıl",
+  "leave": "Ayrıl",
+  "leaveHouseholdBody": "\"{household}\" evinden ayrılmak istediğine emin misin?",
+  "@leaveHouseholdBody": {
+    "placeholders": {
+      "household": {
+        "type": "String"
+      }
+    }
+  },
+  "cannotLeaveTitle": "Önce ödeşmelisin",
+  "cannotLeaveBody": "Bakiyen {amount}. Evden ayrılmadan önce bakiyenin sıfır olması gerekiyor.",
+  "@cannotLeaveBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteHousemates": "Ev arkadaşlarını davet et",
+  "allSettled": "Hesaplar denk, kimsenin kimseye borcu yok.",
+  "youOweOne": "{name} {amount} borçlusun",
+  "@youOweOne": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "youOweTotal": "Toplam {amount} borçlusun",
+  "@youOweTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "owesYouOne": "{name} sana {amount} borçlu",
+  "@owesYouOne": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "theyOweYouTotal": "Sana {amount} borçlular",
+  "@theyOweYouTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "statusOwe": "Borçlusun",
+  "statusOwed": "Alacaklısın",
+  "statusSettled": "Ödeşmiş",
+  "whoOwesWhom": "Kim kime borçlu",
+  "transferLine": "{from} → {to}",
+  "@transferLine": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "pay": "Öde",
+  "remind": "Hatırlat",
+  "reminderSent": "Hatırlatma gönderildi.",
+  "pendingBills": "Tutar bekleyen faturalar",
+  "enterAmount": "Tutarı gir",
+  "recentPayments": "Son ödemeler",
+  "disputePayment": "Ödemeye itiraz et",
+  "disputePaymentBody": "{amount} tutarındaki ödeme kaydı silinsin mi? Bakiye buna göre güncellenir.",
+  "@disputePaymentBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recentActivity": "Son etkinlikler",
+  "homeEmptyTitle": "İlk gideri ekle",
+  "homeEmptyBody": "Bir gider eklediğinde kimin kime borçlu olduğu burada görünür.",
+  "recordPayment": "Ödeme kaydet",
+  "from": "Kimden",
+  "to": "Kime",
+  "partialPaymentHint": "Tamamını ya da bir kısmını ödeyebilirsin.",
+  "recipientIban": "{name} IBAN",
+  "@recipientIban": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "copyIban": "IBAN'ı kopyala",
+  "ibanCopied": "IBAN kopyalandı",
+  "noIbanYet": "{name} henüz IBAN eklememiş.",
+  "@noIbanYet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "markAsPaid": "Ödeme yapıldı",
+  "paymentRecorded": "Ödeme kaydedildi.",
+  "samePersonError": "Kimden ve kime aynı kişi olamaz",
+  "paymentMustInvolveYou": "Yalnızca kendi ödemelerini kaydedebilirsin",
+  "addExpense": "Gider ekle",
+  "editExpense": "Gideri düzenle",
+  "enterBillAmount": "Fatura tutarını gir",
+  "description": "Açıklama",
+  "amount": "Tutar",
+  "paidBy": "Ödeyen",
+  "category": "Kategori",
+  "date": "Tarih",
+  "split": "Bölüşme",
+  "note": "Not",
+  "noteOptional": "Not (isteğe bağlı)",
+  "shares": "Paylar",
+  "enterValidAmount": "Geçerli bir tutar gir",
+  "fixSplitFirst": "Bölüşme toplamı tutmuyor",
+  "paidByOn": "{name} ödedi · {date}",
+  "@paidByOn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "yourShare": "Payın {amount}",
+  "@yourShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pendingAmount": "Tutar bekleniyor",
+  "splitTypeLabel": "Bölüşme: {type}",
+  "@splitTypeLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "searchExpenses": "Giderlerde ara",
+  "allCategories": "Tüm kategoriler",
+  "everyone": "Herkes",
+  "noExpensesTitle": "Henüz gider yok",
+  "noExpensesBody": "Kira, fatura veya market: ilk ortak gideri ekleyin.",
+  "noResultsTitle": "Sonuç yok",
+  "noResultsBody": "Bu filtrelerle eşleşen gider bulunamadı.",
+  "clearFilters": "Filtreleri temizle",
+  "deleteExpense": "Gideri sil",
+  "deleteExpenseBody": "\"{description}\" kalıcı olarak silinsin mi?",
+  "@deleteExpenseBody": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseNotFound": "Gider bulunamadı",
+  "expenseNotFoundBody": "Bu gider silinmiş olabilir.",
+  "categoryRent": "Kira",
+  "categoryElectricity": "Elektrik",
+  "categoryWater": "Su",
+  "categoryGas": "Doğalgaz",
+  "categoryInternet": "İnternet",
+  "categoryGroceries": "Market",
+  "categoryCleaning": "Temizlik",
+  "categoryHomeGoods": "Ev eşyası",
+  "categoryOther": "Diğer",
+  "splitEqual": "Eşit",
+  "splitExact": "Tutar",
+  "splitPercent": "Yüzde",
+  "splitShares": "Pay",
+  "sharesSuffix": "pay",
+  "splitNoParticipants": "En az bir kişi seç",
+  "splitInvalidNumber": "Geçersiz sayı var",
+  "splitMissing": "{amount} eksik",
+  "@splitMissing": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "splitExcess": "{amount} fazla",
+  "@splitExcess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "percentTotal": "Toplam %{percent} (100 olmalı)",
+  "@percentTotal": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "scanReceipt": "Fiş tara",
+  "takePhoto": "Fotoğraf çek",
+  "chooseFromGallery": "Galeriden seç",
+  "receiptScanning": "Fiş okunuyor…",
+  "receiptScanned": "Fiş okundu, bilgileri kontrol et.",
+  "receiptScanFailed": "Fiş okunamadı; fotoğraf eklendi, bilgileri elle girebilirsin.",
+  "receiptTooLarge": "Fotoğraf çok büyük (en fazla 5 MB).",
+  "receiptAttached": "Fiş fotoğrafı eklendi",
+  "receiptItemCount": "{count, plural, =1{1 kalem okundu} other{{count} kalem okundu}}",
+  "@receiptItemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "removeReceipt": "Fişi kaldır",
+  "receipt": "Fiş",
+  "receiptItems": "Fiş kalemleri",
+  "shoppingList": "Alışveriş",
+  "addShoppingItemHint": "Ne lazım? ör. süt, deterjan",
+  "emptyShoppingTitle": "Liste boş",
+  "emptyShoppingBody": "Eve lazım olanları ekleyin; alan kişi işaretlesin, herkes anında görsün.",
+  "addFirstItem": "İlk kalemi ekle",
+  "addedBy": "{name} ekledi",
+  "@addedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "boughtItems": "Alınanlar",
+  "boughtItemsHelp": "Seçili kalemleri tek bir Market gideri olarak ekleyebilirsin.",
+  "boughtBy": "{name} aldı",
+  "@boughtBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "markNotBought": "Alınmadı olarak işaretle",
+  "addAsExpense": "{count, plural, =1{1 kalemi gider olarak ekle} other{{count} kalemi gider olarak ekle}}",
+  "@addAsExpense": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groceriesDescription": "Market alışverişi",
+  "chores": "Ev işleri",
+  "addChore": "Görev ekle",
+  "editChore": "Görevi düzenle",
+  "deleteChore": "Görevi sil",
+  "deleteChoreBody": "\"{name}\" görevi silinsin mi?",
+  "@deleteChoreBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "choreName": "Görev adı",
+  "choreNameHint": "ör. Çöpleri çıkar",
+  "emptyChoresTitle": "Görev yok",
+  "emptyChoresBody": "Bulaşık, çöp, temizlik… Sırayı belirleyin, kimin günü geldiğini uygulama hatırlatsın.",
+  "whoseTurn": "Sıra: {name}",
+  "@whoseTurn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "choreDueToday": "Zamanı geldi ({date})",
+  "@choreDueToday": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "choreDueOn": "Sonraki: {date}",
+  "@choreDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "markDone": "Tamamlandı",
+  "choreDoneNext": "Harika! Sıra artık {name} kişisinde.",
+  "@choreDoneNext": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "firstDueDate": "İlk tarih",
+  "rotationOrder": "Sıra",
+  "rotationHelp": "Kişilere sırayla dokun; seçim sırası, görev sırası olur.",
+  "frequencyDaily": "Her gün",
+  "frequencyWeekly": "Haftalık",
+  "frequencyBiweekly": "İki haftada bir",
+  "frequencyMonthly": "Aylık",
+  "recurringExpenses": "Tekrarlayan",
+  "addRecurring": "Tekrarlayan gider ekle",
+  "editRecurring": "Tekrarlayan gideri düzenle",
+  "deleteRecurring": "Şablonu sil",
+  "deleteRecurringBody": "\"{description}\" şablonu silinsin mi? Daha önce oluşan giderler kalır.",
+  "@deleteRecurringBody": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyRecurringTitle": "Tekrarlayan gider yok",
+  "emptyRecurringBody": "Kira gibi sabit giderler her ay otomatik eklenir; faturalar için tutar girmeniz hatırlatılır.",
+  "recurringHint": "ör. Kira, İnternet faturası",
+  "fixedAmount": "Sabit tutar",
+  "fixedAmountHelp": "Gider o gün otomatik oluşur.",
+  "variableAmountHelp": "O gün \"tutar bekleniyor\" taslağı oluşur, ödeyen kişiye bildirim gider.",
+  "variableAmount": "Değişken tutar",
+  "variableNoExact": "Değişken tutarda \"Tutar\" bölüşmesi kullanılamaz",
+  "schedule": "Zamanlama",
+  "dayOfMonth": "Ayın günü",
+  "dayOfMonthHelp": "O gün olmayan aylarda ayın son günü kullanılır.",
+  "dayOfWeek": "Haftanın günü",
+  "nextRun": "Sonraki: {date}",
+  "@nextRun": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringFreeUsage": "Ücretsiz planda {used}/{limit} şablon kullanılıyor.",
+  "@recurringFreeUsage": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "activity": "Etkinlik",
+  "noActivityTitle": "Henüz etkinlik yok",
+  "noActivityBody": "Giderler, ödemeler ve tamamlanan görevler burada görünür.",
+  "activityHouseholdCreated": "{actor} evi oluşturdu",
+  "@activityHouseholdCreated": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "activityMemberJoined": "{actor} eve katıldı",
+  "@activityMemberJoined": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "activityMemberLeft": "{actor} evden ayrıldı",
+  "@activityMemberLeft": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "activityMemberRemoved": "{actor}, {member} kişisini evden çıkardı",
+  "@activityMemberRemoved": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "member": {
+        "type": "String"
+      }
+    }
+  },
+  "activityExpenseAdded": "{actor} gider ekledi: {description} ({amount})",
+  "@activityExpenseAdded": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "description": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "activityExpenseEdited": "{actor} gideri düzenledi: {description}",
+  "@activityExpenseEdited": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "activityExpenseDeleted": "{actor} gideri sildi: {description} ({amount})",
+  "@activityExpenseDeleted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "description": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "activitySettlementAdded": "Ödeme: {from} → {to} ({amount})",
+  "@activitySettlementAdded": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "activitySettlementDeleted": "{actor} bir ödemeyi sildi: {from} → {to} ({amount})",
+  "@activitySettlementDeleted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "activityRecurringCreated": "Tekrarlayan gider eklendi: {description} ({amount})",
+  "@activityRecurringCreated": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "activityBillPending": "{description} faturası oluştu, tutar bekleniyor",
+  "@activityBillPending": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "activityChoreDone": "{actor} tamamladı: {chore}. Sıra: {next}",
+  "@activityChoreDone": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "chore": {
+        "type": "String"
+      },
+      "next": {
+        "type": "String"
+      }
+    }
+  },
+  "activityShoppingConverted": "{actor}, {count} alışveriş kalemini gidere dönüştürdü",
+  "@activityShoppingConverted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activityUnknown": "Evde bir değişiklik oldu",
+  "editProfile": "Profili düzenle",
+  "avatar": "Avatar",
+  "ibanOptional": "IBAN (isteğe bağlı)",
+  "ibanHelp": "Ev arkadaşların sana ödeme yaparken IBAN'ını tek dokunuşla kopyalayabilir.",
+  "ibanInvalid": "Geçerli bir IBAN gir",
+  "preferences": "Tercihler",
+  "language": "Dil",
+  "theme": "Tema",
+  "themeLight": "Açık",
+  "themeDark": "Koyu",
+  "systemDefault": "Sistem",
+  "notifications": "Bildirimler",
+  "notifyNewExpense": "Yeni giderler",
+  "notifyReminders": "Ödemeler ve hatırlatmalar",
+  "notifyBills": "Tutar bekleyen faturalar",
+  "notifyChores": "Ev işi sırası",
+  "data": "Veriler",
+  "reports": "Raporlar",
+  "exportCsv": "CSV olarak dışa aktar",
+  "csvSubject": "{household} giderleri",
+  "@csvSubject": {
+    "placeholders": {
+      "household": {
+        "type": "String"
+      }
+    }
+  },
+  "proFeature": "Pro özelliği",
+  "privacyPolicy": "Gizlilik politikası",
+  "termsOfUse": "Kullanım koşulları",
+  "deleteAccount": "Hesabı sil",
+  "deleteAccountBody": "Hesabın ve profil bilgilerin kalıcı olarak silinir, evlerden çıkarılırsın. Geçmiş giderlerde adın \"Silinmiş kullanıcı\" olarak görünür. Bu işlem geri alınamaz.",
+  "goPro": "EvKasa Pro'ya geç",
+  "goProBody": "Sınırsız ev ve şablon, ayda 200 fiş okuma, tüm raporlar.",
+  "proActive": "Pro etkin",
+  "proActiveBody": "Evdeki herkes Pro özelliklerinden yararlanıyor.",
+  "proActiveFor": "\"{household}\" evinde herkes Pro.",
+  "@proActiveFor": {
+    "placeholders": {
+      "household": {
+        "type": "String"
+      }
+    }
+  },
+  "proBadge": "Pro",
+  "proTitle": "EvKasa Pro",
+  "proSubtitle": "Bir kişi alır, evdeki herkes kullanır. Aboneliği de bölüşün!",
+  "proFreeForever": "Gider ekleme her planda sınırsız ve ücretsiz.",
+  "proBenefitHouseholds": "Sınırsız ev",
+  "proBenefitRecurring": "Sınırsız tekrarlayan gider şablonu",
+  "proBenefitReceipts": "Ayda {count} fiş okuma",
+  "@proBenefitReceipts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "proBenefitReports": "Tüm geçmişte kategori raporları ve aylık özet",
+  "proBenefitCsv": "CSV dışa aktarma",
+  "proBenefitShared": "Evdeki herkes için geçerli",
+  "planMonthly": "Aylık",
+  "planAnnual": "Yıllık",
+  "trialDays": "{days} gün ücretsiz dene",
+  "@trialDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "savePercent": "%{percent} tasarruf",
+  "@savePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "startTrial": "Ücretsiz denemeyi başlat",
+  "subscribe": "Abone ol",
+  "restorePurchases": "Satın alımları geri yükle",
+  "restoreSuccess": "Pro aboneliğin geri yüklendi.",
+  "restoreNothing": "Geri yüklenecek bir abonelik bulunamadı.",
+  "storeUnavailable": "Şu an bağlanılamıyor, tekrar dene",
+  "proWelcome": "Pro'ya hoş geldin! 🎉",
+  "subscriptionTerms": "Abonelik, iptal edilmedikçe dönem sonunda otomatik yenilenir. Mağaza hesabının ayarlarından istediğin zaman iptal edebilirsin.",
+  "previousMonth": "Önceki ay",
+  "nextMonth": "Sonraki ay",
+  "reportsFreeLimit": "Ücretsiz planda bu ay görünür; geçmiş aylar Pro'da.",
+  "householdTotal": "Ev toplamı",
+  "myShareTotal": "Senin payın",
+  "noExpensesThisMonth": "Bu ay gider yok."
+}
