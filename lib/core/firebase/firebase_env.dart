@@ -16,7 +16,6 @@ abstract final class FirebaseEnv {
   static const _iosApiKey = String.fromEnvironment('FIREBASE_IOS_API_KEY');
   static const _iosAppId = String.fromEnvironment('FIREBASE_IOS_APP_ID');
   static const iosClientId = String.fromEnvironment('FIREBASE_IOS_CLIENT_ID');
-  static const googleServerClientId = String.fromEnvironment('GOOGLE_SERVER_CLIENT_ID');
   static const revenueCatAndroidKey = String.fromEnvironment('REVENUECAT_ANDROID_KEY');
   static const revenueCatIosKey = String.fromEnvironment('REVENUECAT_IOS_KEY');
   static const _emulatorHost = String.fromEnvironment('EMULATOR_HOST');
@@ -37,7 +36,8 @@ abstract final class FirebaseEnv {
   static FirebaseOptions get options {
     if (isDemo) {
       return FirebaseOptions(
-        apiKey: 'demo-api-key',
+        // Not a real key: native SDKs only validate its shape (39 chars, "A…").
+        apiKey: 'AIzaSydemoEvkasaEmulatorOnlyNotAKey0000',
         appId: Platform.isIOS
             ? '1:123456789012:ios:0123456789abcdef'
             : '1:123456789012:android:0123456789abcdef',

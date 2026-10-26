@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/firebase/app_error.dart';
 import '../../../core/firebase/firebase_env.dart';
@@ -12,7 +11,6 @@ class AuthRepository {
   AuthRepository(this._auth);
 
   final FirebaseAuth _auth;
-  bool _googleInitialized = false;
 
   static const _appleEnabled = bool.fromEnvironment('APPLE_SIGN_IN_ENABLED');
 
@@ -44,24 +42,15 @@ class AuthRepository {
   Future<void> sendPasswordReset(String email) =>
       _auth.sendPasswordResetEmail(email: email.trim());
 
+  /// Google sign-in through Firebase's provider flow (system browser sheet).
+  /// The native google_sign_in plugin conflicts with Firebase iOS SDK 13.
   Future<void> signInWithGoogle() async {
-    final google = GoogleSignIn.instance;
-    if (!_googleInitialized) {
-      await google.initialize(
-        serverClientId:
-            FirebaseEnv.googleServerClientId.isEmpty ? null : FirebaseEnv.googleServerClientId,
-        clientId: Platform.isIOS && FirebaseEnv.iosClientId.isNotEmpty
-            ? FirebaseEnv.iosClientId
-            : null,
-      );
-      _googleInitialized = true;
-    }
     try {
-      final account = await google.authenticate();
-      final idToken = account.authentication.idToken;
-      await _auth.signInWithCredential(GoogleAuthProvider.credential(idToken: idToken));
-    } on GoogleSignInException catch (e) {
-      if (e.code == GoogleSignInExceptionCode.canceled) throw const CancelledException();
+      await _auth.signInWithProvider(GoogleAuthProvider()..addScope('email'));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'web-context-canceled' || e.code == 'canceled') {
+        throw const CancelledException();
+      }
       rethrow;
     }
   }
@@ -73,10 +62,7 @@ class AuthRepository {
     await _auth.signInWithProvider(provider);
   }
 
-  Future<void> signOut() async {
-    if (_googleInitialized) await GoogleSignIn.instance.signOut();
-    await _auth.signOut();
-  }
+  Future<void> signOut() => _auth.signOut();
 }
 
 final authRepositoryProvider =
