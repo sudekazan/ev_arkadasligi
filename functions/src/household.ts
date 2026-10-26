@@ -116,6 +116,7 @@ export const createHousehold = onCall({ region: REGION }, async (req) => {
     tx.create(hRef.collection("members").doc(uid), {
       displayName: user.get("displayName") ?? "",
       avatarEmoji: user.get("avatarEmoji") ?? "🙂",
+      iban: user.get("iban") ?? null,
       rentWeight: 1,
       joinedAt: now,
       active: true,
@@ -155,6 +156,7 @@ export const joinHousehold = onCall({ region: REGION }, async (req) => {
       {
         displayName: user.get("displayName") ?? "",
         avatarEmoji: user.get("avatarEmoji") ?? "🙂",
+        iban: user.get("iban") ?? null,
         rentWeight: existing.exists ? (existing.get("rentWeight") ?? 1) : 1,
         joinedAt: Timestamp.now(),
         active: true,

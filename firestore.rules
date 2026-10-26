@@ -56,7 +56,7 @@ service cloud.firestore {
       match /members/{memberId} {
         allow read: if isMember(hid);
         allow update: if isMember(hid) && (
-          (memberId == me() && changesOnly(['displayName', 'avatarEmoji'])
+          (memberId == me() && changesOnly(['displayName', 'avatarEmoji', 'iban'])
             && request.resource.data.displayName is string
             && request.resource.data.displayName.size() <= 40)
           || (isAdmin(hid) && changesOnly(['rentWeight'])

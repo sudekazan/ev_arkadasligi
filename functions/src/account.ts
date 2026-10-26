@@ -16,6 +16,7 @@ export const deleteAccount = onCall({ region: REGION }, async (req) => {
       deleted: true,
       displayName: "",
       avatarEmoji: "👤",
+      iban: null,
     });
   }
   await db.recursiveDelete(userRef);
