@@ -1,4 +1,5 @@
 import { FieldValue, Timestamp, Transaction } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
   FREE_HOUSEHOLD_LIMIT,
@@ -63,9 +64,9 @@ export async function detachMember(
   extraMemberFields: Record<string, unknown> = {},
 ) {
   const hRef = db.collection("households").doc(hid);
-  await db.runTransaction(async (tx) => {
+  const emptied = await db.runTransaction(async (tx) => {
     const snap = await tx.get(hRef);
-    if (!snap.exists) return;
+    if (!snap.exists) return false;
     const memberIds = (snap.get("memberIds") as string[]).filter((m) => m !== uid);
     let adminIds = (snap.get("adminIds") as string[]).filter((m) => m !== uid);
     if (adminIds.length === 0 && memberIds.length > 0) adminIds = [memberIds[0]];
@@ -87,8 +88,19 @@ export async function detachMember(
       hRef.collection("activity").doc(),
       activityDoc(activityType, actorUid, uid),
     );
+    return memberIds.length === 0;
   });
-  await recomputeHouseholdPro(hid);
+  if (emptied) {
+    await purgeHousehold(hid);
+  } else {
+    await recomputeHouseholdPro(hid);
+  }
+}
+
+/** Deletes a household nobody belongs to any more, with its receipt photos. */
+async function purgeHousehold(hid: string) {
+  await db.recursiveDelete(db.collection("households").doc(hid));
+  await getStorage().bucket().deleteFiles({ prefix: `receipts/${hid}/` });
 }
 
 export const createHousehold = onCall({ region: REGION }, async (req) => {
