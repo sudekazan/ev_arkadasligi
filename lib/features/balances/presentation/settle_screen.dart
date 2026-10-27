@@ -90,7 +90,9 @@ class _SettleScreenState extends ConsumerState<SettleScreen> {
     final household = ref.watch(currentHouseholdProvider).value;
     final members = ref.watch(activeMembersProvider);
     final uid = ref.watch(currentUidProvider);
-    if (household == null || members.isEmpty || uid == null) {
+    // The suggested amount is filled once, so wait for balances to load.
+    final loading = ref.watch(balancesLoadingProvider);
+    if (household == null || members.isEmpty || uid == null || loading) {
       return Scaffold(appBar: AppBar(), body: const Center(child: CircularProgressIndicator()));
     }
     if (!_initialized) {
