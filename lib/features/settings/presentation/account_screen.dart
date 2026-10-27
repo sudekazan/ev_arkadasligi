@@ -49,8 +49,8 @@ class AccountScreen extends ConsumerWidget {
     );
     final bytes = utf8.encode('﻿$csv'); // BOM so Excel reads UTF-8.
     await SharePlus.instance.share(ShareParams(
-      files: [XFile.fromData(bytes, mimeType: 'text/csv', name: 'evkasa-${household.name}.csv')],
-      fileNameOverrides: ['evkasa.csv'],
+      files: [XFile.fromData(bytes, mimeType: 'text/csv', name: 'odeselim-${household.name}.csv')],
+      fileNameOverrides: ['odeselim.csv'],
       subject: l.csvSubject(household.name),
     ));
   }

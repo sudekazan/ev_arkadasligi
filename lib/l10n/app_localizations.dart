@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In tr, this message translates to:
-  /// **'EvKasa'**
+  /// **'Ödeşelim'**
   String get appName;
 
   /// No description provided for @tabHome.
@@ -599,7 +599,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteShareText.
   ///
   /// In tr, this message translates to:
-  /// **'EvKasa\'da evimize katıl! Uygulamayı aç, \"Kodla katıl\"a dokun ve şu kodu gir: {code}'**
+  /// **'Ödeşelim\'de evimize katıl! Uygulamayı aç, \"Kodla katıl\"a dokun ve şu kodu gir: {code}'**
   String inviteShareText(String code);
 
   /// No description provided for @continueToHome.
@@ -1880,7 +1880,7 @@ abstract class AppLocalizations {
   /// No description provided for @goPro.
   ///
   /// In tr, this message translates to:
-  /// **'EvKasa Pro\'ya geç'**
+  /// **'Ödeşelim Pro\'ya geç'**
   String get goPro;
 
   /// No description provided for @goProBody.
@@ -1916,7 +1916,7 @@ abstract class AppLocalizations {
   /// No description provided for @proTitle.
   ///
   /// In tr, this message translates to:
-  /// **'EvKasa Pro'**
+  /// **'Ödeşelim Pro'**
   String get proTitle;
 
   /// No description provided for @proSubtitle.

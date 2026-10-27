@@ -1,4 +1,4 @@
-# EvKasa
+# Ödeşelim
 
 Ev arkadaşlarının kira, fatura ve market giderlerini adil bölüştüren Flutter + Firebase uygulaması. Ürün ve mimari kararları [PLAN.md](PLAN.md) dosyasında.
 

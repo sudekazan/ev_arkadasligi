@@ -1,4 +1,4 @@
-"""Draws the EvKasa app icon (house + coin) into assets/icon/.
+"""Draws the Ödeşelim app icon (house + coin) into assets/icon/.
 
 Run from the project root: python3 tool/make_icons.py
 """

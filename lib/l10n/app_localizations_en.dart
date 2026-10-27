@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'EvKasa';
+  String get appName => 'Ödeşelim';
 
   @override
   String get tabHome => 'Home';
@@ -276,7 +276,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String inviteShareText(String code) {
-    return 'Join our household on EvKasa! Open the app, tap \"Join with code\" and enter: $code';
+    return 'Join our household on Ödeşelim! Open the app, tap \"Join with code\" and enter: $code';
   }
 
   @override
@@ -1054,7 +1054,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your account and profile are permanently deleted and you leave all households. Past expenses will show \"Deleted user\". This cannot be undone.';
 
   @override
-  String get goPro => 'Go EvKasa Pro';
+  String get goPro => 'Go Ödeşelim Pro';
 
   @override
   String get goProBody =>
@@ -1075,7 +1075,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proBadge => 'Pro';
 
   @override
-  String get proTitle => 'EvKasa Pro';
+  String get proTitle => 'Ödeşelim Pro';
 
   @override
   String get proSubtitle =>

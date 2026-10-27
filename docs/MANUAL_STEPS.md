@@ -14,11 +14,11 @@ Uygulama bu adımlar olmadan da `demo-evkasa` projesi ve Firebase Emulator ile t
 
 ## 1. Uygulama adı
 
-- [ ] "EvKasa" adının App Store ve Google Play'de boşta olduğunu kontrol et. Değişirse `lib/l10n/app_*.arb` içindeki `appName`, `ios/Runner/Info.plist` içindeki `CFBundleDisplayName`, `android/app/src/main/AndroidManifest.xml` içindeki `android:label`, `hosting/public/*.html` ve `docs/STORE_LISTING.md` güncellenmeli. İstersen bunu bana yaptırabilirsin.
+- [ ] Uygulama adı **Ödeşelim** olarak belirlendi ve kodda güncellendi. Adın App Store ve Google Play'de boşta olduğunu kontrol et. Yeniden değişirse `lib/l10n/app_*.arb` içindeki `appName`, `ios/Runner/Info.plist` içindeki `CFBundleDisplayName`, `android/app/src/main/AndroidManifest.xml` içindeki `android:label`, `hosting/public/*.html` ve `docs/STORE_LISTING.md` güncellenmeli. İstersen bunu bana yaptırabilirsin.
 
 ## 2. Firebase `dev` projesi
 
-- [ ] [Firebase konsolunda](https://console.firebase.google.com) `evkasa-dev` gibi bir proje oluştur. Google Analytics'i aç.
+- [ ] [Firebase konsolunda](https://console.firebase.google.com) `odeselim-dev` gibi bir proje oluştur. Google Analytics'i aç.
 - [ ] **Blaze (kullandıkça öde) planına geç.** Cloud Functions, zamanlanmış görevler ve gizli anahtarlar Blaze ister. Google Cloud'da düşük tutarlı bir **bütçe uyarısı** kur.
 - [ ] **Authentication → Sign-in method:** E-posta/Şifre, Google ve Apple'ı etkinleştir (Apple için 5. bölüme bak).
 - [ ] **Firestore:** üretim modunda, konum `europe-west1` olarak oluştur.
@@ -93,11 +93,11 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 - [ ] **Google Play Console** geliştirici hesabı ve uygulama kaydı.
 - [ ] **Android yükleme anahtarı:**
   ```bash
-  keytool -genkey -v -keystore ~/evkasa-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+  keytool -genkey -v -keystore ~/odeselim-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
   ```
   `android/key.properties` dosyasını oluştur (git'e girmez):
   ```
-  storeFile=/Users/sude/evkasa-upload.jks
+  storeFile=/Users/sude/odeselim-upload.jks
   storePassword=...
   keyAlias=upload
   keyPassword=...
@@ -110,7 +110,7 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 ## 8. Abonelik (RevenueCat)
 
 - [ ] **Mağaza ürünleri:**
-  - App Store Connect → Abonelikler: `evkasa_pro` grubu altında `evkasa_pro_monthly` ve `evkasa_pro_yearly`. Yıllık pakette 7 günlük ücretsiz deneme olsun.
+  - App Store Connect → Abonelikler: `odeselim_pro` grubu altında `odeselim_pro_monthly` ve `odeselim_pro_yearly`. Yıllık pakette 7 günlük ücretsiz deneme olsun.
   - Play Console → Abonelikler: aynı kimliklerle iki ürün; yıllıkta 7 günlük deneme teklifi.
   - Fiyat: Türkiye fiyat seviyesinden seç, yıllık ≈ aylık × 7. Uygulama fiyatı mağazadan okur.
 - [ ] [RevenueCat](https://app.revenuecat.com)'te proje oluştur, iOS ve Android uygulamalarını bağla (App Store Connect API anahtarı ve Play servis hesabı gerekir).
@@ -128,7 +128,7 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
 ## 9. `prod` ortamı
 
-- [ ] 2. bölümü `evkasa-prod` adlı ikinci bir projeyle tekrarla ve değerleri `env/prod.json` dosyasına yaz. `APP_ENV` değeri `prod`, `USE_EMULATOR` değeri `false` olmalı.
+- [ ] 2. bölümü `odeselim-prod` adlı ikinci bir projeyle tekrarla ve değerleri `env/prod.json` dosyasına yaz. `APP_ENV` değeri `prod`, `USE_EMULATOR` değeri `false` olmalı.
 - [ ] `prod` için ayrı gizli anahtarlar (3, 4, 6 ve 8. bölümler) ve ayrı RevenueCat webhook'u tanımla.
 - [ ] Sürüm derlemeleri:
   ```bash

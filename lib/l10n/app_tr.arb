@@ -1,6 +1,6 @@
 {
   "@@locale": "tr",
-  "appName": "EvKasa",
+  "appName": "Ödeşelim",
   "tabHome": "Ana sayfa",
   "tabExpenses": "Giderler",
   "tabHouse": "Ev",
@@ -107,7 +107,7 @@
   },
   "inviteTitle": "Evin hazır!",
   "inviteBody": "Ev arkadaşlarını davet et: bu kodu paylaş, uygulamada \"Kodla katıl\" ile girsinler.",
-  "inviteShareText": "EvKasa'da evimize katıl! Uygulamayı aç, \"Kodla katıl\"a dokun ve şu kodu gir: {code}",
+  "inviteShareText": "Ödeşelim'de evimize katıl! Uygulamayı aç, \"Kodla katıl\"a dokun ve şu kodu gir: {code}",
   "@inviteShareText": {
     "placeholders": {
       "code": {
@@ -735,7 +735,7 @@
   "termsOfUse": "Kullanım koşulları",
   "deleteAccount": "Hesabı sil",
   "deleteAccountBody": "Hesabın ve profil bilgilerin kalıcı olarak silinir, evlerden çıkarılırsın. Geçmiş giderlerde adın \"Silinmiş kullanıcı\" olarak görünür. Bu işlem geri alınamaz.",
-  "goPro": "EvKasa Pro'ya geç",
+  "goPro": "Ödeşelim Pro'ya geç",
   "goProBody": "Sınırsız ev ve şablon, ayda 200 fiş okuma, tüm raporlar.",
   "proActive": "Pro etkin",
   "proActiveBody": "Evdeki herkes Pro özelliklerinden yararlanıyor.",
@@ -748,7 +748,7 @@
     }
   },
   "proBadge": "Pro",
-  "proTitle": "EvKasa Pro",
+  "proTitle": "Ödeşelim Pro",
   "proSubtitle": "Bir kişi alır, evdeki herkes kullanır. Aboneliği de bölüşün!",
   "proFreeForever": "Gider ekleme her planda sınırsız ve ücretsiz.",
   "proBenefitHouseholds": "Sınırsız ev",

@@ -1,12 +1,12 @@
 # Mağaza metinleri
 
-App Store Connect ve Google Play Console'a kopyalanacak metinler. Karakter sınırları parantez içinde; her metin sınırın altında. Uygulama adı hâlâ çalışma adı (**EvKasa**); kesinleşince her yerde değiştir.
+App Store Connect ve Google Play Console'a kopyalanacak metinler. Karakter sınırları parantez içinde; her metin sınırın altında. Uygulama adı: **Ödeşelim**.
 
 Fiyat hiçbir metinde yazılmaz. Fiyatlar mağaza panelinden ülkeye göre belirlenir.
 
 ## Türkçe (tr-TR)
 
-**Ad (30):** EvKasa: Ev Masrafı Bölüş
+**Ad (30):** Ödeşelim: Ev Masrafı Bölüş
 
 **Alt başlık, App Store (30):** Kira, fatura ve market bölüş
 
@@ -20,7 +20,7 @@ ev arkadaşı,masraf,borç,hesap bölme,kira,fatura,ortak gider,öğrenci evi,al
 **Uzun açıklama (4000):**
 
 ```
-Ev arkadaşlarınla giderleri WhatsApp mesajları ve not defteriyle takip etmeye son. EvKasa kira, fatura ve market giderlerini adil bölüştürür; kimin kime ne kadar borçlu olduğunu tek bakışta gösterir.
+Ev arkadaşlarınla giderleri WhatsApp mesajları ve not defteriyle takip etmeye son. Ödeşelim kira, fatura ve market giderlerini adil bölüştürür; kimin kime ne kadar borçlu olduğunu tek bakışta gösterir.
 
 GİDER EKLEME SINIRSIZ
 Ücretsiz planda da istediğin kadar gider eklersin. Günlük sınır yok, reklam yok.
@@ -53,7 +53,7 @@ Evde olan her şey (eklenen ve değiştirilen giderler, ödemeler, tamamlanan i�
 KOLAY BAŞLANGIÇ
 Evi oluştur, 6 haneli davet kodunu ev arkadaşlarınla paylaş, hepsi bu.
 
-EVKASA PRO
+ÖDEŞELİM PRO
 Pro'yu evde bir kişi alır, evdeki herkes yararlanır. Aboneliği de bölüşün!
 • Sınırsız ev
 • Sınırsız tekrarlayan gider
@@ -67,7 +67,7 @@ Gizlilik politikası: https://<PROJE>.web.app/privacy
 Kullanım koşulları: https://<PROJE>.web.app/terms
 ```
 
-**Yenilikler (ilk sürüm):** EvKasa'nın ilk sürümü! Giderleri bölüş, borçları sadeleştir, alışveriş listesini ve ev işlerini tek yerden yönet.
+**Yenilikler (ilk sürüm):** Ödeşelim'in ilk sürümü! Giderleri bölüş, borçları sadeleştir, alışveriş listesini ve ev işlerini tek yerden yönet.
 
 **Ekran görüntüsü başlıkları (6 adet):**
 1. Kim kime borçlu, tek bakışta
@@ -79,7 +79,7 @@ Kullanım koşulları: https://<PROJE>.web.app/terms
 
 ## English (en-US)
 
-**Name (30):** EvKasa: Split House Bills
+**Name (30):** Ödeşelim: Split House Bills
 
 **Subtitle, App Store (30):** Rent, bills & groceries split
 
@@ -93,7 +93,7 @@ roommate,housemate,split bills,rent,expense,shared,flat,debt,shopping list,chore
 **Full description (4000):**
 
 ```
-Stop tracking shared costs in group chats and notebooks. EvKasa splits rent, bills and groceries fairly between housemates and shows who owes whom at a glance.
+Stop tracking shared costs in group chats and notebooks. Ödeşelim splits rent, bills and groceries fairly between housemates and shows who owes whom at a glance.
 
 UNLIMITED EXPENSES
 Add as many expenses as you like, even on the free plan. No daily limits, no ads.
@@ -126,7 +126,7 @@ Everything that happens in the house (new and edited expenses, payments, finishe
 EASY START
 Create your house, share the 6-character invite code with your housemates, and you're set.
 
-EVKASA PRO
+ÖDEŞELİM PRO
 One person subscribes, the whole house benefits. Split the subscription too!
 • Unlimited houses
 • Unlimited recurring expenses
@@ -140,7 +140,7 @@ Privacy policy: https://<PROJECT>.web.app/privacy
 Terms of use: https://<PROJECT>.web.app/terms
 ```
 
-**What's new (first release):** The first release of EvKasa! Split expenses, simplify debts and manage your shopping list and chores in one place.
+**What's new (first release):** The first release of Ödeşelim! Split expenses, simplify debts and manage your shopping list and chores in one place.
 
 **Screenshot captions (6):**
 1. Who owes whom, at a glance

@@ -10,7 +10,7 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appName => 'EvKasa';
+  String get appName => 'Ödeşelim';
 
   @override
   String get tabHome => 'Ana sayfa';
@@ -277,7 +277,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String inviteShareText(String code) {
-    return 'EvKasa\'da evimize katıl! Uygulamayı aç, \"Kodla katıl\"a dokun ve şu kodu gir: $code';
+    return 'Ödeşelim\'de evimize katıl! Uygulamayı aç, \"Kodla katıl\"a dokun ve şu kodu gir: $code';
   }
 
   @override
@@ -1050,7 +1050,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Hesabın ve profil bilgilerin kalıcı olarak silinir, evlerden çıkarılırsın. Geçmiş giderlerde adın \"Silinmiş kullanıcı\" olarak görünür. Bu işlem geri alınamaz.';
 
   @override
-  String get goPro => 'EvKasa Pro\'ya geç';
+  String get goPro => 'Ödeşelim Pro\'ya geç';
 
   @override
   String get goProBody =>
@@ -1071,7 +1071,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get proBadge => 'Pro';
 
   @override
-  String get proTitle => 'EvKasa Pro';
+  String get proTitle => 'Ödeşelim Pro';
 
   @override
   String get proSubtitle =>

@@ -34,7 +34,7 @@ Sen bu projenin kıdemli Flutter ve Firebase geliştiricisisin. Projeyi aşağı
 
 ## Ürün özeti
 
-Uygulama, aynı evde yaşayanların kira, fatura ve market giderlerini adil bölüşmesini, kimin kime ne kadar borçlu olduğunu tek bakışta görmesini ve evin ortak işlerini düzenlemesini sağlar. Çalışma adı **EvKasa**; kesin isim açık kararlarda.
+Uygulama, aynı evde yaşayanların kira, fatura ve market giderlerini adil bölüşmesini, kimin kime ne kadar borçlu olduğunu tek bakışta görmesini ve evin ortak işlerini düzenlemesini sağlar. Uygulamanın adı **Ödeşelim** (çalışma adı EvKasa idi).
 
 - **Sorun:** Ev arkadaşları giderleri WhatsApp mesajları ve not defteriyle takip ediyor; oda büyüklüğüne göre kira, her ay tekrar eden faturalar ve "sıra kimde" tartışmaları bu yöntemle yönetilemiyor.
 - **Hedef kullanıcı:** 2–6 kişilik evlerde yaşayan üniversite öğrencileri ve genç çalışanlar; ilk pazar Türkiye, ikinci dil İngilizce.
@@ -322,7 +322,7 @@ Bunlar planda öneriyle doldurulmuş ama henüz kesinleşmemiş konular. Claude,
 
 | Konu | Önerilen | Ne zaman gerekli |
 | --- | --- | --- |
-| Uygulama adı | EvKasa (çalışma adı; mağazada müsaitliği kontrol edilmeli) | Faz 8 |
+| Uygulama adı | Ödeşelim (27 Ekim 2026'da seçildi; mağazada müsaitliği kontrol edilmeli) | Faz 8 |
 | Fiş okuma sağlayıcısı | Gemini (Firebase ile aynı faturalandırma) veya Tarif Defteri'ndeki gibi OpenRouter | Faz 6 |
 | Pro fiyatı (TRY) | Mağazanın Türkiye fiyat seviyelerinden; yıllık ≈ aylık × 7 | Faz 7 |
 | Ana renk ve logo | Yeşil tonu, sade bir ev + bozuk para simgesi | Faz 0 (renk), Faz 8 (logo) |
