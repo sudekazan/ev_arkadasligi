@@ -6,7 +6,7 @@ Uygulama bu adımlar olmadan da `demo-evkasa` projesi ve Firebase Emulator ile t
 
 ## 0. Yerel geliştirme ortamı
 
-- [ ] **Java 21 veya üstü kur.** `firebase-tools` artık Java 17 ile emulator başlatmıyor. En kolayı `brew install openjdk@21`; ya da Android Studio'nun içindeki JDK'yı kullan:
+- [x] **Java 21 veya üstü kur.** `firebase-tools` artık Java 17 ile emulator başlatmıyor. En kolayı `brew install openjdk@21`; ya da Android Studio'nun içindeki JDK'yı kullan:
   ```bash
   export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
   ```
@@ -18,16 +18,16 @@ Uygulama bu adımlar olmadan da `demo-evkasa` projesi ve Firebase Emulator ile t
 
 ## 2. Firebase `dev` projesi
 
-- [ ] [Firebase konsolunda](https://console.firebase.google.com) `odeselim-dev` gibi bir proje oluştur. Google Analytics'i aç.
-- [ ] **Blaze (kullandıkça öde) planına geç.** Cloud Functions, zamanlanmış görevler ve gizli anahtarlar Blaze ister. Google Cloud'da düşük tutarlı bir **bütçe uyarısı** kur.
-- [ ] **Authentication → Sign-in method:** E-posta/Şifre, Google ve Apple'ı etkinleştir (Apple için 5. bölüme bak).
-- [ ] **Firestore:** üretim modunda, konum `europe-west1` olarak oluştur.
-- [ ] **Storage:** varsayılan kovayı aynı bölgede oluştur.
-- [ ] **Uygulamaları kaydet:**
+- [x] [Firebase konsolunda](https://console.firebase.google.com) `odeselim-dev` gibi bir proje oluştur. Google Analytics'i aç.
+- [x] **Blaze (kullandıkça öde) planına geç.** Cloud Functions, zamanlanmış görevler ve gizli anahtarlar Blaze ister. Google Cloud'da düşük tutarlı bir **bütçe uyarısı** kur.
+- [ ] **Authentication → Sign-in method:** E-posta/Şifre, Google ve Apple'ı etkinleştir (Apple için 5. bölüme bak). *(E-posta ve Google açık; Apple bekliyor.)*
+- [x] **Firestore:** üretim modunda, konum `europe-west1` olarak oluştur.
+- [x] **Storage:** varsayılan kovayı aynı bölgede oluştur.
+- [x] **Uygulamaları kaydet:**
   - Android: paket adı `com.sudekazan.evarkadasligi`. Debug SHA-1 ve SHA-256 değerlerini ekle (`cd android && ./gradlew signingReport`); sürüm anahtarı oluşunca (7. bölüm) onunkileri de ekle.
   - iOS: bundle ID `com.sudekazan.evarkadasligi`.
-- [ ] `google-services.json` dosyasını `android/app/`, `GoogleService-Info.plist` dosyasını `ios/Runner/` altına koy. İkisi de git'e girmez (`.gitignore`'da).
-- [ ] `env/dev.example.json` dosyasını `env/dev.json` olarak kopyala ve doldur (bu dosya da git'e girmez):
+- [x] `google-services.json` dosyasını `android/app/`, `GoogleService-Info.plist` dosyasını `ios/Runner/` altına koy. İkisi de git'e girmez (`.gitignore`'da).
+- [x] `env/dev.example.json` dosyasını `env/dev.json` olarak kopyala ve doldur (bu dosya da git'e girmez):
 
   | Alan | Nereden |
   | --- | --- |
@@ -43,7 +43,7 @@ Uygulama bu adımlar olmadan da `demo-evkasa` projesi ve Firebase Emulator ile t
   ```bash
   firebase use dev
   ```
-- [ ] Kuralları, indeksleri, fonksiyonları ve Hosting'i yükle:
+- [x] Kuralları, indeksleri, fonksiyonları ve Hosting'i yükle:
   ```bash
   firebase deploy --only firestore,storage,functions,hosting
   ```
@@ -76,8 +76,8 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
 ## 6. Fiş okuma sağlayıcısı
 
-- [ ] Sağlayıcıyı seç. Seçilen: **OpenRouter** (`google/gemini-2.5-flash`), `functions/.env` içinde. Doğrudan Gemini için `RECEIPT_PROVIDER=gemini`, `RECEIPT_MODEL=gemini-2.5-flash` yaz.
-- [ ] Anahtarı al ([Google AI Studio](https://aistudio.google.com/apikey) veya OpenRouter) ve gizli anahtar olarak kaydet:
+- [x] Sağlayıcıyı seç. Seçilen: **OpenRouter** (`google/gemini-2.5-flash`), `functions/.env` içinde. Doğrudan Gemini için `RECEIPT_PROVIDER=gemini`, `RECEIPT_MODEL=gemini-2.5-flash` yaz.
+- [x] Anahtarı al ([Google AI Studio](https://aistudio.google.com/apikey) veya OpenRouter) ve gizli anahtar olarak kaydet:
   ```bash
   firebase functions:secrets:set RECEIPT_API_KEY
   ```
