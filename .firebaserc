@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "demo-evkasa"
+    "default": "demo-evkasa",
+    "dev": "odeselim-dev"
   }
 }

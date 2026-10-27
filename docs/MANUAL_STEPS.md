@@ -38,10 +38,10 @@ Uygulama bu adımlar olmadan da `demo-evkasa` projesi ve Firebase Emulator ile t
   | `FIREBASE_IOS_API_KEY`, `FIREBASE_IOS_APP_ID`, `FIREBASE_IOS_CLIENT_ID` | `GoogleService-Info.plist` → `API_KEY`, `GOOGLE_APP_ID`, `CLIENT_ID` |
   | `REVENUECAT_*_KEY` | 8. bölüm |
 
-- [ ] **iOS'ta Google girişi için URL şeması:** Xcode'da *Runner → Info → URL Types* altına `GoogleService-Info.plist` içindeki `REVERSED_CLIENT_ID` değerini ekle. Ya da bu değeri bana ver, ben ekleyeyim.
-- [ ] `.firebaserc` dosyasına dev projesini ekle:
+- [x] **iOS'ta Google girişi için URL şeması:** dev uygulamasının kodlanmış app ID'si `ios/Runner/Info.plist` içine eklendi (prod için 9. bölüme bak).
+- [x] `.firebaserc` dosyasında dev projesi `dev` takma adıyla tanımlı. Seçmek için:
   ```bash
-  firebase use --add
+  firebase use dev
   ```
 - [ ] Kuralları, indeksleri, fonksiyonları ve Hosting'i yükle:
   ```bash
