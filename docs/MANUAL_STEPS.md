@@ -76,7 +76,7 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
 ## 6. Fiş okuma sağlayıcısı
 
-- [ ] Sağlayıcıyı seç. Varsayılan **Gemini** (`gemini-2.5-flash`); OpenRouter da destekleniyor.
+- [ ] Sağlayıcıyı seç. Seçilen: **OpenRouter** (`google/gemini-2.5-flash`), `functions/.env` içinde. Doğrudan Gemini için `RECEIPT_PROVIDER=gemini`, `RECEIPT_MODEL=gemini-2.5-flash` yaz.
 - [ ] Anahtarı al ([Google AI Studio](https://aistudio.google.com/apikey) veya OpenRouter) ve gizli anahtar olarak kaydet:
   ```bash
   firebase functions:secrets:set RECEIPT_API_KEY
