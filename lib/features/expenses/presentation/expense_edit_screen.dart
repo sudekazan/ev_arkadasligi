@@ -139,10 +139,15 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
     if (picked != null) setState(() => _date = picked);
   }
 
+  /// Closes the keyboard; the decimal keypad on iOS has no Done key.
+  void _dismissKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
+
   Future<void> _scanReceipt() async {
     final l = context.l10n;
     final hid = ref.read(currentHouseholdIdProvider);
     if (hid == null) return;
+    // Otherwise iOS hands focus back to the amount field after the camera.
+    _dismissKeyboard();
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
       showDragHandle: true,
@@ -167,6 +172,7 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
     if (source == null) return;
     final file = await ImagePicker().pickImage(source: source, maxWidth: 2000, imageQuality: 80);
     if (file == null || !mounted) return;
+    _dismissKeyboard();
 
     setState(() => _scanning = true);
     final repo = ref.read(receiptRepositoryProvider);
@@ -305,6 +311,7 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 120),
           children: [
             if (_scanning) ...[
@@ -324,6 +331,7 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _description,
+              onTapOutside: (_) => _dismissKeyboard(),
               maxLength: 100,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(labelText: l.description),
@@ -376,6 +384,7 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _note,
+              onTapOutside: (_) => _dismissKeyboard(),
               maxLines: 3,
               minLines: 1,
               maxLength: 500,

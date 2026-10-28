@@ -177,6 +177,8 @@ class AmountField extends StatelessWidget {
       controller: controller,
       autofocus: autofocus,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      // The iOS decimal keypad has no Done key; tapping elsewhere closes it.
+      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       textAlign: large ? TextAlign.center : TextAlign.start,
       style: large
           ? theme.textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w600)
