@@ -109,14 +109,14 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
 ## 8. Abonelik (RevenueCat)
 
-- [ ] **Mağaza ürünleri:**
+- [ ] **Mağaza ürünleri:** (iOS tamam: aylık 29,99 ₺, yıllık 199,99 ₺ + 1 hafta deneme; Android bekliyor)
   - App Store Connect → Abonelikler: `odeselim_pro` grubu altında `odeselim_pro_monthly` ve `odeselim_pro_yearly`. Yıllık pakette 7 günlük ücretsiz deneme olsun.
   - Play Console → Abonelikler: aynı kimliklerle iki ürün; yıllıkta 7 günlük deneme teklifi.
   - Fiyat: Türkiye fiyat seviyesinden seç, yıllık ≈ aylık × 7. Uygulama fiyatı mağazadan okur.
-- [ ] [RevenueCat](https://app.revenuecat.com)'te proje oluştur, iOS ve Android uygulamalarını bağla (App Store Connect API anahtarı ve Play servis hesabı gerekir).
-- [ ] Entitlement kimliği tam olarak **`pro`** olmalı; iki ürünü de buna bağla.
-- [ ] Varsayılan (*current*) offering'e **Monthly** ve **Annual** paketlerini ekle.
-- [ ] Genel SDK anahtarlarını `env/dev.json` → `REVENUECAT_IOS_KEY` / `REVENUECAT_ANDROID_KEY` alanlarına yaz.
+- [ ] [RevenueCat](https://app.revenuecat.com)'te proje oluştur (iOS bağlı; Android bekliyor), iOS ve Android uygulamalarını bağla (App Store Connect API anahtarı ve Play servis hesabı gerekir).
+- [x] Entitlement kimliği tam olarak **`pro`** olmalı; iki ürünü de buna bağla.
+- [x] Varsayılan (*current*) offering'e **Monthly** ve **Annual** paketlerini ekle.
+- [ ] Genel SDK anahtarlarını (iOS yazıldı) `env/dev.json` → `REVENUECAT_IOS_KEY` / `REVENUECAT_ANDROID_KEY` alanlarına yaz.
 - [ ] **Webhook:**
   1. Uzun, rastgele bir gizli değer üret ve kaydet:
      ```bash
