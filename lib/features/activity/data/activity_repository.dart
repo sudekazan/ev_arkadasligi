@@ -18,7 +18,7 @@ class ActivityRepository {
     if (limit != null) q = q.limit(limit);
     return q
         .snapshots()
-        .map((s) => s.docs.map((d) => ActivityEvent.fromJson(docWithId(d))).toList());
+        .map((s) => parseDocs(s, ActivityEvent.fromJson));
   }
 }
 

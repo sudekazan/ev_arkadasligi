@@ -18,7 +18,7 @@ class ShoppingRepository {
   Stream<List<ShoppingItem>> watch(String hid) => _col(hid)
       .orderBy('createdAt')
       .snapshots()
-      .map((q) => q.docs.map((d) => ShoppingItem.fromJson(docWithId(d))).toList());
+      .map((q) => parseDocs(q, ShoppingItem.fromJson));
 
   Future<void> add(String hid, {required String name, String? quantity, required String uid}) =>
       _col(hid).add({

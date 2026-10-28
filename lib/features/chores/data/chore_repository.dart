@@ -18,13 +18,13 @@ class ChoreRepository {
   Stream<List<Chore>> watch(String hid) => _col(hid)
       .orderBy('nextDueAt')
       .snapshots()
-      .map((q) => q.docs.map((d) => Chore.fromJson(docWithId(d))).toList());
+      .map((q) => parseDocs(q, Chore.fromJson));
 
   Stream<List<ChoreLog>> watchLogs(String hid, String choreId) => _db
       .collection('households/$hid/choreLogs')
       .where('choreId', isEqualTo: choreId)
       .snapshots()
-      .map((q) => q.docs.map((d) => ChoreLog.fromJson(docWithId(d))).toList()
+      .map((q) => parseDocs(q, ChoreLog.fromJson)
         ..sort((a, b) => b.doneAt.compareTo(a.doneAt)));
 
   Future<void> save(String hid, Chore chore) {

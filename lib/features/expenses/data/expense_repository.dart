@@ -42,12 +42,12 @@ class ExpenseRepository {
   Stream<List<Expense>> watchExpenses(String hid) => _expenses(hid)
       .orderBy('date', descending: true)
       .snapshots()
-      .map((q) => q.docs.map((d) => Expense.fromJson(docWithId(d))).toList());
+      .map((q) => parseDocs(q, Expense.fromJson));
 
   Stream<List<Settlement>> watchSettlements(String hid) => _settlements(hid)
       .orderBy('date', descending: true)
       .snapshots()
-      .map((q) => q.docs.map((d) => Settlement.fromJson(docWithId(d))).toList());
+      .map((q) => parseDocs(q, Settlement.fromJson));
 
   /// Creates or updates [expense]; [existing] is the stored version when editing.
   Future<void> saveExpense(

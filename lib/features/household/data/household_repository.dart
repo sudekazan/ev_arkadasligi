@@ -56,13 +56,13 @@ class HouseholdRepository {
       .collection('households')
       .where('memberIds', arrayContains: uid)
       .snapshots()
-      .map((q) => q.docs.map((d) => Household.fromJson(docWithId(d))).toList()
+      .map((q) => parseDocs(q, Household.fromJson)
         ..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
 
   Stream<List<Member>> watchMembers(String hid) => _doc(hid)
       .collection('members')
       .snapshots()
-      .map((q) => q.docs.map((d) => Member.fromJson(docWithId(d))).toList()
+      .map((q) => parseDocs(q, Member.fromJson)
         ..sort((a, b) => a.joinedAt.compareTo(b.joinedAt)));
 
   Future<void> update(String hid, {required String name, required String currency}) =>

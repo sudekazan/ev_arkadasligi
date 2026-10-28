@@ -17,7 +17,7 @@ class RecurringRepository {
   Stream<List<RecurringTemplate>> watch(String hid) => _col(hid)
       .orderBy('createdAt')
       .snapshots()
-      .map((q) => q.docs.map((d) => RecurringTemplate.fromJson(docWithId(d))).toList());
+      .map((q) => parseDocs(q, RecurringTemplate.fromJson));
 
   String newId(String hid) => _col(hid).doc().id;
 
