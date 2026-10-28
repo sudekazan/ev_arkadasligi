@@ -37,6 +37,8 @@ flutter run --dart-define-from-file=env/dev.json
 
 ## Testler
 
+GitHub'a her gönderimde aşağıdaki testlerin hepsi (entegrasyon testi hariç) GitHub Actions'ta otomatik çalışır: `.github/workflows/test.yml`. Sonuçlar reponun **Actions** sekmesinde.
+
 Birim ve widget testleri (para çekirdeği T1–T10, gider ekleme, ödeme kaydetme):
 
 ```bash
