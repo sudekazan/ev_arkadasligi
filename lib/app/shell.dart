@@ -38,7 +38,8 @@ class _AppShellState extends ConsumerState<AppShell> {
       await service.requestPermission();
     }
     await service.register(uid);
-    _messages = service.foregroundMessages.listen((m) {
+    if (!mounted) return; // register can wait several seconds for APNs on iOS.
+    _messages =service.foregroundMessages.listen((m) {
       final body = m.notification?.body;
       if (body != null && mounted) showMessage(context, body);
     });

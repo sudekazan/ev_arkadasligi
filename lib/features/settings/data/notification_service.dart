@@ -37,17 +37,29 @@ class NotificationService {
 
   /// Saves the device token on the profile and keeps it fresh.
   Future<void> register(String uid) async {
+    // Listen first: on iOS the FCM token can only be issued once the APNs
+    // token arrives, which may be after this call; it then comes as a refresh.
+    await _tokenSub?.cancel();
+    _tokenSub = FirebaseMessaging.instance.onTokenRefresh
+        .listen((t) => unawaited(_users.addFcmToken(uid, t)));
+    _messageSub ??= FirebaseMessaging.onMessage.listen(_foreground.add);
     try {
+      if (defaultTargetPlatform == TargetPlatform.iOS && !await _waitForApnsToken()) return;
       final token = await FirebaseMessaging.instance.getToken();
       if (token != null) await _users.addFcmToken(uid, token);
-      await _tokenSub?.cancel();
-      _tokenSub = FirebaseMessaging.instance.onTokenRefresh
-          .listen((t) => unawaited(_users.addFcmToken(uid, t)));
-      _messageSub ??= FirebaseMessaging.onMessage.listen(_foreground.add);
     } catch (e) {
       // Without APNs / Play services (simulators, demo project) there is no token.
       if (kDebugMode) debugPrint('FCM unavailable: $e');
     }
+  }
+
+  /// getToken throws on iOS until APNs has handed the device a token.
+  Future<bool> _waitForApnsToken() async {
+    for (var i = 0; i < 10; i++) {
+      if (await FirebaseMessaging.instance.getAPNSToken() != null) return true;
+      await Future<void>.delayed(const Duration(seconds: 1));
+    }
+    return false;
   }
 
   Future<void> unregister(String uid) async {
