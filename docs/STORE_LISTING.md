@@ -1,6 +1,6 @@
 # Mağaza metinleri
 
-App Store Connect ve Google Play Console'a kopyalanacak metinler. Karakter sınırları parantez içinde; her metin sınırın altında. Uygulama adı: **Ödeşelim**.
+App Store Connect ve Google Play Console'a kopyalanacak metinler. Karakter sınırları parantez içinde; her metin sınırın altında. Uygulama adı: **Ödeşelim**. Adresler şimdilik `odeselim-dev.web.app`; `prod` projesine geçilirse güncellenir.
 
 Fiyat hiçbir metinde yazılmaz. Fiyatlar mağaza panelinden ülkeye göre belirlenir.
 
@@ -9,6 +9,8 @@ Fiyat hiçbir metinde yazılmaz. Fiyatlar mağaza panelinden ülkeye göre belir
 **Ad (30):** Ödeşelim: Ev Masrafı Bölüş
 
 **Alt başlık, App Store (30):** Kira, fatura ve market bölüş
+
+**Tanıtım metni, App Store (170):** Kirayı, faturaları ve market alışverişini ev arkadaşlarınla adil bölüş. Kim kime borçlu, tek bakışta gör. Gider ekleme her zaman sınırsız, reklam yok.
 
 **Kısa açıklama, Google Play (80):** Ev arkadaşlarınla kira, fatura ve marketi adil bölüş. Gider ekleme sınırsız.
 
@@ -63,8 +65,8 @@ Pro'yu evde bir kişi alır, evdeki herkes yararlanır. Aboneliği de bölüşü
 
 Abonelik, iptal edilmedikçe dönem sonunda otomatik yenilenir. Mağaza hesabının ayarlarından istediğin zaman iptal edebilirsin.
 
-Gizlilik politikası: https://<PROJE>.web.app/privacy
-Kullanım koşulları: https://<PROJE>.web.app/terms
+Gizlilik politikası: https://odeselim-dev.web.app/privacy
+Kullanım koşulları: https://odeselim-dev.web.app/terms
 ```
 
 **Yenilikler (ilk sürüm):** Ödeşelim'in ilk sürümü! Giderleri bölüş, borçları sadeleştir, alışveriş listesini ve ev işlerini tek yerden yönet.
@@ -82,6 +84,8 @@ Kullanım koşulları: https://<PROJE>.web.app/terms
 **Name (30):** Ödeşelim: Split House Bills
 
 **Subtitle, App Store (30):** Rent, bills & groceries split
+
+**Promotional text, App Store (170):** Split rent, bills and groceries fairly with your housemates. See who owes whom at a glance. Adding expenses is always unlimited, with no ads.
 
 **Short description, Google Play (80):** Split rent, bills and groceries fairly with housemates. Unlimited expenses.
 
@@ -136,8 +140,8 @@ One person subscribes, the whole house benefits. Split the subscription too!
 
 Subscriptions renew automatically at the end of each period unless cancelled. You can cancel any time in your store account settings.
 
-Privacy policy: https://<PROJECT>.web.app/privacy
-Terms of use: https://<PROJECT>.web.app/terms
+Privacy policy: https://odeselim-dev.web.app/privacy
+Terms of use: https://odeselim-dev.web.app/terms
 ```
 
 **What's new (first release):** The first release of Ödeşelim! Split expenses, simplify debts and manage your shopping list and chores in one place.
@@ -158,8 +162,9 @@ Terms of use: https://<PROJECT>.web.app/terms
 | Yaş sınırı | 4+ (App Store), Herkes / PEGI 3 (Google Play) |
 | Reklam içeriyor mu | Hayır |
 | Uygulama içi satın alma | Evet (otomatik yenilenen abonelik) |
-| Destek URL'si | `https://<PROJE>.web.app` |
-| Gizlilik URL'si | `https://<PROJE>.web.app/privacy` |
+| Destek URL'si | `https://odeselim-dev.web.app` |
+| Gizlilik URL'si | `https://odeselim-dev.web.app/privacy` |
+| Telif (Copyright) | `2026 Sude Kazan` |
 
 **App Store gizlilik etiketleri / Google Play Veri güvenliği formu:**
 
