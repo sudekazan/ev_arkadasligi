@@ -43,8 +43,9 @@ function safeEqual(a: string, b: string): boolean {
 export const revenueCatWebhook = onRequest(
   { region: REGION, secrets: [webhookSecret] },
   async (req, res) => {
-    const expected = `Bearer ${webhookSecret.value()}`;
-    if (req.method !== "POST" || !safeEqual(req.get("authorization") ?? "", expected)) {
+    // Trim: a secret set from a pipe (openssl rand | secrets:set) keeps its trailing newline.
+    const expected = `Bearer ${webhookSecret.value().trim()}`;
+    if (req.method !== "POST" || !safeEqual((req.get("authorization") ?? "").trim(), expected)) {
       res.status(401).send("unauthorized");
       return;
     }
