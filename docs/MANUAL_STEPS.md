@@ -10,7 +10,7 @@ Uygulama bu adımlar olmadan da `demo-evkasa` projesi ve Firebase Emulator ile t
   ```bash
   export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
   ```
-- [ ] Emulator'ın ve testlerin çalıştığını doğrula (README'deki komutlar).
+- [x] Emulator'ın ve testlerin çalıştığını doğrula (README'deki komutlar). *(Artık GitHub Actions'ta çalışıyor.)*
 
 ## 1. Uygulama adı
 
@@ -48,30 +48,30 @@ Uygulama bu adımlar olmadan da `demo-evkasa` projesi ve Firebase Emulator ile t
   firebase deploy --only firestore,storage,functions,hosting
   ```
 - [ ] **Analytics veri saklama süresi:** Analytics → Yönetici → Veri saklama → **14 ay**. Gizlilik politikası bu süreyi yazıyor; varsayılan 2 aydır.
-- [ ] Uygulamayı gerçek projeyle çalıştır:
+- [x] Uygulamayı gerçek projeyle çalıştır:
   ```bash
   flutter run --dart-define-from-file=env/dev.json
   ```
 
 ## 3. Bildirimler (FCM)
 
-- [ ] [Apple Developer](https://developer.apple.com/account/resources/authkeys/list) → Keys bölümünde **Apple Push Notifications service (APNs)** anahtarı oluştur. `.p8` dosyasını, Key ID ve Team ID (`75W22TJ5MZ`) ile birlikte Firebase → Proje ayarları → Cloud Messaging → Apple uygulama yapılandırmasına yükle.
+- [x] [Apple Developer](https://developer.apple.com/account/resources/authkeys/list) → Keys bölümünde **Apple Push Notifications service (APNs)** anahtarı oluştur. `.p8` dosyasını, Key ID ve Team ID (`75W22TJ5MZ`) ile birlikte Firebase → Proje ayarları → Cloud Messaging → Apple uygulama yapılandırmasına yükle.
 - [ ] Gerçek bir iPhone'da gider ekleyerek diğer üyeye bildirim geldiğini doğrula. Simülatör push almaz.
 
 ## 4. App Check
 
-- [ ] Firebase → App Check:
-  - Android'i **Play Integrity** ile kaydet (önce uygulama Play Console'da olmalı, 7. bölüm).
+- [x] Firebase → App Check:
+  - Android'i **Play Integrity** (bekliyor) ile kaydet (önce uygulama Play Console'da olmalı, 7. bölüm).
   - iOS'u **App Attest** ile kaydet; DeviceCheck yedeği için DeviceCheck anahtarını da yükle.
-- [ ] Debug derlemelerde konsola yazılan **debug token**'ı App Check → Uygulamalar → Debug token'ları yönet bölümüne ekle; yoksa debug derlemede fiş okuma reddedilir.
+- [x] Debug derlemelerde konsola yazılan **debug token**'ı App Check → Uygulamalar → Debug token'ları yönet bölümüne ekle; yoksa debug derlemede fiş okuma reddedilir.
 - [ ] Bir hafta metrikleri izledikten sonra Storage ve Firestore için **zorunlu kıl**. `scanReceipt` zaten App Check istiyor.
 
 ## 5. Apple ile Giriş
 
 Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
-- [ ] Apple Developer → Identifiers → `com.sudekazan.evarkadasligi` için **Sign in with Apple** ve **Push Notifications** yeteneklerini aç. **App Attest** de açık olmalı.
-- [ ] Xcode'da Runner hedefini açıp *Signing & Capabilities* sekmesinde hata olmadığını kontrol et; otomatik imzalama profili yeni yetenekleri içerecek şekilde yeniler.
+- [x] Apple Developer → Identifiers → `com.sudekazan.evarkadasligi` için **Sign in with Apple** ve **Push Notifications** yeteneklerini aç. **App Attest** de açık olmalı.
+- [x] Xcode'da Runner hedefini açıp *Signing & Capabilities* sekmesinde hata olmadığını kontrol et; otomatik imzalama profili yeni yetenekleri içerecek şekilde yeniler.
 - [ ] Firebase → Authentication → Apple sağlayıcısında Services ID, Team ID, Key ID ve özel anahtarı gir. Bu bilgiler yalnızca web ve Android'de Apple girişi için gerekir; iOS'ta yerel giriş bunlarsız çalışır.
 
 ## 6. Fiş okuma sağlayıcısı
@@ -82,7 +82,7 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
   firebase functions:secrets:set RECEIPT_API_KEY
   ```
 - [ ] Varsayılanı değiştirmek istersen `functions/.env.<proje-id>` dosyasına `RECEIPT_PROVIDER=openrouter` ve `RECEIPT_MODEL=<model>` yaz. Bu dosyada sır yok, git'e girebilir; anahtar yalnızca secret olarak tutulur.
-- [ ] Fonksiyonları yeniden yükle ve gerçek bir fişle dene:
+- [x] Fonksiyonları yeniden yükle ve gerçek bir fişle dene:
   ```bash
   firebase deploy --only functions
   ```
