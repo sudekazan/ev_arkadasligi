@@ -117,14 +117,14 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 - [x] Entitlement kimliği tam olarak **`pro`** olmalı; iki ürünü de buna bağla.
 - [x] Varsayılan (*current*) offering'e **Monthly** ve **Annual** paketlerini ekle.
 - [ ] Genel SDK anahtarlarını (iOS yazıldı) `env/dev.json` → `REVENUECAT_IOS_KEY` / `REVENUECAT_ANDROID_KEY` alanlarına yaz.
-- [ ] **Webhook:**
+- [x] **Webhook:** (dev bağlı, 200 dönüyor)
   1. Uzun, rastgele bir gizli değer üret ve kaydet:
      ```bash
      firebase functions:secrets:set REVENUECAT_WEBHOOK_SECRET
      ```
   2. RevenueCat → Integrations → Webhooks: URL `https://europe-west1-<proje-id>.cloudfunctions.net/revenueCatWebhook`, Authorization başlığı `Bearer <gizli değer>`.
   3. Fonksiyonları yeniden yükle.
-- [ ] Sandbox (iOS) ve lisanslı test hesabı (Android) ile satın alma, deneme, iptal ve geri yüklemeyi dene. `users/{uid}.proUntil` alanının dolduğunu kontrol et.
+- [ ] Sandbox (iOS: satın alma ve `proUntil` tamam; deneme/iptal/geri yükleme ve Android bekliyor) ve lisanslı test hesabı (Android) ile satın alma, deneme, iptal ve geri yüklemeyi dene. `users/{uid}.proUntil` alanının dolduğunu kontrol et.
 
 ## 9. `prod` ortamı
 
