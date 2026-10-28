@@ -89,9 +89,9 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
 ## 7. Mağaza hesapları ve imzalama
 
-- [ ] **Apple Developer Program** üyeliği (yıllık ücretli) ve App Store Connect'te `com.sudekazan.evarkadasligi` ile uygulama kaydı.
+- [x] **Apple Developer Program** üyeliği (yıllık ücretli) ve App Store Connect'te `com.sudekazan.evarkadasligi` ile uygulama kaydı.
 - [ ] **Google Play Console** geliştirici hesabı ve uygulama kaydı.
-- [ ] **Android yükleme anahtarı:**
+- [x] **Android yükleme anahtarı:** (`~/odeselim-upload.jks` ve `android/key.properties` oluşturuldu; SHA-1 `47:7A:D5:…:69:8F`)
   ```bash
   keytool -genkey -v -keystore ~/odeselim-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
   ```
@@ -104,7 +104,7 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
   ```
   Anahtarı ve şifreleri güvenli bir yere yedekle. Play App Signing'i aç ve SHA-1/SHA-256 değerlerini Firebase'e ekle.
 - [ ] Mağaza kayıtlarını `docs/STORE_LISTING.md` dosyasındaki metinlerle doldur: açıklamalar, anahtar kelimeler, gizlilik etiketleri ve Veri güvenliği formu.
-- [ ] Gizlilik ve koşul sayfalarındaki `[İLETİŞİM E-POSTASI]` / `[CONTACT EMAIL]` yer tutucularını gerçek destek adresiyle değiştir. Metinler bir şablon; yayından önce hukuki açıdan gözden geçirilmesi önerilir.
+- [x] Gizlilik ve koşul sayfalarındaki iletişim adresi `sudekazan1907@gmail.com` olarak yazıldı (ileride ayrı bir destek adresiyle değiştirilebilir). Metinler bir şablon; yayından önce hukuki açıdan gözden geçirilmesi önerilir.
 - [ ] Ekran görüntüleri: 6,9" iPhone ve Android telefon için TR ve EN.
 
 ## 8. Abonelik (RevenueCat)
