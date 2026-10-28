@@ -111,6 +111,21 @@ void main() {
     );
   });
 
+  test('unbalanced expenses written around the app do not move balances', () {
+    final withForged = [
+      ...t6Expenses(),
+      // Shares larger than the amount, negative shares, no shares at all.
+      const LedgerExpense(paidBy: 'A', amountMinor: 1000, shares: {'B': 1000000}),
+      const LedgerExpense(paidBy: 'A', amountMinor: 1000, shares: {'A': 2000, 'B': -1000}),
+      const LedgerExpense(paidBy: 'A', amountMinor: 1000, shares: {}),
+      const LedgerExpense(paidBy: 'A', amountMinor: 0, shares: {'A': 0}),
+    ];
+    expect(
+      BalanceCalculator.nets(withForged, const []),
+      BalanceCalculator.nets(t6Expenses(), const []),
+    );
+  });
+
   test('T10: random 200-expense household keeps every kuruş', () {
     final random = Random(20261026);
     final uids = ['ayse', 'burak', 'cem', 'deniz', 'ece', 'fatma'];

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { allocateByWeights, computeNets, computeShares } from "../../src/money.js";
+import { allocateByWeights, computeNets, computeShares, isBalancedExpense } from "../../src/money.js";
 
 describe("money (mirror of lib/core/money)", () => {
   it("T1 equal split gives the extra kuruş to the first uid", () => {
@@ -31,5 +31,19 @@ describe("money (mirror of lib/core/money)", () => {
     const nets = computeNets(expenses, [{ fromUid: "C", toUid: "A", amountMinor: 40000 }]);
     expect(nets).toEqual({ A: 10000, B: -10000, C: 0 });
     expect(Object.values(nets).reduce((a, b) => a + b, 0)).toBe(0);
+  });
+
+  it("rejects and skips expenses whose shares do not add up", () => {
+    const ok = { paidBy: "A", amountMinor: 1000, shares: { A: 500, B: 500 }, status: "final" };
+    const forged = [
+      { ...ok, shares: { B: 1000000 } },
+      { ...ok, shares: { A: 2000, B: -1000 } },
+      { ...ok, shares: { A: 500.5, B: 499.5 } },
+      { ...ok, shares: {} },
+      { ...ok, amountMinor: 0, shares: { A: 0 } },
+    ];
+    expect(isBalancedExpense(ok)).toBe(true);
+    for (const e of forged) expect(isBalancedExpense(e)).toBe(false);
+    expect(computeNets([ok, ...forged], [])).toEqual(computeNets([ok], []));
   });
 });

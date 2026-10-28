@@ -1,9 +1,11 @@
 import { Timestamp } from "firebase-admin/firestore";
 import { onDocumentWritten } from "firebase-functions/v2/firestore";
+import { logger } from "firebase-functions/v2";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { REGION, db, loadHousehold, requireAuth, requireMember, requireString } from "./common.js";
 import { dayKey } from "./dates.js";
 import { balanceOf } from "./household.js";
+import { ExpenseLike, isBalancedExpense } from "./money.js";
 import { formatAmount, notifyUsers } from "./notify.js";
 
 async function memberName(hid: string, uid: string): Promise<string> {
@@ -12,15 +14,29 @@ async function memberName(hid: string, uid: string): Promise<string> {
 }
 
 // Activity entries are written by the client in the same batch as the change
-// (so the actor is known, also for deletes); triggers only notify.
+// (so the actor is known, also for deletes); triggers only notify, except that
+// an unbalanced expense is rolled back (balances skip it meanwhile).
 export const onExpenseWritten = onDocumentWritten(
   { document: "households/{hid}/expenses/{eid}", region: REGION },
   async (event) => {
     const before = event.data?.before;
     const after = event.data?.after;
-    if (!after?.exists || before?.exists) return;
+    if (!after?.exists) return;
     const e = after.data()!;
-    if (e.status !== "final") return;
+    if (e.status === "final" && !isBalancedExpense(e as ExpenseLike)) {
+      const prev = before?.exists ? before.data()! : null;
+      const prevOk =
+        prev && (prev.status !== "final" || isBalancedExpense(prev as ExpenseLike));
+      logger.warn("unbalanced expense rolled back", {
+        hid: event.params.hid,
+        eid: event.params.eid,
+        restored: !!prevOk,
+      });
+      if (prevOk) await after.ref.set(prev);
+      else await after.ref.delete();
+      return;
+    }
+    if (before?.exists || e.status !== "final") return;
     const hid = event.params.hid;
     const { data: h } = await loadHousehold(hid);
     const actor = await memberName(hid, e.createdBy);

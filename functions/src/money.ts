@@ -73,6 +73,18 @@ export function computeShares(
 }
 
 /** net = paid − owed + settlements sent − settlements received. */
+/**
+ * Whether a final expense's shares are non-negative integers that add up to
+ * its amount. Rules cannot sum a map, so a client can write one that does not.
+ */
+export function isBalancedExpense(e: ExpenseLike): boolean {
+  if (!Number.isInteger(e.amountMinor) || e.amountMinor <= 0) return false;
+  const shares = Object.values(e.shares ?? {});
+  if (shares.length === 0) return false;
+  if (!shares.every((s) => Number.isInteger(s) && s >= 0)) return false;
+  return shares.reduce((sum, s) => sum + s, 0) === e.amountMinor;
+}
+
 export function computeNets(
   expenses: ExpenseLike[],
   settlements: SettlementLike[],
@@ -82,7 +94,7 @@ export function computeNets(
     net[uid] = (net[uid] ?? 0) + v;
   };
   for (const e of expenses) {
-    if (e.status === "pendingAmount") continue;
+    if (e.status === "pendingAmount" || !isBalancedExpense(e)) continue;
     add(e.paidBy, e.amountMinor);
     for (const [uid, share] of Object.entries(e.shares ?? {})) add(uid, -share);
   }

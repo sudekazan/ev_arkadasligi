@@ -87,9 +87,13 @@ service cloud.firestore {
         allow create: if isMember(hid)
           && request.resource.data.createdBy == me()
           && validExpense(request.resource.data);
+        // A pending bill is also filled in by its payer (who gets the
+        // reminder), but the payer cannot hand the bill to someone else.
         allow update: if isMember(hid)
           && (resource.data.createdBy == me() || isAdmin(hid)
-            || resource.data.status == 'pendingAmount')
+            || (resource.data.status == 'pendingAmount'
+              && resource.data.paidBy == me()
+              && request.resource.data.paidBy == me()))
           && unchanged(['createdBy', 'createdAt'])
           && validExpense(request.resource.data);
         allow delete: if isMember(hid)

@@ -89,6 +89,9 @@ beforeEach(async () => {
     }
     await setDoc(doc(db, "households/h1/expenses/e1"), expense());
     await setDoc(doc(db, "households/h1/expenses/pending"), expense({
+      amountMinor: 0, shares: {}, status: "pendingAmount", createdBy: "alice", paidBy: "bob",
+    }));
+    await setDoc(doc(db, "households/h1/expenses/pendingAlice"), expense({
       amountMinor: 0, shares: {}, status: "pendingAmount", createdBy: "alice",
     }));
     await setDoc(doc(db, "households/h1/settlements/s1"), {
@@ -160,8 +163,16 @@ describe("expenses", () => {
     await assertSucceeds(deleteDoc(doc(as("alice"), "households/h1/expenses/e1")));
   });
 
-  it("any member can fill in a pending bill", async () => {
+  it("the payer fills in a pending bill but cannot hand it to someone else", async () => {
+    const filled = { amountMinor: 8000, shares: { alice: 4000, bob: 4000 }, createdBy: "alice" };
+    await assertFails(setDoc(doc(as("bob"), "households/h1/expenses/pending"),
+      expense({ ...filled, paidBy: "alice" })));
     await assertSucceeds(setDoc(doc(as("bob"), "households/h1/expenses/pending"),
+      expense({ ...filled, paidBy: "bob" })));
+  });
+
+  it("other members cannot fill in someone else's pending bill", async () => {
+    await assertFails(setDoc(doc(as("bob"), "households/h1/expenses/pendingAlice"),
       expense({ amountMinor: 8000, shares: { alice: 4000, bob: 4000 }, createdBy: "alice" })));
   });
 });
