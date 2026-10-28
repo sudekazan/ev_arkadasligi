@@ -15,12 +15,13 @@ describe("receipt parser", () => {
 
   it("validates the model JSON", () => {
     const r = parseReceiptJson(
-      '```json\n{"merchant":" Migros ","date":"2026-10-20","total":"245,90","items":[{"name":"Süt","amount":"34,50"},{"name":"","amount":"1"},{"name":"Ekmek","amount":"x"}]}\n```',
+      '```json\n{"merchant":" Migros ","date":"2026-10-20","total":"245,90","category":"groceries","items":[{"name":"Süt","amount":"34,50"},{"name":"","amount":"1"},{"name":"Ekmek","amount":"x"}]}\n```',
     );
     expect(r).toEqual({
       merchant: "Migros",
       date: "2026-10-20",
       totalMinor: 24590,
+      category: "groceries",
       items: [{ name: "Süt", amountMinor: 3450 }],
     });
   });
@@ -30,6 +31,9 @@ describe("receipt parser", () => {
     expect(r.date).toBeNull();
     expect(r.merchant).toBeNull();
     expect(r.totalMinor).toBe(1000);
+    expect(r.category).toBeNull();
+    expect(parseReceiptJson('{"total":"10","category":"rent"}').category).toBeNull();
+    expect(parseReceiptJson('{"total":"10","category":"food"}').category).toBeNull();
     expect(() => parseReceiptJson('{"merchant":"X"}')).toThrow("empty-receipt");
     expect(() => parseReceiptJson("not json")).toThrow();
   });

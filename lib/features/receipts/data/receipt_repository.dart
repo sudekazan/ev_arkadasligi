@@ -10,12 +10,19 @@ import '../../expenses/domain/expense.dart';
 
 /// Result of `scanReceipt`; every field may be missing.
 class ScannedReceipt {
-  const ScannedReceipt({this.merchant, this.date, this.totalMinor, this.items = const []});
+  const ScannedReceipt({
+    this.merchant,
+    this.date,
+    this.totalMinor,
+    this.category,
+    this.items = const [],
+  });
 
   factory ScannedReceipt.fromMap(Map<String, dynamic> m) => ScannedReceipt(
         merchant: m['merchant'] as String?,
         date: m['date'] is String ? DateTime.tryParse(m['date'] as String) : null,
         totalMinor: (m['totalMinor'] as num?)?.toInt(),
+        category: ExpenseCategory.values.asNameMap()[m['category']],
         items: [
           for (final raw in (m['items'] as List<Object?>? ?? const []))
             if (raw is Map)
@@ -29,6 +36,7 @@ class ScannedReceipt {
   final String? merchant;
   final DateTime? date;
   final int? totalMinor;
+  final ExpenseCategory? category;
   final List<ReceiptItem> items;
 }
 

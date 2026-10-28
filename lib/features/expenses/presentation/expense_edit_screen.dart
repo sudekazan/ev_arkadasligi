@@ -183,6 +183,9 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
         }
         if (r.merchant != null && _description.text.isEmpty) _description.text = r.merchant!;
         if (r.date != null) _date = r.date!;
+        // Only replace the default; a category the user picked stays. Rent is
+        // never suggested, so no rent shares need applying here.
+        if (r.category != null && _category == ExpenseCategory.other) _category = r.category!;
         _receiptItems = r.items;
       });
       showMessage(context, l.receiptScanned);

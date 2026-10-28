@@ -4,14 +4,35 @@ export interface ParsedReceipt {
   merchant: string | null;
   date: string | null; // YYYY-MM-DD
   totalMinor: number | null;
+  category: ReceiptCategory | null;
   items: { name: string; amountMinor: number }[];
 }
 
+// ExpenseCategory names in lib/features/expenses/domain/expense.dart, minus
+// rent (never on a shop receipt; picking it applies the rent shares).
+export const RECEIPT_CATEGORIES = [
+  "electricity",
+  "water",
+  "gas",
+  "internet",
+  "groceries",
+  "cleaning",
+  "homeGoods",
+  "other",
+] as const;
+
+export type ReceiptCategory = (typeof RECEIPT_CATEGORIES)[number];
+
 export const RECEIPT_PROMPT = `You read shop receipts. Reply with JSON only, no prose:
 {"merchant": string|null, "date": "YYYY-MM-DD"|null, "total": string|null,
- "items": [{"name": string, "amount": string}]}
+ "category": string|null, "items": [{"name": string, "amount": string}]}
 Amounts are strings with the receipt's decimals, e.g. "1234.50". "total" is the
-final amount paid. Use null when a field is not readable. At most 50 items.`;
+final amount paid. "category" is the one that fits the whole receipt best:
+${RECEIPT_CATEGORIES.join(", ")}. Supermarkets, grocers, bakeries and markets
+(e.g. Migros, BİM, A101, ŞOK, CarrefourSA) are "groceries"; detergents and
+cleaning supplies are "cleaning"; furniture, kitchenware and home items are
+"homeGoods"; utility bills are electricity, water, gas or internet. Use null
+when a field is not readable. At most 50 items.`;
 
 /** Parses "1.234,56", "1234.56", "₺ 12,5" etc. into integer minor units. */
 export function decimalToMinor(value: unknown): number | null {
@@ -45,6 +66,9 @@ export function parseReceiptJson(text: string): ParsedReceipt {
       ? raw.date
       : null;
   const totalMinor = decimalToMinor(raw.total);
+  const category = (RECEIPT_CATEGORIES as readonly string[]).includes(raw.category as string)
+    ? (raw.category as ReceiptCategory)
+    : null;
   const items: ParsedReceipt["items"] = [];
   if (Array.isArray(raw.items)) {
     for (const item of raw.items.slice(0, 50)) {
@@ -57,5 +81,11 @@ export function parseReceiptJson(text: string): ParsedReceipt {
     }
   }
   if (totalMinor === null && items.length === 0) throw new Error("empty-receipt");
-  return { merchant, date, totalMinor: totalMinor && totalMinor > 0 ? totalMinor : null, items };
+  return {
+    merchant,
+    date,
+    totalMinor: totalMinor && totalMinor > 0 ? totalMinor : null,
+    category,
+    items,
+  };
 }
