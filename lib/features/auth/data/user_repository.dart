@@ -18,7 +18,9 @@ class UserRepository {
   /// Streams the profile, creating it on first sign-in.
   Stream<AppUser?> watch(String uid) async* {
     await for (final snap in _doc(uid).snapshots()) {
-      if (!snap.exists) {
+      // A doc without createdAt holds only the registration name (see
+      // setDisplayName) and still needs the default fields.
+      if (!snap.exists || !snap.data()!.containsKey('createdAt')) {
         if (!snap.metadata.isFromCache) await _create(uid);
         continue;
       }
@@ -31,14 +33,19 @@ class UserRepository {
     final fallbackName = user?.email?.split('@').first ?? '';
     final ref = _doc(uid);
     await _db.runTransaction((tx) async {
-      if ((await tx.get(ref)).exists) return;
+      final existing = (await tx.get(ref)).data();
+      if (existing != null && existing.containsKey('createdAt')) return;
+      final savedName = existing?['displayName'] as String?;
       tx.set(ref, {
-      'displayName': (user?.displayName?.trim().isNotEmpty ?? false)
-          ? user!.displayName!.trim()
-          : fallbackName,
+      'displayName': (savedName?.trim().isNotEmpty ?? false)
+          ? savedName!.trim()
+          : (user?.displayName?.trim().isNotEmpty ?? false)
+              ? user!.displayName!.trim()
+              : fallbackName,
       'avatarEmoji': '🙂',
       'locale': 'tr',
-      'householdIds': <String>[],
+      // Rules forbid touching householdIds on update; it defaults to [] anyway.
+      if (existing == null) 'householdIds': <String>[],
       'fcmTokens': <String>[],
       'notificationPrefs': <String, bool>{},
       'createdAt': Timestamp.now(),

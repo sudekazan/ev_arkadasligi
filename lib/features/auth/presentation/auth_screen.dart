@@ -44,11 +44,14 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   Future<void> _submitEmail() async {
     if (!_formKey.currentState!.validate()) return;
     final repo = ref.read(authRepositoryProvider);
+    // Read before the await: signing in redirects away and disposes this screen.
+    final userRepo = ref.read(userRepositoryProvider);
+    final name = _name.text;
     await _run(() async {
       if (!_register) return repo.signInWithEmail(_email.text, _password.text);
-      await repo.registerWithEmail(name: _name.text, email: _email.text, password: _password.text);
+      await repo.registerWithEmail(name: name, email: _email.text, password: _password.text);
       final uid = repo.currentUser?.uid;
-      if (uid != null) await ref.read(userRepositoryProvider).setDisplayName(uid, _name.text);
+      if (uid != null) await userRepo.setDisplayName(uid, name);
     });
   }
 
