@@ -36,6 +36,8 @@
 				<array>
 					<!-- Encoded Firebase iOS app ID (dev) for the Google sign-in web flow -->
 					<string>app-1-1077868311479-ios-cec245b5c8fcf506802e32</string>
+					<!-- prod (odeselimapp) -->
+					<string>app-1-1049396082892-ios-b60a75b587159db1082a69</string>
 				</array>
 			</dict>
 		</array>

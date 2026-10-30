@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "demo-evkasa",
-    "dev": "odeselim-dev"
+    "dev": "odeselim-dev",
+    "prod": "odeselimapp"
   }
 }
