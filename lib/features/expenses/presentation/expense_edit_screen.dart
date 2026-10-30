@@ -148,6 +148,18 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
     if (hid == null) return;
     // Otherwise iOS hands focus back to the amount field after the camera.
     _dismissKeyboard();
+    // App Store 5.1.2: ask once before the photo goes to a third-party AI.
+    final flags = ref.read(onceFlagsProvider);
+    if (!flags.isSet(OnceFlags.receiptAiConsent)) {
+      final ok = await confirm(
+        context,
+        title: l.receiptAiConsentTitle,
+        message: l.receiptAiConsentBody,
+        confirmLabel: l.receiptAiConsentAccept,
+      );
+      if (!ok || !mounted) return;
+      flags.set(OnceFlags.receiptAiConsent);
+    }
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
       showDragHandle: true,

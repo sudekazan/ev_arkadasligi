@@ -400,6 +400,9 @@
     }
   },
   "scanReceipt": "Fiş tara",
+  "receiptAiConsentTitle": "Fiş yapay zekâ ile okunur",
+  "receiptAiConsentBody": "Tutarı, tarihi ve mağazayı doldurmak için fişin fotoğrafı sunucumuz üzerinden bir yapay zekâ metin okuma servisine gönderilir. Fotoğraf yalnızca okumak için kullanılır, model eğitiminde kullanılmaz. Ayrıntılar gizlilik politikasında.",
+  "receiptAiConsentAccept": "Kabul et ve devam et",
   "takePhoto": "Fotoğraf çek",
   "chooseFromGallery": "Galeriden seç",
   "receiptScanning": "Fiş okunuyor…",

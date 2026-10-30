@@ -1238,6 +1238,24 @@ abstract class AppLocalizations {
   /// **'Fiş tara'**
   String get scanReceipt;
 
+  /// No description provided for @receiptAiConsentTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Fiş yapay zekâ ile okunur'**
+  String get receiptAiConsentTitle;
+
+  /// No description provided for @receiptAiConsentBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tutarı, tarihi ve mağazayı doldurmak için fişin fotoğrafı sunucumuz üzerinden bir yapay zekâ metin okuma servisine gönderilir. Fotoğraf yalnızca okumak için kullanılır, model eğitiminde kullanılmaz. Ayrıntılar gizlilik politikasında.'**
+  String get receiptAiConsentBody;
+
+  /// No description provided for @receiptAiConsentAccept.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kabul et ve devam et'**
+  String get receiptAiConsentAccept;
+
   /// No description provided for @takePhoto.
   ///
   /// In tr, this message translates to:

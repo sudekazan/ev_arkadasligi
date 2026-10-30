@@ -62,6 +62,7 @@ class OnceFlags {
   static const seenWelcome = 'seenWelcome';
   static const proIntroShown = 'proIntroShown';
   static const askedNotifications = 'askedNotifications';
+  static const receiptAiConsent = 'receiptAiConsent';
 
   bool isSet(String key) => _ref.read(sharedPreferencesProvider).getBool(key) ?? false;
 

@@ -650,6 +650,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scanReceipt => 'Fiş tara';
 
   @override
+  String get receiptAiConsentTitle => 'Fiş yapay zekâ ile okunur';
+
+  @override
+  String get receiptAiConsentBody =>
+      'Tutarı, tarihi ve mağazayı doldurmak için fişin fotoğrafı sunucumuz üzerinden bir yapay zekâ metin okuma servisine gönderilir. Fotoğraf yalnızca okumak için kullanılır, model eğitiminde kullanılmaz. Ayrıntılar gizlilik politikasında.';
+
+  @override
+  String get receiptAiConsentAccept => 'Kabul et ve devam et';
+
+  @override
   String get takePhoto => 'Fotoğraf çek';
 
   @override

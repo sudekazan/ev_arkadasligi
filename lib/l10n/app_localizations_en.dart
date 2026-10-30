@@ -649,6 +649,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanReceipt => 'Scan receipt';
 
   @override
+  String get receiptAiConsentTitle => 'Receipts are read by AI';
+
+  @override
+  String get receiptAiConsentBody =>
+      'To fill in the amount, date and store, the receipt photo is sent through our server to an AI text-recognition service. The photo is only used to read it and is not used to train models. See the privacy policy for details.';
+
+  @override
+  String get receiptAiConsentAccept => 'Accept and continue';
+
+  @override
   String get takePhoto => 'Take a photo';
 
   @override
