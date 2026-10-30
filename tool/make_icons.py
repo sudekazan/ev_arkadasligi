@@ -49,10 +49,11 @@ def render(bg, scale, path, size=S):
     img.save(path)
 
 
-render(GREEN, 1.0, "assets/icon/icon.png")
-# Android adaptive foreground; flutter_launcher_icons adds a 16% inset itself.
-render((0, 0, 0, 0), 1.0, "assets/icon/icon_foreground.png")
-# Android 12 splash icon: only the inner circle (2/3 diameter) is visible.
-render((0, 0, 0, 0), 0.62, "assets/icon/splash_android12.png")
-# Splash: the mark on transparent, the background colour comes from config.
-render((0, 0, 0, 0), 0.9, "assets/icon/splash.png", size=768)
+if __name__ == "__main__":
+    render(GREEN, 1.0, "assets/icon/icon.png")
+    # Android adaptive foreground; flutter_launcher_icons adds a 16% inset itself.
+    render((0, 0, 0, 0), 1.0, "assets/icon/icon_foreground.png")
+    # Android 12 splash icon: only the inner circle (2/3 diameter) is visible.
+    render((0, 0, 0, 0), 0.62, "assets/icon/splash_android12.png")
+    # Splash: the mark on transparent, the background colour comes from config.
+    render((0, 0, 0, 0), 0.9, "assets/icon/splash.png", size=768)

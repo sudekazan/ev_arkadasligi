@@ -2,7 +2,9 @@
 //
 //   flutter test test_screenshots --update-goldens
 //
-// Images land in test_screenshots/out/<language>/ at 1320×2868 (6.9" iPhone).
+// Images land in test_screenshots/out/<language>/: six 1320×2868 screenshots
+// (6.9" iPhone) plus the product page header (3840×1646) and search results
+// (3840×2560) images.
 // Runs on GitHub (see .github/workflows/screenshots.yml); no simulator needed.
 import 'dart:io';
 
@@ -50,26 +52,75 @@ void main() {
   for (final data in storeData) {
     for (final shot in _Shot.values) {
       testWidgets('${data.locale} ${shot.index + 1} ${shot.name}', (tester) async {
-        tester.view.physicalSize = _canvas * 3;
-        // Golden images are captured at 1 pixel per logical pixel.
-        tester.view.devicePixelRatio = 1;
-        addTearDown(tester.view.reset);
-        debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-        // flutter_test draws elevation as black outlines unless shadows are on.
-        debugDisableShadows = false;
-
-        await _pump(tester, data, shot);
-        await _prepare(tester, shot, data);
-
-        await expectLater(
-          find.byKey(_frameKey),
-          matchesGoldenFile('out/${data.locale}/${shot.index + 1}_${shot.name}.png'),
+        await _shoot(
+          tester,
+          _canvas * 3,
+          'out/${data.locale}/${shot.index + 1}_${shot.name}.png',
+          () async {
+            await _pump(
+              tester,
+              data,
+              _StoreFrame(caption: data.captions[shot.index], child: _app(data, shot)),
+            );
+            await _prepare(tester, shot, data);
+          },
         );
-        debugDefaultTargetPlatformOverride = null;
-        debugDisableShadows = true;
+      });
+    }
+    for (final banner in _Banner.values) {
+      testWidgets('${data.locale} ${banner.name}', (tester) async {
+        final px = banner.design * 2;
+        await _shoot(
+          tester,
+          px,
+          'out/${data.locale}/${banner.name}_${px.width.round()}x${px.height.round()}.png',
+          () => _pump(
+            tester,
+            data,
+            _BannerFrame(
+              banner: banner,
+              title: data.bannerTitle,
+              phones: [
+                for (final shot in const [_Shot.expenses, _Shot.home, _Shot.shopping])
+                  _app(data, shot),
+              ],
+            ),
+          ),
+        );
       });
     }
   }
+}
+
+/// Renders [build] on a canvas of [pixels] and saves it to [file].
+Future<void> _shoot(
+  WidgetTester tester,
+  Size pixels,
+  String file,
+  Future<void> Function() build,
+) async {
+  tester.view.physicalSize = pixels;
+  // Golden images are captured at 1 pixel per logical pixel; frames scale up.
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+  debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+  // flutter_test draws elevation as black outlines unless shadows are on.
+  debugDisableShadows = false;
+
+  await build();
+  await expectLater(find.byKey(_frameKey), matchesGoldenFile(file));
+
+  debugDefaultTargetPlatformOverride = null;
+  debugDisableShadows = true;
+}
+
+/// Product page header (21:9) and search results card (3:2), in logical pixels.
+enum _Banner {
+  header(Size(1920, 823)),
+  search(Size(1920, 1280));
+
+  const _Banner(this.design);
+  final Size design;
 }
 
 const _frameKey = ValueKey('store-frame');
@@ -83,7 +134,7 @@ final _theme = lightTheme.copyWith(
   primaryTextTheme: lightTheme.primaryTextTheme.apply(fontFamilyFallback: _fallback),
 );
 
-Future<void> _pump(WidgetTester tester, StoreData data, _Shot shot) async {
+Future<void> _pump(WidgetTester tester, StoreData data, Widget frame) async {
   // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({
     OnceFlags.proIntroShown: true,
@@ -91,6 +142,34 @@ Future<void> _pump(WidgetTester tester, StoreData data, _Shot shot) async {
   });
   final prefs = await SharedPreferences.getInstance();
 
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => shotNow),
+        currentUidProvider.overrideWithValue(me),
+        currentHouseholdIdProvider.overrideWithValue('h1'),
+        currentHouseholdProvider.overrideWith((ref) => Stream.value(data.household)),
+        myHouseholdsProvider.overrideWith((ref) => Stream.value([data.household])),
+        membersProvider.overrideWith((ref) => Stream.value(data.members)),
+        expensesProvider.overrideWith((ref) => Stream.value(data.expenses)),
+        settlementsProvider.overrideWith((ref) => Stream.value(data.settlements)),
+        recentActivityProvider.overrideWith((ref) => Stream.value(data.activity)),
+        shoppingItemsProvider.overrideWith((ref) => Stream.value(data.shoppingItems)),
+        choresProvider.overrideWith((ref) => Stream.value(data.choreList)),
+        ownEntitlementProvider.overrideWith((ref) => Stream.value(false)),
+        // Screens read these in build; nothing is written while screenshotting.
+        shoppingRepositoryProvider.overrideWithValue(_FakeShopping()),
+        choreRepositoryProvider.overrideWithValue(_FakeChores()),
+      ],
+      child: frame,
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+/// The app showing [shot], phone-sized with a status bar.
+Widget _app(StoreData data, _Shot shot) {
   final Widget screen = switch (shot) {
     _Shot.home => const HomeScreen(),
     _Shot.rent => ExpenseEditScreen(
@@ -117,45 +196,21 @@ Future<void> _pump(WidgetTester tester, StoreData data, _Shot shot) async {
     ],
   );
 
-  await tester.pumpWidget(
-    ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-        clockProvider.overrideWithValue(() => shotNow),
-        currentUidProvider.overrideWithValue(me),
-        currentHouseholdIdProvider.overrideWithValue('h1'),
-        currentHouseholdProvider.overrideWith((ref) => Stream.value(data.household)),
-        myHouseholdsProvider.overrideWith((ref) => Stream.value([data.household])),
-        membersProvider.overrideWith((ref) => Stream.value(data.members)),
-        expensesProvider.overrideWith((ref) => Stream.value(data.expenses)),
-        settlementsProvider.overrideWith((ref) => Stream.value(data.settlements)),
-        recentActivityProvider.overrideWith((ref) => Stream.value(data.activity)),
-        shoppingItemsProvider.overrideWith((ref) => Stream.value(data.shoppingItems)),
-        choresProvider.overrideWith((ref) => Stream.value(data.choreList)),
-        ownEntitlementProvider.overrideWith((ref) => Stream.value(false)),
-        // Screens read these in build; nothing is written while screenshotting.
-        shoppingRepositoryProvider.overrideWithValue(_FakeShopping()),
-        choreRepositoryProvider.overrideWithValue(_FakeChores()),
+  return _Phone(
+    child: MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: _theme,
+      locale: Locale(data.locale),
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      child: _StoreFrame(
-        caption: data.captions[shot.index],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: _theme,
-          locale: Locale(data.locale),
-          supportedLocales: AppLocalizations.supportedLocales,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          routerConfig: router,
-        ),
-      ),
+      routerConfig: router,
     ),
   );
-  await tester.pumpAndSettle();
 }
 
 class _FakeShopping implements ShoppingRepository {
@@ -277,10 +332,7 @@ class _StoreFrame extends StatelessWidget {
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
                             alignment: Alignment.topCenter,
-                            child: SizedBox.fromSize(
-                              size: _canvas,
-                              child: _Phone(child: child),
-                            ),
+                            child: SizedBox.fromSize(size: _canvas, child: child),
                           ),
                         ),
                       ),
@@ -294,6 +346,112 @@ class _StoreFrame extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Header and search results image: a headline over three phones.
+class _BannerFrame extends StatelessWidget {
+  const _BannerFrame({required this.banner, required this.title, required this.phones});
+
+  final _Banner banner;
+  final String title;
+
+  /// Left, centre and right phone.
+  final List<Widget> phones;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = lightTheme.colorScheme;
+    final size = banner.design;
+    final header = banner == _Banner.header;
+    final titleTop = header ? 64.0 : 96.0;
+    final phonesTop = header ? 200.0 : 270.0;
+    // Phones run off the bottom edge; the App Store crops towards the centre.
+    final phoneHeight = header ? 1000.0 : 1300.0;
+
+    Widget device(Widget phone, double scale, double dx, double dy) {
+      final h = phoneHeight * scale;
+      final w = h * _Device.size.width / _Device.size.height;
+      return Positioned(
+        left: size.width / 2 - w / 2 + dx,
+        top: phonesTop + dy,
+        width: w,
+        height: h,
+        child: FittedBox(child: _Device(child: phone)),
+      );
+    }
+
+    final side = phoneHeight * _Device.size.width / _Device.size.height * 0.95;
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: RepaintBoundary(
+        key: _frameKey,
+        child: FittedBox(
+          child: SizedBox.fromSize(
+            size: size,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [scheme.primary, Color.lerp(scheme.primary, Colors.black, 0.35)!],
+                ),
+              ),
+              child: ClipRect(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: titleTop,
+                      child: Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: header ? 72 : 88,
+                          fontWeight: FontWeight.w700,
+                          color: scheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                    device(phones[0], 0.9, -side, phoneHeight * 0.06),
+                    device(phones[2], 0.9, side, phoneHeight * 0.06),
+                    device(phones[1], 1, 0, 0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A phone with a dark bezel and a soft shadow.
+class _Device extends StatelessWidget {
+  const _Device({required this.child});
+
+  static const _bezel = 14.0;
+  static final size = Size(_canvas.width + 2 * _bezel, _canvas.height + 2 * _bezel);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size.width,
+    height: size.height,
+    padding: const EdgeInsets.all(_bezel),
+    decoration: BoxDecoration(
+      color: const Color(0xFF1C1C1E),
+      borderRadius: BorderRadius.circular(68),
+      boxShadow: const [BoxShadow(color: Color(0x55000000), blurRadius: 40, offset: Offset(0, 16))],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(56),
+      child: SizedBox.fromSize(size: _canvas, child: child),
+    ),
+  );
 }
 
 /// A phone-sized screen with an iOS-style status bar.

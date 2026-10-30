@@ -1,6 +1,8 @@
-# Renders the App Store screenshots (TR, EN, DE; 6.9" iPhone, 1320×2868)
-# from test_screenshots/ with sample data. Run it from the Actions tab and
-# download the "store-screenshots" artifact. macOS for its emoji font.
+# Renders the App Store images (TR, EN, DE) from test_screenshots/ with sample
+# data: six 6.9" iPhone screenshots (1320×2868), the product page header
+# (3840×1646) and the search results image (3840×2560). Run it from the
+# Actions tab and download the "store-screenshots" artifact. macOS for its
+# emoji font.
 name: Mağaza ekran görüntüleri
 
 on:
@@ -20,6 +22,8 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter test test_screenshots --update-goldens
+      # App Store Connect rejects images with an alpha channel.
+      - run: pip3 install --break-system-packages pillow && python3 tool/flatten_pngs.py test_screenshots/out
       - uses: actions/upload-artifact@v4
         with:
           name: store-screenshots

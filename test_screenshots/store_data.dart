@@ -19,6 +19,7 @@ class StoreData {
     required this.householdName,
     required this.names,
     required this.captions,
+    required this.bannerTitle,
     required this.rent,
     required this.electricity,
     required this.internet,
@@ -41,6 +42,9 @@ class StoreData {
 
   /// One headline per screenshot, in order.
   final List<String> captions;
+
+  /// Headline of the header and search results images.
+  final String bannerTitle;
 
   final int rent;
   final int electricity;
@@ -238,6 +242,7 @@ const storeData = [
       'Ev işlerinde sıra kimde?',
       'Gider ekleme her zaman sınırsız',
     ],
+    bannerTitle: 'Ev masraflarını adil bölüş',
     rent: 30000,
     electricity: 1470,
     internet: 600,
@@ -279,6 +284,7 @@ const storeData = [
       'Whose turn is it?',
       'Adding expenses is always unlimited',
     ],
+    bannerTitle: 'Split house bills fairly',
     rent: 2400,
     electricity: 147,
     internet: 45,
@@ -324,6 +330,7 @@ const storeData = [
       'Wer ist heute dran?',
       'Ausgaben eintragen ist immer unbegrenzt',
     ],
+    bannerTitle: 'WG-Kosten fair teilen',
     rent: 1800,
     electricity: 129,
     internet: 39,
