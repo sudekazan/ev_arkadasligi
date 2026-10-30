@@ -64,3 +64,6 @@ pubsub-debug.log
 emulator-data/
 functions/.secret.local
 coverage/
+
+# Generated store screenshots (see test_screenshots/)
+test_screenshots/out/

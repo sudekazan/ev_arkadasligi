@@ -113,6 +113,7 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
     } else {
       final d = widget.draft;
       _paidBy = uid;
+      _date = ref.read(clockProvider)();
       _description.text = d?.description ?? '';
       _note.text = d?.note ?? '';
       _category = d?.category ?? ExpenseCategory.other;
