@@ -200,12 +200,12 @@ The account already belongs to a household ("Ev Arkadaşları") with sample expe
 HOW TO TEST THE MAIN FLOW
 1. Home tab: net balance and "who owes whom". Tap a debt to record a payment.
 2. Expenses tab: tap + to add an expense. Choose how to split it (equally, exact amounts, percentages or shares).
-3. Receipt scanning: on the new-expense screen tap the camera icon and take a photo of any shop receipt. The amount, date, store and category are filled in for review.
+3. Receipt scanning: on the new-expense screen tap "Scan receipt" and take a photo of any shop receipt. The amount, date, store and category are filled in for review.
 4. House tab: members, the 6-character invite code, shopping list and chores.
 5. Account tab: profile, notifications, privacy policy, terms and "Delete account".
 
 HOUSEHOLDS
-A household is joined with an invite code shown on the House tab. To try joining, create a second account and enter that code under "Join a household".
+A household is joined with an invite code shown on the House tab. To try joining, create a second account and tap "Join with code" and enter that code.
 
 SUBSCRIPTION (Ödeşelim Pro)
 Open Account tab > "Ödeşelim Pro". Two auto-renewable subscriptions: monthly and yearly (yearly has a 1-week free trial). "Restore purchases" is on the same screen. One member's subscription unlocks Pro for everyone in that household. Adding expenses is free and unlimited on every plan; Pro adds unlimited households and recurring expenses, 200 receipt scans a month, full-history reports and CSV export.
