@@ -154,6 +154,81 @@ Terms of use: https://odeselimapp.web.app/terms
 5. Whose turn is it?
 6. Adding expenses is always unlimited
 
+## Deutsch (de-DE)
+
+**Name (30):** Ödeşelim: WG-Kosten teilen
+
+**Untertitel, App Store (30):** Miete, Rechnungen & Einkauf
+
+**Werbetext, App Store (170):** Teile Miete, Rechnungen und Einkäufe fair mit deinen Mitbewohnern. Sieh auf einen Blick, wer wem was schuldet. Ausgaben eintragen ist immer unbegrenzt, ohne Werbung.
+
+**Kurzbeschreibung, Google Play (80):** Miete, Rechnungen und Einkäufe fair in der WG teilen. Unbegrenzt Ausgaben.
+
+**Keywords, App Store (100, kommagetrennt, ohne Leerzeichen):**
+```
+wg,mitbewohner,kosten teilen,miete,rechnung,haushaltsbuch,schulden,einkaufsliste,putzplan,splitten
+```
+
+**Beschreibung (4000):**
+
+```
+Schluss mit WG-Kosten in Gruppenchats und Notizbüchern. Ödeşelim teilt Miete, Rechnungen und Einkäufe fair zwischen Mitbewohnern auf und zeigt auf einen Blick, wer wem was schuldet.
+
+UNBEGRENZT AUSGABEN
+Trag so viele Ausgaben ein, wie du willst, auch im kostenlosen Plan. Kein Tageslimit, keine Werbung.
+
+FAIRE AUFTEILUNG
+• Gleichmäßig zwischen den Personen, die du auswählst
+• Nach genauen Beträgen
+• Nach Prozent, zusammen 100 %
+• Nach Anteilen, z. B. großes Zimmer 3, kleines Zimmer 2. Mietanteile einmal festlegen, sie gelten jeden Monat
+Jede Rechnung stimmt auf den Cent. Durch Runden geht nichts verloren.
+
+WER SCHULDET WEM?
+Auf der Startseite siehst du deinen Stand: „Du schuldest Lena 25,00 €“. Schulden werden auf möglichst wenige Überweisungen reduziert. Erfasse ganze oder Teilzahlungen und kopiere die IBAN deiner Mitbewohner mit einem Tippen. Wenn jemand vergisst zu zahlen, tippe auf „Erinnern“.
+
+WIEDERKEHRENDE AUSGABEN
+Die Miete wird jeden Monat automatisch eingetragen. Für Strom, Wasser und Gas entsteht ein Entwurf „Betrag ausstehend“; Betrag eingeben, fertig.
+
+BELEGE SCANNEN
+Fotografiere den Kassenbon, und Betrag, Datum und Geschäft werden automatisch ausgefüllt.
+
+GEMEINSAME EINKAUFSLISTE
+Trag ein, was fehlt, hak ab, was gekauft wurde, und mach mit einem Tippen eine Lebensmittel-Ausgabe daraus. Änderungen sind sofort auf allen Handys zu sehen.
+
+PUTZPLAN
+Abwasch, Müll, Bad… Es ist immer klar, wer dran ist. Auf „Erledigt“ tippen, und die nächste Person ist dran, mit Erinnerung am Tag.
+
+AKTIVITÄTEN
+Alles, was in der WG passiert (neue und geänderte Ausgaben, Zahlungen, erledigte Aufgaben), in einer Zeitleiste.
+
+EINFACHER START
+WG erstellen, den 6-stelligen Einladungscode mit deinen Mitbewohnern teilen, fertig.
+
+ÖDEŞELIM PRO
+Eine Person abonniert, die ganze WG profitiert. Teilt euch auch das Abo!
+• Unbegrenzt WGs
+• Unbegrenzt wiederkehrende Ausgaben
+• 200 Belegscans im Monat
+• Kategorieberichte für den gesamten Verlauf
+• CSV-Export
+
+Abos verlängern sich automatisch am Ende des Zeitraums, wenn sie nicht gekündigt werden. Du kannst jederzeit in den Einstellungen deines Store-Kontos kündigen.
+
+Datenschutzerklärung: https://odeselimapp.web.app/privacy
+Nutzungsbedingungen: https://odeselimapp.web.app/terms
+```
+
+**Neuigkeiten (erste Version):** Die erste Version von Ödeşelim! Ausgaben teilen, Schulden vereinfachen und Einkaufsliste und Putzplan an einem Ort verwalten.
+
+**Bildunterschriften für Screenshots (6):**
+1. Wer schuldet wem, auf einen Blick
+2. Miete nach Zimmergröße teilen
+3. Beleg fotografieren, Formular füllt sich
+4. Eine gemeinsame Einkaufsliste
+5. Wer ist heute dran?
+6. Ausgaben eintragen ist immer unbegrenzt
+
 ## Diğer mağaza alanları
 
 | Alan | Değer |

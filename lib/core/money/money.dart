@@ -29,10 +29,13 @@ abstract final class Money {
     final number = '$whole$decimalSep$cents';
     final sign = minor < 0 ? '−' : (showPlus && minor > 0 ? '+' : '');
     final symbol = symbolFor(currency);
-    return locale.startsWith('tr')
+    return _symbolAfter(locale)
         ? '$sign$number $symbol'
         : '$sign$symbol$number';
   }
+
+  /// Turkish and German write "12,50 €"; English writes "€12.50".
+  static bool _symbolAfter(String locale) => !locale.startsWith('en');
 
   /// Formats hundredths without a currency, e.g. basis points 3333 → "33,33".
   static String formatHundredths(int value, {required String locale}) {
@@ -78,9 +81,9 @@ abstract final class Money {
     return wholeValue * 100 + fracValue;
   }
 
-  /// Text for an input field: 123450 → "1234,50" (tr) / "1234.50" (en).
+  /// Text for an input field: 123450 → "1234,50" (tr, de) / "1234.50" (en).
   static String toInput(int minor, {required String locale}) {
-    final sep = locale.startsWith('tr') ? ',' : '.';
+    final sep = NumberFormat.decimalPattern(locale).symbols.DECIMAL_SEP;
     final cents = minor % 100;
     if (cents == 0) return '${minor ~/ 100}';
     return '${minor ~/ 100}$sep${cents.toString().padLeft(2, '0')}';

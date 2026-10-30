@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/widgets/feedback.dart';
 import '../features/auth/data/auth_repository.dart';
+import '../features/auth/data/user_repository.dart';
 import '../features/settings/data/notification_service.dart';
 import '../features/settings/data/settings_controller.dart';
 
@@ -31,6 +32,13 @@ class _AppShellState extends ConsumerState<AppShell> {
   Future<void> _setUpNotifications() async {
     final uid = ref.read(currentUidProvider);
     if (uid == null) return;
+    // Push texts are written in the profile language, so follow the app's.
+    final lang = appLanguageFor(Localizations.localeOf(context).languageCode);
+    final profile = await ref.read(userProfileProvider.future);
+    if (profile != null && profile.locale != lang) {
+      unawaited(ref.read(userRepositoryProvider).setLocale(uid, lang));
+    }
+    if (!mounted) return;
     final service = ref.read(notificationServiceProvider);
     final flags = ref.read(onceFlagsProvider);
     if (!flags.isSet(OnceFlags.askedNotifications)) {

@@ -54,6 +54,12 @@ class SettingsController extends Notifier<AppSettings> {
 final settingsProvider = NotifierProvider<SettingsController, AppSettings>(SettingsController.new);
 
 /// One-time flags stored on the device.
+/// App languages; anything else falls back to English (see app.dart).
+const appLanguages = ['tr', 'en', 'de'];
+
+/// The app language for a device or picked language code.
+String appLanguageFor(String code) => appLanguages.contains(code) ? code : 'en';
+
 class OnceFlags {
   OnceFlags(this._ref);
 

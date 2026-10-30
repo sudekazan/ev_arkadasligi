@@ -82,7 +82,7 @@ class AccountScreen extends ConsumerWidget {
     Future<void> setLocale(String? code) async {
       await ref.read(settingsProvider.notifier).setLocale(code);
       final effective = code ?? WidgetsBinding.instance.platformDispatcher.locale.languageCode;
-      await userRepo.setLocale(profile.id, effective == 'en' ? 'en' : 'tr');
+      await userRepo.setLocale(profile.id, appLanguageFor(effective));
     }
 
     return Scaffold(
@@ -126,6 +126,7 @@ class AccountScreen extends ConsumerWidget {
                 DropdownMenuItem(value: null, child: Text(l.systemDefault)),
                 const DropdownMenuItem(value: 'tr', child: Text('Türkçe')),
                 const DropdownMenuItem(value: 'en', child: Text('English')),
+                const DropdownMenuItem(value: 'de', child: Text('Deutsch')),
               ],
               onChanged: setLocale,
             ),

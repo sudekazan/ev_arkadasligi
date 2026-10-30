@@ -20,7 +20,8 @@ class EvKasaApp extends ConsumerWidget {
       darkTheme: darkTheme,
       themeMode: settings.themeMode,
       locale: settings.locale,
-      supportedLocales: AppLocalizations.supportedLocales,
+      // English first: Flutter falls back to the first entry for other languages.
+      supportedLocales: const [Locale('en'), Locale('tr'), Locale('de')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

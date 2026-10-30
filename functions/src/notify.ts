@@ -5,7 +5,7 @@ import { db } from "./common.js";
 
 export type NotificationKind = "newExpense" | "reminders" | "chores" | "bills";
 
-type Lang = "tr" | "en";
+type Lang = "tr" | "en" | "de";
 
 type Template = (p: Record<string, string>) => { title: string; body: string };
 
@@ -13,22 +13,27 @@ const MESSAGES: Record<string, Record<Lang, Template>> = {
   newExpense: {
     tr: (p) => ({ title: p.household, body: `${p.actor} gider ekledi: ${p.description} (${p.amount})` }),
     en: (p) => ({ title: p.household, body: `${p.actor} added an expense: ${p.description} (${p.amount})` }),
+    de: (p) => ({ title: p.household, body: `${p.actor} hat eine Ausgabe eingetragen: ${p.description} (${p.amount})` }),
   },
   settlement: {
     tr: (p) => ({ title: p.household, body: `${p.actor} sana ${p.amount} ödediğini kaydetti` }),
     en: (p) => ({ title: p.household, body: `${p.actor} recorded paying you ${p.amount}` }),
+    de: (p) => ({ title: p.household, body: `${p.actor} hat eine Zahlung von ${p.amount} an dich eingetragen` }),
   },
   reminder: {
     tr: (p) => ({ title: p.household, body: `${p.actor} hatırlatıyor: ona ${p.amount} borcun var` }),
     en: (p) => ({ title: p.household, body: `${p.actor} reminds you that you owe them ${p.amount}` }),
+    de: (p) => ({ title: p.household, body: `${p.actor} erinnert dich: Du schuldest ${p.amount}` }),
   },
   pendingBill: {
     tr: (p) => ({ title: p.household, body: `${p.description} faturasının tutarını girmen bekleniyor` }),
     en: (p) => ({ title: p.household, body: `Enter the amount for the ${p.description} bill` }),
+    de: (p) => ({ title: p.household, body: `Gib den Betrag für die Rechnung ${p.description} ein` }),
   },
   chore: {
     tr: (p) => ({ title: p.household, body: `Bugün sıra sende: ${p.chore}` }),
     en: (p) => ({ title: p.household, body: `It's your turn today: ${p.chore}` }),
+    de: (p) => ({ title: p.household, body: `Heute bist du dran: ${p.chore}` }),
   },
 };
 
@@ -37,12 +42,13 @@ export function formatAmount(minor: number, currency: string, lang: Lang): strin
   const abs = Math.abs(minor);
   const major = Math.floor(abs / 100).toString();
   const cents = String(abs % 100).padStart(2, "0");
-  const grouped = major.replace(/\B(?=(\d{3})+(?!\d))/g, lang === "tr" ? "." : ",");
+  const english = lang === "en";
+  const grouped = major.replace(/\B(?=(\d{3})+(?!\d))/g, english ? "," : ".");
   const sign = minor < 0 ? "-" : "";
   const symbol = { TRY: "₺", EUR: "€", USD: "$", GBP: "£" }[currency] ?? currency;
-  return lang === "tr"
-    ? `${sign}${grouped},${cents} ${symbol}`
-    : `${sign}${symbol}${grouped}.${cents}`;
+  return english
+    ? `${sign}${symbol}${grouped}.${cents}`
+    : `${sign}${grouped},${cents} ${symbol}`;
 }
 
 /**
@@ -65,7 +71,8 @@ export async function notifyUsers(
       if (prefs[kind] === false) return;
       const tokens = (snap.get("fcmTokens") as string[]) ?? [];
       if (tokens.length === 0) return;
-      const lang: Lang = snap.get("locale") === "en" ? "en" : "tr";
+      const locale = snap.get("locale");
+      const lang: Lang = locale === "en" || locale === "de" ? locale : "tr";
       const notification = MESSAGES[messageKey][lang](params(lang));
       try {
         const res = await messaging.sendEachForMulticast({ tokens, notification, data });
