@@ -183,3 +183,38 @@ Terms of use: https://odeselimapp.web.app/terms
 - Veriler aktarım sırasında şifrelenir (HTTPS): **Evet**
 - Kullanıcı verilerinin silinmesini isteyebilir: **Evet** (uygulama içinden "Hesabı sil")
 - Hesap silme bağlantısı (Google Play zorunlu): uygulama içi yol *Hesap → Hesabı sil*; web için gizlilik sayfasının "Saklama ve silme" bölümü.
+
+## App Review notları (App Store Connect → App Review Information → Notes)
+
+İnceleme ekibi İngilizce okur. `<…>` alanlarını prod'daki demo hesapla doldur; şifreyi yalnızca App Store Connect'e yaz.
+
+```
+Ödeşelim helps housemates split shared costs (rent, utility bills, groceries) and see who owes whom.
+
+DEMO ACCOUNT
+Sign in with "Email" on the first screen:
+Email: <demo e-posta>
+Password: (entered in the Sign-In Information fields above)
+The account already belongs to a household ("Ev Arkadaşları") with sample expenses, a shopping list and a chore rotation, so every screen has data.
+
+HOW TO TEST THE MAIN FLOW
+1. Home tab: net balance and "who owes whom". Tap a debt to record a payment.
+2. Expenses tab: tap + to add an expense. Choose how to split it (equally, exact amounts, percentages or shares).
+3. Receipt scanning: on the new-expense screen tap the camera icon and take a photo of any shop receipt. The amount, date, store and category are filled in for review.
+4. House tab: members, the 6-character invite code, shopping list and chores.
+5. Account tab: profile, notifications, privacy policy, terms and "Delete account".
+
+HOUSEHOLDS
+A household is joined with an invite code shown on the House tab. To try joining, create a second account and enter that code under "Join a household".
+
+SUBSCRIPTION (Ödeşelim Pro)
+Open Account tab > "Ödeşelim Pro". Two auto-renewable subscriptions: monthly and yearly (yearly has a 1-week free trial). "Restore purchases" is on the same screen. One member's subscription unlocks Pro for everyone in that household. Adding expenses is free and unlimited on every plan; Pro adds unlimited households and recurring expenses, 200 receipt scans a month, full-history reports and CSV export.
+
+RECEIPT PHOTOS AND AI
+When the user scans a receipt, the photo is sent through our own server to an AI text-recognition provider only to read the receipt. It is not used for training and nothing else is shared. This is described in the privacy policy (https://odeselimapp.web.app/privacy).
+
+ACCOUNT DELETION
+Account tab > Delete account. The account and profile are deleted permanently; past shared expenses show "Deleted user" so housemates' balances stay correct.
+
+The app has no ads and does no tracking.
+```
