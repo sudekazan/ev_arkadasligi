@@ -128,9 +128,9 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
 ## 9. `prod` ortamı
 
-- [ ] 2. bölümü `odeselimapp` (prod) projesiyle tekrarla ve değerleri `env/prod.json` dosyasına yaz. `APP_ENV` değeri `prod`, `USE_EMULATOR` değeri `false` olmalı.
-- [ ] `prod` iOS uygulamasının `GOOGLE_APP_ID` değerini (`1:…:ios:…`) `app-1-…-ios-…` biçimine çevirip (`:` yerine `-`, başa `app-`) `ios/Runner/Info.plist` içindeki `CFBundleURLSchemes` listesine dev şemasının yanına ekle. Google girişi iOS'ta buna ihtiyaç duyar. İstersen bunu bana yaptırabilirsin.
-- [ ] `prod` için ayrı gizli anahtarlar (3, 4, 6 ve 8. bölümler) ve ayrı RevenueCat webhook'u tanımla.
+- [x] 2. bölümü `odeselimapp` (prod) projesiyle tekrarla ve değerleri `env/prod.json` dosyasına yaz. `APP_ENV` değeri `prod`, `USE_EMULATOR` değeri `false` olmalı.
+- [x] `prod` iOS uygulamasının `GOOGLE_APP_ID` değerini (`1:…:ios:…`) `app-1-…-ios-…` biçimine çevirip (`:` yerine `-`, başa `app-`) `ios/Runner/Info.plist` içindeki `CFBundleURLSchemes` listesine dev şemasının yanına ekle. Google girişi iOS'ta buna ihtiyaç duyar. İstersen bunu bana yaptırabilirsin.
+- [ ] `prod` için ayrı gizli anahtarlar (gizli anahtarlar ve deploy tamam; APNs, App Check ve RevenueCat webhook'u bekliyor) (3, 4, 6 ve 8. bölümler) ve ayrı RevenueCat webhook'u tanımla.
 - [ ] Sürüm derlemeleri:
   ```bash
   flutter build appbundle --dart-define-from-file=env/prod.json

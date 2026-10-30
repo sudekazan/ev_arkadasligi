@@ -1,6 +1,6 @@
 # Mağaza metinleri
 
-App Store Connect ve Google Play Console'a kopyalanacak metinler. Karakter sınırları parantez içinde; her metin sınırın altında. Uygulama adı: **Ödeşelim**. Adresler şimdilik `odeselim-dev.web.app`; `prod` projesine geçilirse güncellenir.
+App Store Connect ve Google Play Console'a kopyalanacak metinler. Karakter sınırları parantez içinde; her metin sınırın altında. Uygulama adı: **Ödeşelim**. Adresler `prod` projesinin (`odeselimapp`).
 
 Fiyat hiçbir metinde yazılmaz. Fiyatlar mağaza panelinden ülkeye göre belirlenir.
 
@@ -65,8 +65,8 @@ Pro'yu evde bir kişi alır, evdeki herkes yararlanır. Aboneliği de bölüşü
 
 Abonelik, iptal edilmedikçe dönem sonunda otomatik yenilenir. Mağaza hesabının ayarlarından istediğin zaman iptal edebilirsin.
 
-Gizlilik politikası: https://odeselim-dev.web.app/privacy
-Kullanım koşulları: https://odeselim-dev.web.app/terms
+Gizlilik politikası: https://odeselimapp.web.app/privacy
+Kullanım koşulları: https://odeselimapp.web.app/terms
 ```
 
 **Yenilikler (ilk sürüm):** Ödeşelim'in ilk sürümü! Giderleri bölüş, borçları sadeleştir, alışveriş listesini ve ev işlerini tek yerden yönet.
@@ -140,8 +140,8 @@ One person subscribes, the whole house benefits. Split the subscription too!
 
 Subscriptions renew automatically at the end of each period unless cancelled. You can cancel any time in your store account settings.
 
-Privacy policy: https://odeselim-dev.web.app/privacy
-Terms of use: https://odeselim-dev.web.app/terms
+Privacy policy: https://odeselimapp.web.app/privacy
+Terms of use: https://odeselimapp.web.app/terms
 ```
 
 **What's new (first release):** The first release of Ödeşelim! Split expenses, simplify debts and manage your shopping list and chores in one place.
@@ -162,8 +162,8 @@ Terms of use: https://odeselim-dev.web.app/terms
 | Yaş sınırı | 4+ (App Store), Herkes / PEGI 3 (Google Play) |
 | Reklam içeriyor mu | Hayır |
 | Uygulama içi satın alma | Evet (otomatik yenilenen abonelik) |
-| Destek URL'si | `https://odeselim-dev.web.app` |
-| Gizlilik URL'si | `https://odeselim-dev.web.app/privacy` |
+| Destek URL'si | `https://odeselimapp.web.app` |
+| Gizlilik URL'si | `https://odeselimapp.web.app/privacy` |
 | Telif (Copyright) | `2026 Sude Kazan` |
 
 **App Store gizlilik etiketleri / Google Play Veri güvenliği formu:**
