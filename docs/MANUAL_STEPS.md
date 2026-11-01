@@ -105,7 +105,8 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
   Anahtarı ve şifreleri güvenli bir yere yedekle. Play App Signing'i aç ve SHA-1/SHA-256 değerlerini Firebase'e ekle.
 - [ ] Mağaza kayıtlarını `docs/STORE_LISTING.md` dosyasındaki metinlerle doldur: açıklamalar, anahtar kelimeler, gizlilik etiketleri ve Veri güvenliği formu.
 - [x] Gizlilik ve koşul sayfalarındaki iletişim adresi `sudekazan1907@gmail.com` olarak yazıldı (ileride ayrı bir destek adresiyle değiştirilebilir). Metinler bir şablon; yayından önce hukuki açıdan gözden geçirilmesi önerilir.
-- [ ] Ekran görüntüleri: 6,9" iPhone ve Android telefon için TR ve EN.
+- [ ] Ekran görüntüleri: `flutter test test_screenshots --update-goldens` (veya Actions → "Mağaza ekran görüntüleri") hem App Store (`out/<dil>/`) hem Google Play (`out/<dil>/play/`: 6 ekran görüntüsü + `feature_graphic.png`) görsellerini TR/EN/DE üretir; indirip ilgili konsola yükle.
+- [ ] **App Review Information → Sign-In Required:** reviewer'ın uygulamaya girebileceği bir hesabın e-posta/şifresini gir. Daha önce oluşturulan sandbox (StoreKit) test hesabı sadece satın alma testi için; prod'da gerçekten "Apple ile Giriş Yap" ile girilip içinde örnek veri (gider, ev arkadaşı vb.) olduğu doğrulanmadan review hesabı olarak kullanılmamalı — gerekirse boş ise veri eklenmeli ya da ayrı bir e-posta/şifre hesabı açılmalı.
 
 ## 8. Abonelik (RevenueCat)
 

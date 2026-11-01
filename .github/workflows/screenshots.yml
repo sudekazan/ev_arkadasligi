@@ -1,8 +1,12 @@
-# Renders the App Store images (TR, EN, DE) from test_screenshots/ with sample
-# data: six 6.9" iPhone screenshots (1320×2868), the product page header
-# (3840×1646) and the search results image (3840×2560). Run it from the
-# Actions tab and download the "store-screenshots" artifact. macOS for its
-# emoji font.
+# Renders the App Store and Google Play images (TR, EN, DE) from
+# test_screenshots/ with sample data: six 6.9" iPhone screenshots
+# (1320×2868), the product page header (3840×1646) and the search results
+# image (3840×2560) for the App Store; the same six screenshots widened to
+# 1434×2868 plus a 1024×500 feature graphic for Google Play, under each
+# language's play/ subfolder. Run it from the Actions tab and download the
+# "store-screenshots" artifact. macOS for its emoji font.
+# App Store Connect and Google Play both reject images with an alpha
+# channel; flatten_pngs.py strips it from every PNG under test_screenshots/out.
 name: Mağaza ekran görüntüleri
 
 on:

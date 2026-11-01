@@ -1,10 +1,14 @@
-// Renders the App Store screenshots for every language with sample data.
+// Renders the App Store and Google Play screenshots for every language with
+// sample data.
 //
 //   flutter test test_screenshots --update-goldens
 //
 // Images land in test_screenshots/out/<language>/: six 1320×2868 screenshots
 // (6.9" iPhone) plus the product page header (3840×1646) and search results
-// (3840×2560) images.
+// (3840×2560) images for the App Store, and under out/<language>/play/: the
+// same six screenshots widened to 1434×2868 (Google Play caps the long/short
+// side ratio at 2:1; the extra width is brand-colour padding, not a crop) plus
+// a 1024×500 feature graphic.
 // Runs on GitHub (see .github/workflows/screenshots.yml); no simulator needed.
 import 'dart:io';
 
@@ -89,8 +93,51 @@ void main() {
         );
       });
     }
+    // Google Play: the App Store phone shots widened to a 2:1 ratio (its max),
+    // plus a feature graphic. Same screens and captions, no separate render pass.
+    for (final shot in _Shot.values) {
+      testWidgets('${data.locale} play ${shot.index + 1} ${shot.name}', (tester) async {
+        await _shoot(
+          tester,
+          _playCanvas,
+          'out/${data.locale}/play/${shot.index + 1}_${shot.name}.png',
+          () async {
+            await _pump(
+              tester,
+              data,
+              _Letterboxed(
+                size: _playCanvas,
+                color: lightTheme.colorScheme.primary,
+                child: _StoreFrame(
+                  caption: data.captions[shot.index],
+                  boundary: false,
+                  child: _app(data, shot),
+                ),
+              ),
+            );
+            await _prepare(tester, shot, data);
+          },
+        );
+      });
+    }
+    testWidgets('${data.locale} play feature graphic', (tester) async {
+      await _shoot(
+        tester,
+        _featureGraphic,
+        'out/${data.locale}/play/feature_graphic.png',
+        () => _pump(tester, data, _FeatureGraphic(title: data.bannerTitle)),
+      );
+    });
   }
 }
+
+/// Google Play phone screenshot canvas: same height as the App Store's
+/// 1320×2868, widened just enough to bring the ratio down to the 2:1 Play
+/// allows (1434/2868 = 2.0 exactly).
+final _playCanvas = Size((_canvas * 3).height / 2, (_canvas * 3).height);
+
+/// Google Play feature graphic: a fixed 1024×500, no scaling pass needed.
+const _featureGraphic = Size(1024, 500);
 
 /// Renders [build] on a canvas of [pixels] and saves it to [file].
 Future<void> _shoot(
@@ -281,11 +328,113 @@ class _PhoneShell extends StatelessWidget {
 }
 
 /// Store image: a headline on the brand colour above the phone screen.
+/// Set [boundary] to false to fold into an outer widget's own
+/// `RepaintBoundary` (e.g. [_Letterboxed]) instead of capturing on its own.
 class _StoreFrame extends StatelessWidget {
-  const _StoreFrame({required this.caption, required this.child});
+  const _StoreFrame({required this.caption, required this.child, this.boundary = true});
 
   final String caption;
   final Widget child;
+  final bool boundary;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = lightTheme.colorScheme;
+    // Laid out at phone size, drawn 3× so the image is 1320×2868.
+    final content = FittedBox(
+      child: SizedBox.fromSize(
+        size: _canvas,
+        child: ColoredBox(
+          color: scheme.primary,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 190,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 40, 28, 0),
+                    child: Text(
+                      caption,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 34,
+                        height: 1.15,
+                        fontWeight: FontWeight.w700,
+                        color: scheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 34),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(44)),
+                    child: OverflowBox(
+                      alignment: Alignment.topCenter,
+                      maxHeight: double.infinity,
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.topCenter,
+                        child: SizedBox.fromSize(size: _canvas, child: child),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (!boundary) return content;
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: RepaintBoundary(key: _frameKey, child: content),
+    );
+  }
+}
+
+/// Pads [child] (already [size.height] tall, narrower than [size.width]) with
+/// solid-colour bars on each side so the result is exactly [size] — widening
+/// rather than cropping, so nothing in the original frame is lost. Captures
+/// the golden itself, since the nested [_StoreFrame] has none of its own.
+class _Letterboxed extends StatelessWidget {
+  const _Letterboxed({required this.size, required this.color, required this.child});
+
+  final Size size;
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final contentWidth = size.height * _canvas.width / _canvas.height;
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: RepaintBoundary(
+        key: _frameKey,
+        child: SizedBox.fromSize(
+          size: size,
+          child: ColoredBox(
+            color: color,
+            child: Center(
+              child: SizedBox(width: contentWidth, height: size.height, child: child),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Google Play feature graphic (1024×500): the brand gradient and app name,
+/// no phone mockups — too small a canvas to fit them legibly.
+class _FeatureGraphic extends StatelessWidget {
+  const _FeatureGraphic({required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -294,51 +443,30 @@ class _StoreFrame extends StatelessWidget {
       textDirection: TextDirection.ltr,
       child: RepaintBoundary(
         key: _frameKey,
-        // Laid out at phone size, drawn 3× so the image is 1320×2868.
-        child: FittedBox(
-          child: SizedBox.fromSize(
-            size: _canvas,
-            child: ColoredBox(
-              color: scheme.primary,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 190,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(28, 40, 28, 0),
-                        child: Text(
-                          caption,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 34,
-                            height: 1.15,
-                            fontWeight: FontWeight.w700,
-                            color: scheme.onPrimary,
-                          ),
-                        ),
-                      ),
-                    ),
+        child: SizedBox.fromSize(
+          size: _featureGraphic,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [scheme.primary, Color.lerp(scheme.primary, Colors.black, 0.35)!],
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48),
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 56,
+                    fontWeight: FontWeight.w700,
+                    height: 1.15,
+                    color: scheme.onPrimary,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 34),
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(44)),
-                        child: OverflowBox(
-                          alignment: Alignment.topCenter,
-                          maxHeight: double.infinity,
-                          child: FittedBox(
-                            fit: BoxFit.fitWidth,
-                            alignment: Alignment.topCenter,
-                            child: SizedBox.fromSize(size: _canvas, child: child),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),

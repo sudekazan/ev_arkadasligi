@@ -1,4 +1,4 @@
-"""Removes the alpha channel from PNGs; App Store Connect rejects transparency.
+"""Removes the alpha channel from PNGs; App Store Connect and Google Play both reject transparency.
 
 Usage: python3 tool/flatten_pngs.py test_screenshots/out
 """
