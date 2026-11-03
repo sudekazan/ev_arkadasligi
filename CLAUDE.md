@@ -28,7 +28,7 @@ GitHub'a her gönderimde testler Actions'ta çalışır (`.github/workflows/test
 - Kullanıcı metni yalnızca ARB dosyalarından gelir; yeni metni üç dile de ekle.
 - Depo herkese açık: `google-services.json`, `GoogleService-Info.plist`, gerçek `firebase_options`, `env/*.json` depoya girmez.
 - Simge değiştirdikten sonra `flutter_launcher_icons` iOS'ta `ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS` ayarını bozuyor; `project.pbxproj` dosyasındaki bu değişikliği geri al.
-- Commit biçimi: `feat(kapsam): ...`, `fix(kapsam): ...`, `docs(store): ...`
+- Commit mesajları Türkçe, kısa ve anlaşılır olsun. Başına `fix:`, `feat:`, `düzeltme:` gibi ön ek konmaz. Örnek: `Harcama bölme ekranını sadeleştir`
 
 # Son kararlar
 - 2026-10-26: Gider ekleme hiçbir planda sınırlanmaz (pazarlamanın ana mesajı).
