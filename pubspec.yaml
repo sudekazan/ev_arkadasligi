@@ -82,6 +82,11 @@ dev_dependencies:
 flutter:
   generate: true
 
+  # iOS plugins come in through Swift Package Manager (there is no Podfile);
+  # pinned here so a global `flutter config` change can't switch it off.
+  config:
+    enable-swift-package-manager: true
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
