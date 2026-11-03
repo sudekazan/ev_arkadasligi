@@ -263,33 +263,45 @@ Nutzungsbedingungen: https://odeselimapp.web.app/terms
 
 İnceleme ekibi İngilizce okur. `<…>` alanlarını prod'daki demo hesapla doldur; şifreyi yalnızca App Store Connect'e yaz.
 
-```
-Ödeşelim helps housemates split shared costs (rent, utility bills, groceries) and see who owes whom.
+İlk gönderim **Guideline 2.1 (Information Needed)** ile geri döndüyse (ekran kaydı + 5 maddelik açıklama istendi), aşağıdaki metin o talebin karşılığı; Notes alanına bunu, ekran kaydını ise ayrı "Attachment" yükleyicisine koy (bkz. alttaki not).
 
-DEMO ACCOUNT
+```
+PURPOSE AND AUDIENCE
+Ödeşelim is for housemates (students and young professionals sharing a flat) who currently track shared costs by hand in chat threads and notebooks. It splits rent, utility bills and groceries fairly and shows who owes whom at a glance, so nothing is forgotten or miscounted and debts are simplified to the fewest transfers.
+
+DEMO ACCOUNT AND SETUP
 Sign in with "Email" on the first screen:
 Email: <demo e-posta>
 Password: (entered in the Sign-In Information fields above)
-The account already belongs to a household ("Ev Arkadaşları") with sample expenses, a shopping list and a chore rotation, so every screen has data.
+The account already belongs to a household ("Ev Arkadaşları") with sample expenses, a shopping list and a chore rotation, so every screen has data without further setup. Email/password, Google and Apple sign-in are all available; the demo account uses email/password.
 
 HOW TO TEST THE MAIN FLOW
 1. Home tab: net balance and "who owes whom". Tap a debt to record a payment.
 2. Expenses tab: tap + to add an expense. Choose how to split it (equally, exact amounts, percentages or shares).
 3. Receipt scanning: on the new-expense screen tap "Scan receipt" and take a photo of any shop receipt. The amount, date, store and category are filled in for review.
-4. House tab: members, the 6-character invite code, shopping list and chores.
-5. Account tab: profile, notifications, privacy policy, terms and "Delete account".
+4. House tab: members, the 6-character invite code, shopping list and chores. A household is joined with the invite code shown there; to try joining, create a second account and tap "Join with code".
+5. Account tab: profile, notifications, privacy policy, terms, "Ödeşelim Pro" and "Delete account".
 
-HOUSEHOLDS
-A household is joined with an invite code shown on the House tab. To try joining, create a second account and tap "Join with code" and enter that code.
+EXTERNAL SERVICES USED
+- Firebase Authentication: email/password, Google and Apple sign-in.
+- Cloud Firestore and Firebase Cloud Storage: household, expense and receipt-photo data.
+- Firebase Cloud Functions: our own backend; also relays receipt photos to Google's Gemini API (gemini-2.5-flash) for text recognition only (amount, date, store). Photos are not used to train any model and are not shared further; see the privacy policy.
+- Firebase Cloud Messaging: push notifications (payment reminders, chore turns).
+- RevenueCat: manages the auto-renewable subscription; the App Store (StoreKit/In-App Purchase) is the only payment processor. No separate payment processor is used and no bank transfers happen inside the app — the IBAN field is only copied for the user to pay their housemate outside the app.
 
 SUBSCRIPTION (Ödeşelim Pro)
-Open Account tab > "Ödeşelim Pro". Two auto-renewable subscriptions: monthly and yearly (yearly has a 1-week free trial). "Restore purchases" is on the same screen. One member's subscription unlocks Pro for everyone in that household. Adding expenses is free and unlimited on every plan; Pro adds unlimited households and recurring expenses, 200 receipt scans a month, full-history reports and CSV export.
-
-RECEIPT PHOTOS AND AI
-When the user scans a receipt, the photo is sent through our own server to an AI text-recognition provider only to read the receipt. It is not used for training and nothing else is shared. This is described in the privacy policy (https://odeselimapp.web.app/privacy).
+Open Account tab > "Ödeşelim Pro" to see the paid tier. Two auto-renewable subscriptions: monthly and yearly (yearly has a 1-week free trial). "Restore purchases" is on the same screen. One member's subscription unlocks Pro for everyone in that household. Adding expenses is free and unlimited on every plan; Pro adds unlimited households and recurring expenses, 200 receipt scans a month, full-history reports and CSV export.
 
 ACCOUNT DELETION
-Account tab > Delete account. The account and profile are deleted permanently; past shared expenses show "Deleted user" so housemates' balances stay correct.
+Account tab > Delete account. The account and profile are deleted permanently; past shared expenses show "Deleted user" so housemates' balances stay correct. Required because the app supports account creation.
+
+REGIONAL DIFFERENCES
+The app functions identically in every region and language (Turkish, English, German). The only thing that varies by App Store territory is the subscription price, set through App Store Connect's standard pricing tiers; no feature or content is region-locked.
+
+REGULATED INDUSTRY / THIRD-PARTY MATERIAL
+Not applicable. The app only tracks who owes whom between housemates; it never moves money, holds funds, or integrates a payment/banking API, and it includes no licensed or third-party protected material.
 
 The app has no ads and does no tracking.
 ```
+
+**Ekran kaydı (madde 1, ayrı "Attachment" alanına):** gerçek bir iPhone'da (simulator değil), güncel iOS ile çekilmeli: uygulamayı açmaktan başla → yeni hesap oluştur (e-posta) → çıkış yap, demo hesapla gir → Home/Expenses/House sekmelerinde gezin, bir gider ekle, fiş tara → Account > Ödeşelim Pro ekranını göster (satın almadan sadece ekranı açman yeterli) → en sonda **ayrı bir test hesabıyla** Account > Delete account akışını uçtan uca göster (demo hesabı silme, o hesap sonraki incelemede de lazım).

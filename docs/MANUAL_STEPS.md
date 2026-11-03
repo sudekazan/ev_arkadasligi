@@ -107,6 +107,7 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 - [x] Gizlilik ve koşul sayfalarındaki iletişim adresi `sudekazan1907@gmail.com` olarak yazıldı (ileride ayrı bir destek adresiyle değiştirilebilir). Metinler bir şablon; yayından önce hukuki açıdan gözden geçirilmesi önerilir.
 - [ ] Ekran görüntüleri: `flutter test test_screenshots --update-goldens` (veya Actions → "Mağaza ekran görüntüleri") hem App Store (`out/<dil>/`) hem Google Play (`out/<dil>/play/`: 6 ekran görüntüsü + `feature_graphic.png`) görsellerini TR/EN/DE üretir; indirip ilgili konsola yükle.
 - [ ] **App Review Information → Sign-In Required:** reviewer'ın uygulamaya girebileceği bir hesabın e-posta/şifresini gir. Daha önce oluşturulan sandbox (StoreKit) test hesabı sadece satın alma testi için; prod'da gerçekten "Apple ile Giriş Yap" ile girilip içinde örnek veri (gider, ev arkadaşı vb.) olduğu doğrulanmadan review hesabı olarak kullanılmamalı — gerekirse boş ise veri eklenmeli ya da ayrı bir e-posta/şifre hesabı açılmalı.
+- [ ] **Guideline 2.1 (Information Needed) yanıtı:** ilk gönderimde Apple ekran kaydı ve 5 maddelik açıklama istedi. Notes metni `docs/STORE_LISTING.md`'deki "App Review notları" bölümünde hazır; eksik olan tek şey gerçek cihazda çekilecek ekran kaydı (aynı bölümde ne gösterileceği yazıyor) — Attachment alanına o video yüklenip yeniden gönderilmeli.
 
 ## 8. Abonelik (RevenueCat)
 
