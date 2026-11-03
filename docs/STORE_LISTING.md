@@ -266,6 +266,9 @@ Nutzungsbedingungen: https://odeselimapp.web.app/terms
 İlk gönderim **Guideline 2.1 (Information Needed)** ile geri döndüyse (ekran kaydı + 5 maddelik açıklama istendi), aşağıdaki metin o talebin karşılığı; Notes alanına bunu, ekran kaydını ise ayrı "Attachment" yükleyicisine koy (bkz. alttaki not).
 
 ```
+SCREEN RECORDING
+Recorded on a physical iPhone, attached to this submission (Attachment field). It starts at the Home Screen, launches the app and shows sign-in, the main features, the Pro subscription screen, sign-out, registering a new account and deleting that account.
+
 PURPOSE AND AUDIENCE
 Ödeşelim is for housemates (students and young professionals sharing a flat) who currently track shared costs by hand in chat threads and notebooks. It splits rent, utility bills and groceries fairly and shows who owes whom at a glance, so nothing is forgotten or miscounted and debts are simplified to the fewest transfers.
 
@@ -295,6 +298,9 @@ Open Account tab > "Ödeşelim Pro" to see the paid tier. Two auto-renewable sub
 ACCOUNT DELETION
 Account tab > Delete account. The account and profile are deleted permanently; past shared expenses show "Deleted user" so housemates' balances stay correct. Required because the app supports account creation.
 
+USER-GENERATED CONTENT
+Expenses, shopping-list items and chores are visible only to the members of one household, who join with a private 6-character invite code. There is no public feed, profile search or messaging between strangers. A member can leave a household at any time (House tab > settings > Leave household), and the household admin can remove a member (House tab > settings > the remove icon next to that member).
+
 REGIONAL DIFFERENCES
 The app functions identically in every region and language (Turkish, English, German). The only thing that varies by App Store territory is the subscription price, set through App Store Connect's standard pricing tiers; no feature or content is region-locked.
 
@@ -304,4 +310,4 @@ Not applicable. The app only tracks who owes whom between housemates; it never m
 The app has no ads and does no tracking.
 ```
 
-**Ekran kaydı (madde 1, ayrı "Attachment" alanına):** gerçek bir iPhone'da (simulator değil), güncel iOS ile çekilmeli: uygulamayı açmaktan başla → yeni hesap oluştur (e-posta) → çıkış yap, demo hesapla gir → Home/Expenses/House sekmelerinde gezin, bir gider ekle, fiş tara → Account > Ödeşelim Pro ekranını göster (satın almadan sadece ekranı açman yeterli) → en sonda **ayrı bir test hesabıyla** Account > Delete account akışını uçtan uca göster (demo hesabı silme, o hesap sonraki incelemede de lazım).
+**Ekran kaydı (madde 1, ayrı "Attachment" alanına):** gerçek bir iPhone'da (simulator değil), telefonun alabildiği en güncel iOS ile, App Store'daki sürümle aynı derlemeyle (TestFlight) çekilmeli. Sıra: ana ekrandan uygulamayı aç (çıkış yapılmış halde) → demo hesapla giriş yap → Ana sayfa, gider ekleme (bölüşme seçenekleri), fiş tarama, Ev sekmesi (alışveriş listesi, ev işleri, davet kodu, ev ayarlarında "Evden ayrıl"/"Üyeyi çıkar") → Hesap > Ödeşelim Pro (sandbox hesabıyla satın alma yapılabiliyorsa yap ve Pro özelliğini göster, yapılamıyorsa ekranı ve "Satın alımları geri yükle"yi göster) → çıkış yap → **yeni bir e-posta hesabı aç** → Hesap > Hesabı sil ile o yeni hesabı sil, giriş ekranına dönüşü göster. Demo hesabı silme; sonraki incelemede de lazım.
