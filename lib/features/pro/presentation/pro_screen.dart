@@ -9,6 +9,22 @@ import '../../../core/firebase/app_error.dart';
 import '../../../core/widgets/feedback.dart';
 import '../../household/data/household_repository.dart';
 import '../data/pro_service.dart';
+import '../domain/savings.dart';
+
+/// Store price (the only double) converted to integer minor units at once.
+int _minor(Package p) => (p.storeProduct.price * 100).round();
+
+/// Yearly saving vs 12 monthly payments; 0 when a plan is missing.
+int _yearlySavePercent(List<Package> list) {
+  Package? monthly;
+  Package? annual;
+  for (final p in list) {
+    if (p.packageType == PackageType.monthly) monthly = p;
+    if (p.packageType == PackageType.annual) annual = p;
+  }
+  if (monthly == null || annual == null) return 0;
+  return savingsPercent(monthlyMinor: _minor(monthly), annualMinor: _minor(annual));
+}
 
 final _packagesProvider = FutureProvider.autoDispose<List<Package>>(
   (ref) => ref.watch(proServiceProvider).packages(),
@@ -131,6 +147,7 @@ class _ProScreenState extends ConsumerState<ProScreen> {
               data: (list) {
                 _selected ??= list.first.identifier;
                 final selected = list.firstWhere((p) => p.identifier == _selected);
+                final savePercent = _yearlySavePercent(list);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -140,6 +157,7 @@ class _ProScreenState extends ConsumerState<ProScreen> {
                         child: _PackageCard(
                           package: p,
                           selected: p.identifier == _selected,
+                          savePercent: savePercent,
                           onTap: () => setState(() => _selected = p.identifier),
                         ),
                       ),
@@ -178,10 +196,18 @@ class _ProScreenState extends ConsumerState<ProScreen> {
 }
 
 class _PackageCard extends StatelessWidget {
-  const _PackageCard({required this.package, required this.selected, required this.onTap});
+  const _PackageCard({
+    required this.package,
+    required this.selected,
+    required this.savePercent,
+    required this.onTap,
+  });
 
   final Package package;
   final bool selected;
+
+  /// Yearly saving in percent; the badge is hidden when 0.
+  final int savePercent;
   final VoidCallback onTap;
 
   @override
@@ -220,7 +246,7 @@ class _PackageCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(package.storeProduct.priceString, style: theme.textTheme.titleMedium),
-                  if (annual)
+                  if (annual && savePercent > 0)
                     Container(
                       margin: const EdgeInsets.only(top: 4),
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -228,7 +254,7 @@ class _PackageCard extends StatelessWidget {
                         color: theme.colorScheme.primary,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Text(l.savePercent(40),
+                      child: Text(l.savePercent(savePercent),
                           style: theme.textTheme.labelSmall
                               ?.copyWith(color: theme.colorScheme.onPrimary)),
                     ),
