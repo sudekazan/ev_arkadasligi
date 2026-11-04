@@ -66,7 +66,12 @@ service cloud.firestore {
         allow update: if isMember(hid) && (
           (memberId == me() && changesOnly(['displayName', 'avatarEmoji', 'iban'])
             && request.resource.data.displayName is string
-            && request.resource.data.displayName.size() <= 40)
+            && request.resource.data.displayName.size() <= 40
+            && request.resource.data.get('avatarEmoji', '') is string
+            && request.resource.data.get('avatarEmoji', '').size() <= 16
+            && (request.resource.data.get('iban', null) == null
+              || (request.resource.data.iban is string
+                && request.resource.data.iban.size() <= 34)))
           || (isAdmin(hid) && changesOnly(['rentWeight'])
             && request.resource.data.rentWeight is int
             && request.resource.data.rentWeight >= 0
@@ -153,8 +158,25 @@ service cloud.firestore {
           && request.resource.data.nextRunAt is timestamp;
       }
 
+      // The stored document is checked (also on "mark done" updates, which
+      // only send done/doneBy/doneAt), so oversized or unknown fields never land.
+      function validShoppingItem(d) {
+        return d.keys().hasOnly(['name', 'quantity', 'addedBy', 'done', 'doneBy', 'doneAt', 'createdAt'])
+          && d.name is string && d.name.size() >= 1 && d.name.size() <= 100
+          && (d.get('quantity', null) == null
+            || (d.quantity is string && d.quantity.size() <= 40))
+          && d.addedBy is string
+          && d.get('done', false) is bool;
+      }
+
       match /shoppingItems/{id} {
-        allow read, write: if isMember(hid);
+        allow read, delete: if isMember(hid);
+        allow create: if isMember(hid)
+          && request.resource.data.addedBy == me()
+          && validShoppingItem(request.resource.data);
+        allow update: if isMember(hid)
+          && unchanged(['addedBy', 'createdAt'])
+          && validShoppingItem(request.resource.data);
       }
 
       match /chores/{id} {

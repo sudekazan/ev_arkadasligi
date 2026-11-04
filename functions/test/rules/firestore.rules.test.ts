@@ -94,6 +94,9 @@ beforeEach(async () => {
     await setDoc(doc(db, "households/h1/expenses/pendingAlice"), expense({
       amountMinor: 0, shares: {}, status: "pendingAmount", createdBy: "alice",
     }));
+    await setDoc(doc(db, "households/h1/shoppingItems/i1"), {
+      name: "Süt", quantity: "2 litre", addedBy: "alice", done: false, createdAt: now,
+    });
     await setDoc(doc(db, "households/h1/settlements/s1"), {
       fromUid: "bob", toUid: "alice", amountMinor: 500, date: now, note: "", createdBy: "bob", createdAt: now,
     });
@@ -140,6 +143,54 @@ describe("households", () => {
     await assertFails(updateDoc(doc(as("bob"), "households/h1/members/bob"), { rentWeight: 5 }));
     await assertSucceeds(updateDoc(doc(as("alice"), "households/h1/members/bob"), { rentWeight: 3 }));
     await assertFails(updateDoc(doc(as("alice"), "households/h1/members/bob"), { rentWeight: 1.5 }));
+  });
+});
+
+describe("member profile limits", () => {
+  const bob = () => doc(as("bob"), "households/h1/members/bob");
+
+  it("rejects an IBAN longer than 34 characters", async () => {
+    await assertFails(updateDoc(bob(), { iban: "T".repeat(35) }));
+    await assertSucceeds(updateDoc(bob(), { iban: "T".repeat(34) }));
+    await assertSucceeds(updateDoc(bob(), { iban: null }));
+  });
+
+  it("rejects an avatar emoji field longer than 16 characters", async () => {
+    await assertFails(updateDoc(bob(), { avatarEmoji: "a".repeat(17) }));
+    await assertSucceeds(updateDoc(bob(), { avatarEmoji: "😀", iban: null }));
+  });
+});
+
+describe("shopping items", () => {
+  const item = (over: Record<string, unknown> = {}) => ({
+    name: "Ekmek", quantity: null, addedBy: "bob", done: false, createdAt: now, ...over,
+  });
+  const items = (uid: string, id: string) => doc(as(uid), `households/h1/shoppingItems/${id}`);
+
+  it("accepts a normal item, with or without quantity", async () => {
+    await assertSucceeds(setDoc(items("bob", "n1"), item()));
+    await assertSucceeds(setDoc(items("bob", "n2"), item({ quantity: "2 paket" })));
+  });
+
+  it("rejects a name over 100 characters, an empty name and a long quantity", async () => {
+    await assertFails(setDoc(items("bob", "n3"), item({ name: "a".repeat(101) })));
+    await assertSucceeds(setDoc(items("bob", "n4"), item({ name: "a".repeat(100) })));
+    await assertFails(setDoc(items("bob", "n5"), item({ name: "" })));
+    await assertFails(setDoc(items("bob", "n6"), item({ quantity: "a".repeat(41) })));
+  });
+
+  it("requires addedBy to be the caller and rejects unknown fields", async () => {
+    await assertFails(setDoc(items("bob", "n7"), item({ addedBy: "alice" })));
+    await assertFails(setDoc(items("bob", "n8"), item({ extra: "x" })));
+    await assertFails(setDoc(items("mallory", "n9"), item({ addedBy: "mallory" })));
+  });
+
+  it("still lets members mark done, undo and delete", async () => {
+    await assertSucceeds(updateDoc(items("bob", "i1"), { done: true, doneBy: "bob", doneAt: now }));
+    await assertSucceeds(updateDoc(items("bob", "i1"), { done: false, doneBy: null, doneAt: null }));
+    await assertFails(updateDoc(items("bob", "i1"), { name: "a".repeat(101) }));
+    await assertFails(updateDoc(items("bob", "i1"), { addedBy: "bob" }));
+    await assertSucceeds(deleteDoc(items("bob", "i1")));
   });
 });
 
