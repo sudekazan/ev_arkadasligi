@@ -135,7 +135,9 @@ class _ChoreCard extends ConsumerWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: FilledButton.tonalIcon(
-                  onPressed: complete,
+                  // Nobody's turn (empty rotation): nothing to complete. Tapping
+                  // the card still opens the editor so people can be added back.
+                  onPressed: current == null ? null : complete,
                   icon: const Icon(Icons.check),
                   label: Text(l.markDone),
                 ),

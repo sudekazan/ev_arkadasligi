@@ -1,5 +1,8 @@
+import 'package:evarkadasligi/app/theme.dart';
 import 'package:evarkadasligi/core/firebase/firebase_providers.dart';
 import 'package:evarkadasligi/features/auth/data/auth_repository.dart';
+import 'package:evarkadasligi/features/chores/data/chore_repository.dart';
+import 'package:evarkadasligi/features/chores/domain/chore.dart';
 import 'package:evarkadasligi/features/expenses/data/expense_repository.dart';
 import 'package:evarkadasligi/features/expenses/domain/expense.dart';
 import 'package:evarkadasligi/features/household/data/household_repository.dart';
@@ -61,6 +64,9 @@ class FakeExpenseRepository implements ExpenseRepository {
 /// someone's member document around without being a current member.
 /// [expensesStream] replaces [expenses] when a test needs to change the
 /// expenses (and so the balances) while the screen is open.
+/// [chores] serves the chore list for screens that show it.
+/// [withAppTheme] applies the real light theme, for screens that read its
+/// money colors; the default keeps Flutter's plain theme.
 Future<void> pumpScreen(
   WidgetTester tester,
   Widget screen, {
@@ -69,6 +75,8 @@ Future<void> pumpScreen(
   required FakeExpenseRepository repo,
   List<Expense> expenses = const [],
   Stream<List<Expense>>? expensesStream,
+  List<Chore> chores = const [],
+  bool withAppTheme = false,
   List<String>? memberIds,
   Map<String, Object> prefs = const {},
 }) async {
@@ -102,12 +110,14 @@ Future<void> pumpScreen(
     membersProvider.overrideWith((ref) => Stream.value(members)),
     expensesProvider.overrideWith((ref) => expensesStream ?? Stream.value(expenses)),
     settlementsProvider.overrideWith((ref) => Stream.value(const [])),
+    choresProvider.overrideWith((ref) => Stream.value(chores)),
     expenseRepositoryProvider.overrideWithValue(repo),
   ];
   await tester.pumpWidget(
     ProviderScope(
       overrides: overrides,
       child: MaterialApp.router(
+        theme: withAppTheme ? lightTheme : null,
         locale: const Locale('tr'),
         supportedLocales: AppLocalizations.supportedLocales,
         localizationsDelegates: const [
