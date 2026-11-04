@@ -108,11 +108,13 @@ class ProService {
   }
 
   /// Asks the server to read Pro from RevenueCat now, so limits lift before
-  /// the webhook arrives. A failure only gets reported; the webhook still
-  /// catches up later.
+  /// the webhook arrives. A failure (a timeout too) only gets reported and
+  /// never changes the purchase result; the webhook still catches up later.
   Future<void> _syncServer() async {
     try {
-      await _functions.httpsCallable('syncPro').call<Object?>();
+      await _functions
+          .httpsCallable('syncPro', options: HttpsCallableOptions(timeout: const Duration(seconds: 15)))
+          .call<Object?>();
     } catch (e, s) {
       reportError(e, s);
     }

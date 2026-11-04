@@ -20,6 +20,30 @@ describe("proUntilFromSubscriber", () => {
     expect(r!.getTime()).toBeGreaterThan(now + 50 * 365 * 864e5);
   });
 
+  it("grace period later than the expiration wins", () => {
+    const body = {
+      subscriber: {
+        entitlements: {
+          pro: {
+            expires_date: "2026-12-01T10:00:00Z",
+            grace_period_expires_date: "2026-12-17T10:00:00Z",
+          },
+        },
+      },
+    };
+    expect(proUntilFromSubscriber(body)).toEqual(new Date("2026-12-17T10:00:00Z"));
+  });
+
+  it("an earlier or missing grace period keeps the expiration", () => {
+    const at = (grace: string | null) => proUntilFromSubscriber({
+      subscriber: {
+        entitlements: { pro: { expires_date: "2026-12-01T10:00:00Z", grace_period_expires_date: grace } },
+      },
+    });
+    expect(at("2026-11-20T10:00:00Z")).toEqual(new Date("2026-12-01T10:00:00Z"));
+    expect(at(null)).toEqual(new Date("2026-12-01T10:00:00Z"));
+  });
+
   it("no pro entitlement returns null", () => {
     expect(proUntilFromSubscriber({ subscriber: { entitlements: {} } })).toBeNull();
     expect(proUntilFromSubscriber({ subscriber: { entitlements: { other: {} } } })).toBeNull();

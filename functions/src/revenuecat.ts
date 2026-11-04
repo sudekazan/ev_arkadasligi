@@ -22,12 +22,23 @@ export interface RevenueCatEvent {
 /** users.proUntil from a GET /v1/subscribers response; null when not Pro. */
 export function proUntilFromSubscriber(body: unknown, now = Date.now()): Date | null {
   const pro = (body as {
-    subscriber?: { entitlements?: Record<string, { expires_date?: string | null }> };
+    subscriber?: {
+      entitlements?: Record<string, {
+        expires_date?: string | null;
+        grace_period_expires_date?: string | null;
+      }>;
+    };
   })?.subscriber?.entitlements?.[ENTITLEMENT];
   if (!pro) return null;
   // Lifetime / non-expiring purchases have no expiration.
   if (pro.expires_date == null) return new Date(now + 100 * 365 * 864e5);
-  return new Date(pro.expires_date);
+  const expires = new Date(pro.expires_date);
+  // A failed renewal in a billing grace period keeps Pro until it ends.
+  if (pro.grace_period_expires_date != null) {
+    const grace = new Date(pro.grace_period_expires_date);
+    if (grace.getTime() > expires.getTime()) return grace;
+  }
+  return expires;
 }
 
 /** Every real (non-anonymous) user an event touches, without duplicates. */
