@@ -17,21 +17,31 @@ export function blockingBalances(rows: HouseholdBalance[]): HouseholdBalance[] {
 }
 
 /**
+ * Only an explicit `force: false` (the new app's first, asking call) can be
+ * refused. Older builds send no `force` and must keep deleting outright
+ * (App Store 5.1.1(v)); `force: true` is the user's confirmed "Delete anyway".
+ */
+export function shouldBlockDeletion(force: unknown, blocking: unknown[]): boolean {
+  return force === false && blocking.length > 0;
+}
+
+/**
  * Deletes the caller's account. Past expenses keep the uid; the member
  * document is flagged `deleted` so clients show "Deleted user".
- * Without `force`, refuses while the user has an open balance anywhere, so
- * the app can warn first. The RevenueCat record is removed last and a failure
- * there is only logged: the account is already gone by then.
+ * With `force: false`, refuses while the user has an open balance anywhere,
+ * so the app can warn first; see `shouldBlockDeletion`. The RevenueCat
+ * record is removed last and a failure there is only logged: the account is
+ * already gone by then.
  */
 export const deleteAccount = onCall(
   { ...CALLABLE, secrets: [revenueCatApiKey] },
   async (req) => {
     const uid = requireAuth(req);
-    const force = req.data?.force === true;
+    const force: unknown = req.data?.force;
     const userRef = db.collection("users").doc(uid);
     const snap = await userRef.get();
     const householdIds = (snap.get("householdIds") as string[]) ?? [];
-    if (!force) {
+    if (force === false) {
       const rows: HouseholdBalance[] = [];
       for (const hid of householdIds) {
         // A household that no longer exists cannot hold a balance.
@@ -44,7 +54,7 @@ export const deleteAccount = onCall(
         });
       }
       const households = blockingBalances(rows);
-      if (households.length > 0) {
+      if (shouldBlockDeletion(force, households)) {
         throw new HttpsError("failed-precondition", "balance-not-zero", { households });
       }
     }

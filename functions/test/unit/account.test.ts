@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { blockingBalances } from "../../src/account.js";
+import { blockingBalances, shouldBlockDeletion } from "../../src/account.js";
 
 describe("blockingBalances", () => {
   it("keeps only households with a non-zero balance", () => {
@@ -14,5 +14,25 @@ describe("blockingBalances", () => {
   it("returns nothing when everything is settled", () => {
     expect(blockingBalances([{ name: "Moda", currency: "TRY", balanceMinor: 0 }])).toEqual([]);
     expect(blockingBalances([])).toEqual([]);
+  });
+});
+
+describe("shouldBlockDeletion", () => {
+  const blocking = [{ name: "Moda", currency: "TRY", balanceMinor: -25000 }];
+
+  it("blocks when the new client asks first (force false) and a balance is open", () => {
+    expect(shouldBlockDeletion(false, blocking)).toBe(true);
+  });
+
+  it("never blocks when the user confirmed (force true)", () => {
+    expect(shouldBlockDeletion(true, blocking)).toBe(false);
+  });
+
+  it("never blocks an old client that sends no force", () => {
+    expect(shouldBlockDeletion(undefined, blocking)).toBe(false);
+  });
+
+  it("does not block when nothing is open", () => {
+    expect(shouldBlockDeletion(false, [])).toBe(false);
   });
 });
