@@ -59,6 +59,8 @@ class FakeExpenseRepository implements ExpenseRepository {
 /// data served from memory. A `/pro` route stands in for the paywall.
 /// [memberIds] defaults to every id in [members]; pass a shorter list to keep
 /// someone's member document around without being a current member.
+/// [expensesStream] replaces [expenses] when a test needs to change the
+/// expenses (and so the balances) while the screen is open.
 Future<void> pumpScreen(
   WidgetTester tester,
   Widget screen, {
@@ -66,6 +68,7 @@ Future<void> pumpScreen(
   required List<Member> members,
   required FakeExpenseRepository repo,
   List<Expense> expenses = const [],
+  Stream<List<Expense>>? expensesStream,
   List<String>? memberIds,
   Map<String, Object> prefs = const {},
 }) async {
@@ -97,7 +100,7 @@ Future<void> pumpScreen(
     currentHouseholdProvider
         .overrideWith((ref) => Stream.value(household(memberIds ?? [for (final m in members) m.id]))),
     membersProvider.overrideWith((ref) => Stream.value(members)),
-    expensesProvider.overrideWith((ref) => Stream.value(expenses)),
+    expensesProvider.overrideWith((ref) => expensesStream ?? Stream.value(expenses)),
     settlementsProvider.overrideWith((ref) => Stream.value(const [])),
     expenseRepositoryProvider.overrideWithValue(repo),
   ];

@@ -104,8 +104,17 @@ class _SettleScreenState extends ConsumerState<SettleScreen> {
       if (amount != null) _amount.text = Money.toInput(amount, locale: l.localeName);
     }
     final isAdmin = household.isAdmin(uid);
-    final recipient = ref.watch(memberMapProvider)[_to];
+    final memberMap = ref.watch(memberMapProvider);
+    final recipient = memberMap[_to];
     final iban = recipient?.iban;
+    // Whoever is selected stays in the list even if the candidates stop
+    // listing them (a deleted member's balance can reach zero while this
+    // screen is open); a dropdown whose value has no item throws.
+    final candidateIds = {for (final m in members) m.id};
+    final choices = [
+      for (final m in memberMap.values)
+        if (candidateIds.contains(m.id) || m.id == _from || m.id == _to) m,
+    ];
 
     String nameOf(Member m) {
       if (m.deleted) return l.deletedUser;
@@ -117,7 +126,7 @@ class _SettleScreenState extends ConsumerState<SettleScreen> {
           initialValue: value,
           decoration: InputDecoration(labelText: label),
           items: [
-            for (final m in members)
+            for (final m in choices)
               DropdownMenuItem(
                 value: m.id,
                 child: Text('${m.avatarEmoji}  ${nameOf(m)}'),

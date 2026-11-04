@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:evarkadasligi/core/money/split_calculator.dart';
 import 'package:evarkadasligi/features/balances/presentation/settle_screen.dart';
 import 'package:evarkadasligi/features/expenses/domain/expense.dart';
@@ -148,6 +150,33 @@ void main() {
       expect(s.fromUid, 'b');
       expect(s.toUid, 'gone');
       expect(s.amountMinor, 10000);
+    });
+
+    testWidgets('keeps the selected deleted member listed when their balance reaches zero',
+        (tester) async {
+      final expenses = StreamController<List<Expense>>();
+      addTearDown(expenses.close);
+      // Burak owes the deleted user 100,00 ₺ ...
+      final owed = expenseOf('gone', {'gone': 10000, 'b': 10000});
+      expenses.add([owed]);
+      await pumpScreen(
+        tester,
+        const SettleScreen(toUid: 'gone'),
+        uid: 'b',
+        members: [...members, gone],
+        memberIds: ['a', 'b'],
+        repo: FakeExpenseRepository(),
+        expensesStream: expenses.stream,
+      );
+      final l = l10nOf(tester);
+      expect(find.textContaining(l.deletedUser), findsOneWidget);
+
+      // ... then an expense Burak paid for both evens it out while the screen is open.
+      expenses.add([owed, expenseOf('b', {'gone': 10000, 'b': 10000})]);
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.textContaining(l.deletedUser), findsOneWidget);
     });
 
     testWidgets('deleted member with a zero balance is not offered', (tester) async {
