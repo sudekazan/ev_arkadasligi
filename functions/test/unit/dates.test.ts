@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dayKey, endOfLocalDay, fromLocal, localWeekday, monthKey, nextMonthly, nextWeekly } from "../../src/dates.js";
+import { dayKey, endOfLocalDay, fromLocal, hourKey, localWeekday, monthKey, nextMonthly, nextWeekly } from "../../src/dates.js";
 import { advance } from "../../src/recurring.js";
 
 const local = (y: number, m: number, d: number, h = 0) => fromLocal({ year: y, month: m, day: d }, h);
@@ -31,5 +31,9 @@ describe("dates (Europe/Istanbul)", () => {
     expect(monthKey(d)).toBe("2026-11");
     expect(dayKey(d)).toBe("2026-11-01");
     expect(endOfLocalDay(d)).toEqual(new Date(local(2026, 11, 2).getTime() - 1));
+  });
+
+  it("hourKey is the UTC hour", () => {
+    expect(hourKey(new Date(Date.UTC(2026, 10, 4, 9, 59)))).toBe("2026-11-04T09");
   });
 });

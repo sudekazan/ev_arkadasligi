@@ -86,6 +86,11 @@ export function monthKey(date: Date): string {
   return `${l.year}-${String(l.month).padStart(2, "0")}`;
 }
 
+/** "2026-11-04T09" style key for the UTC hour of [date]. */
+export function hourKey(date: Date): string {
+  return date.toISOString().slice(0, 13);
+}
+
 /** "2026-10-26" style key for the local day of [date]. */
 export function dayKey(date: Date): string {
   const l = toLocal(date);

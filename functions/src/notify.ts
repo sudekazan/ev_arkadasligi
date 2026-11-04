@@ -30,6 +30,11 @@ const MESSAGES: Record<string, Record<Lang, Template>> = {
     en: (p) => ({ title: p.household, body: `Enter the amount for the ${p.description} bill` }),
     de: (p) => ({ title: p.household, body: `Gib den Betrag für die Rechnung ${p.description} ein` }),
   },
+  memberJoined: {
+    tr: (p) => ({ title: p.household, body: `${p.actor} eve katıldı` }),
+    en: (p) => ({ title: p.household, body: `${p.actor} joined the household` }),
+    de: (p) => ({ title: p.household, body: `${p.actor} ist dem Haushalt beigetreten` }),
+  },
   chore: {
     tr: (p) => ({ title: p.household, body: `Bugün sıra sende: ${p.chore}` }),
     en: (p) => ({ title: p.household, body: `It's your turn today: ${p.chore}` }),

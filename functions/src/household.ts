@@ -1,8 +1,10 @@
 import { FieldValue, Timestamp, Transaction } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
+import { logger } from "firebase-functions/v2";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
   FREE_HOUSEHOLD_LIMIT,
+  JOIN_FAILURES_PER_HOUR,
   MAX_MEMBERS,
   REGION,
   activityDoc,
@@ -16,6 +18,8 @@ import {
   requireString,
 } from "./common.js";
 import { dropFromRotation } from "./chores.js";
+import { hourKey } from "./dates.js";
+import { notifyUsers } from "./notify.js";
 import { revenueCatApiKey, userIsProFresh } from "./revenuecat.js";
 import { ExpenseLike, SettlementLike, computeNets } from "./money.js";
 
@@ -165,8 +169,18 @@ export const createHousehold = onCall({ region: REGION, secrets: [revenueCatApiK
 export const joinHousehold = onCall({ region: REGION, secrets: [revenueCatApiKey] }, async (req) => {
   const uid = requireAuth(req);
   const code = requireString(req.data?.code, "code").toUpperCase();
+  const usageRef = db.collection("usage").doc(uid);
+  const hour = hourKey(new Date());
+  const failures = ((await usageRef.get()).get(`joinFailures.${hour}`) as number) ?? 0;
+  if (failures >= JOIN_FAILURES_PER_HOUR) {
+    throw new HttpsError("resource-exhausted", "too-many-attempts");
+  }
   const codeSnap = await db.collection("inviteCodes").doc(code).get();
-  if (!codeSnap.exists) throw new HttpsError("not-found", "invite-code-invalid");
+  if (!codeSnap.exists) {
+    // Only unknown codes count; a correct code below the limit always works.
+    await usageRef.set({ joinFailures: { [hour]: FieldValue.increment(1) } }, { merge: true });
+    throw new HttpsError("not-found", "invite-code-invalid");
+  }
   const hid = codeSnap.get("householdId") as string;
   const { ref: hRef, data: h } = await loadHousehold(hid);
   if (h.memberIds.includes(uid)) return { householdId: hid };
@@ -198,6 +212,18 @@ export const joinHousehold = onCall({ region: REGION, secrets: [revenueCatApiKey
     tx.create(hRef.collection("activity").doc(), activityDoc("memberJoined", uid, uid));
   });
   await recomputeHouseholdPro(hid);
+  try {
+    await notifyUsers(
+      h.adminIds.filter((a) => a !== uid),
+      "newExpense",
+      "memberJoined",
+      () => ({ household: h.name, actor: String(user.get("displayName") ?? "") }),
+      { type: "member", hid },
+    );
+  } catch (err) {
+    // The join already succeeded; a failed push must not undo it.
+    logger.warn("member joined push failed", { hid, err: String(err) });
+  }
   return { householdId: hid };
 });
 

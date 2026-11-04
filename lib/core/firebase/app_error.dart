@@ -52,6 +52,7 @@ AppErrorCode errorCodeOf(Object error) {
       'household-limit' => AppErrorCode.householdLimit,
       'household-full' => AppErrorCode.householdFull,
       'invite-code-invalid' => AppErrorCode.inviteInvalid,
+      'too-many-attempts' => AppErrorCode.tooManyRequests,
       'balance-not-zero' => AppErrorCode.balanceNotZero,
       'receipt-quota' => AppErrorCode.receiptQuota,
       'receipt-unreadable' => AppErrorCode.receiptUnreadable,
