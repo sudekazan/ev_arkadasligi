@@ -25,6 +25,14 @@ service cloud.firestore {
       return signedIn() && me() in householdData(hid).adminIds;
     }
 
+    // Someone who deleted their account: no longer in memberIds, but their old
+    // expenses stay, so the others still need to settle the balance with them.
+    // Members who merely left or were removed always have a zero balance and
+    // are not accepted here.
+    function isDeletedMember(hid, uid) {
+      return get(/databases/$(database)/documents/households/$(hid)/members/$(uid)).data.get('deleted', false) == true;
+    }
+
     function changesOnly(keys) {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
     }
@@ -69,17 +77,34 @@ service cloud.firestore {
 
       // The sum of shares cannot be checked in rules (no loops); the client
       // computes it with lib/core/money and the keys are validated here.
-      function validExpense(d) {
-        let members = householdData(hid).memberIds;
+      function validExpenseFields(d) {
         return d.amountMinor is int && d.amountMinor > 0
-          && d.paidBy in members
           && d.shares is map && d.shares.size() > 0
-          && d.shares.keys().hasOnly(members)
           && d.status == 'final'
           && d.splitType in ['equal', 'exact', 'percent', 'shares']
           && d.description is string && d.description.size() > 0
           && d.description.size() <= 100
           && d.date is timestamp;
+      }
+
+      // A new expense only involves current members.
+      function validExpense(d) {
+        let members = householdData(hid).memberIds;
+        return validExpenseFields(d)
+          && d.paidBy in members
+          && d.shares.keys().hasOnly(members);
+      }
+
+      // An edit may keep the payer and participants already on the stored
+      // expense even after they left or deleted their account (otherwise old
+      // expenses could never be fixed); anyone newly added must be a current
+      // member.
+      function validExpenseEdit(d, stored) {
+        let members = householdData(hid).memberIds;
+        let newKeys = d.shares.keys().toSet().difference(members.toSet());
+        return validExpenseFields(d)
+          && (d.paidBy in members || d.paidBy == stored.paidBy)
+          && newKeys.difference(stored.shares.keys().toSet()).size() == 0;
       }
 
       match /expenses/{eid} {
@@ -95,7 +120,7 @@ service cloud.firestore {
               && resource.data.paidBy == me()
               && request.resource.data.paidBy == me()))
           && unchanged(['createdBy', 'createdAt'])
-          && validExpense(request.resource.data);
+          && validExpenseEdit(request.resource.data, resource.data);
         allow delete: if isMember(hid)
           && (resource.data.createdBy == me() || isAdmin(hid));
       }
@@ -106,8 +131,10 @@ service cloud.firestore {
           && request.resource.data.createdBy == me()
           && request.resource.data.amountMinor is int
           && request.resource.data.amountMinor > 0
-          && request.resource.data.fromUid in householdData(hid).memberIds
-          && request.resource.data.toUid in householdData(hid).memberIds
+          && (request.resource.data.fromUid in householdData(hid).memberIds
+            || isDeletedMember(hid, request.resource.data.fromUid))
+          && (request.resource.data.toUid in householdData(hid).memberIds
+            || isDeletedMember(hid, request.resource.data.toUid))
           && request.resource.data.fromUid != request.resource.data.toUid
           && (me() in [request.resource.data.fromUid, request.resource.data.toUid]
             || isAdmin(hid));

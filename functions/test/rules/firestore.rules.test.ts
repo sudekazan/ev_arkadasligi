@@ -191,6 +191,89 @@ describe("settlements", () => {
   });
 });
 
+// "gone" is no longer in households/h1.memberIds but still has a member
+// document and an old expense: that is what account deletion and leaving
+// leave behind.
+describe("deleted members", () => {
+  async function seedGone(member: Record<string, unknown>) {
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      const db = ctx.firestore();
+      await setDoc(doc(db, "households/h1/members/gone"), {
+        displayName: "", avatarEmoji: "🙂", rentWeight: 1, joinedAt: now, ...member,
+      });
+      await setDoc(doc(db, "households/h1/expenses/withGone"), expense({
+        splitInput: { alice: 1, gone: 1 }, shares: { alice: 5000, gone: 5000 },
+      }));
+    });
+  }
+
+  const payment = { fromUid: "alice", toUid: "gone", amountMinor: 2500, date: now, note: "", createdBy: "alice", createdAt: now };
+
+  it("settlement to a deleted member succeeds", async () => {
+    await seedGone({ active: false, deleted: true });
+    await assertSucceeds(setDoc(doc(as("alice"), "households/h1/settlements/d1"), payment));
+    // The other direction (the deleted member owed the household) works too.
+    await assertSucceeds(setDoc(doc(as("alice"), "households/h1/settlements/d2"),
+      { ...payment, fromUid: "gone", toUid: "alice" }));
+  });
+
+  it("settlement to a departed (not deleted) member fails", async () => {
+    await seedGone({ active: false });
+    await assertFails(setDoc(doc(as("alice"), "households/h1/settlements/d1"), payment));
+    await assertFails(setDoc(doc(as("alice"), "households/h1/settlements/d2"),
+      { ...payment, fromUid: "gone", toUid: "alice" }));
+  });
+
+  it("settlement to someone who never belonged to the household fails", async () => {
+    await seedGone({ active: false, deleted: true });
+    await assertFails(setDoc(doc(as("alice"), "households/h1/settlements/d1"), { ...payment, toUid: "eve" }));
+  });
+
+  it("settlement between two deleted members is only recorded by an admin", async () => {
+    await seedGone({ active: false, deleted: true });
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), "households/h1/members/gone2"), {
+        displayName: "", active: false, deleted: true, joinedAt: now,
+      });
+    });
+    const between = { ...payment, fromUid: "gone", toUid: "gone2" };
+    await assertSucceeds(setDoc(doc(as("alice"), "households/h1/settlements/d1"), between));
+    await assertFails(setDoc(doc(as("bob"), "households/h1/settlements/d2"), { ...between, createdBy: "bob" }));
+  });
+
+  it("editing an old expense that keeps a deleted participant succeeds", async () => {
+    await seedGone({ active: false, deleted: true });
+    await assertSucceeds(updateDoc(doc(as("alice"), "households/h1/expenses/withGone"), { description: "Düzeltildi" }));
+    // Also when the deleted member paid it.
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), "households/h1/expenses/paidByGone"), expense({
+        paidBy: "gone", splitInput: { alice: 1, gone: 1 }, shares: { alice: 5000, gone: 5000 },
+      }));
+    });
+    await assertSucceeds(updateDoc(doc(as("alice"), "households/h1/expenses/paidByGone"), { description: "Düzeltildi" }));
+  });
+
+  it("an old expense cannot gain a participant who is not a current member", async () => {
+    await seedGone({ active: false, deleted: true });
+    // Was never on e1 (alice, bob): neither the deleted member nor a stranger can be added.
+    await assertFails(updateDoc(doc(as("alice"), "households/h1/expenses/e1"),
+      { shares: { alice: 3000, bob: 3000, gone: 4000 } }));
+    await assertFails(updateDoc(doc(as("alice"), "households/h1/expenses/e1"),
+      { shares: { alice: 5000, eve: 5000 } }));
+    await assertFails(updateDoc(doc(as("alice"), "households/h1/expenses/e1"), { paidBy: "gone" }));
+    // A stranger cannot be made the payer of an old expense either.
+    await assertFails(updateDoc(doc(as("alice"), "households/h1/expenses/withGone"), { paidBy: "eve" }));
+  });
+
+  it("adding a deleted member to a new expense fails", async () => {
+    await seedGone({ active: false, deleted: true });
+    const db = as("bob");
+    await assertFails(setDoc(doc(db, "households/h1/expenses/n1"),
+      expense({ createdBy: "bob", shares: { bob: 5000, gone: 5000 } })));
+    await assertFails(setDoc(doc(db, "households/h1/expenses/n2"), expense({ createdBy: "bob", paidBy: "gone" })));
+  });
+});
+
 describe("server-only collections", () => {
   it("inviteCodes and usage are closed", async () => {
     await assertFails(getDoc(doc(as("alice"), "inviteCodes/ABC234")));

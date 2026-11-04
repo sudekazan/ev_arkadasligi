@@ -98,4 +98,68 @@ void main() {
 
     expect(copied, iban.replaceAll(' ', ''));
   });
+
+  group('deleted member', () {
+    final gone = deletedMember('gone');
+
+    Expense expenseOf(String paidBy, Map<String, int> shares) => Expense(
+          id: 'g1',
+          description: 'Kira',
+          amountMinor: shares.values.fold(0, (a, b) => a + b),
+          paidBy: paidBy,
+          date: testNow,
+          splitType: SplitType.equal,
+          shares: shares,
+          createdBy: 'a',
+          createdAt: testNow,
+          updatedAt: testNow,
+        );
+
+    Future<FakeExpenseRepository> openWith(WidgetTester tester, List<Expense> expenses,
+        {String? toUid}) async {
+      final repo = FakeExpenseRepository();
+      await pumpScreen(
+        tester,
+        SettleScreen(toUid: toUid),
+        uid: 'b',
+        members: [...members, gone],
+        memberIds: ['a', 'b'],
+        repo: repo,
+        expenses: expenses,
+      );
+      return repo;
+    }
+
+    testWidgets('deleted member with a balance can be picked as recipient', (tester) async {
+      // The deleted user paid 200,00 ₺ split with Burak, so Burak owes them 100,00 ₺.
+      final repo = await openWith(tester, [expenseOf('gone', {'gone': 10000, 'b': 10000})], toUid: 'gone');
+      final l = l10nOf(tester);
+
+      expect(tester.takeException(), isNull);
+      expect(find.textContaining(l.deletedUser), findsOneWidget);
+      // The profile is blanked, so no "has not added an IBAN" hint with an empty name.
+      expect(find.text(l.noIbanYet('')), findsNothing);
+      expect(tester.widget<TextFormField>(amountField()).controller!.text, '100');
+
+      await tester.tap(find.widgetWithText(FilledButton, l.markAsPaid));
+      await tester.pumpAndSettle();
+
+      final s = repo.settlements.single;
+      expect(s.fromUid, 'b');
+      expect(s.toUid, 'gone');
+      expect(s.amountMinor, 10000);
+    });
+
+    testWidgets('deleted member with a zero balance is not offered', (tester) async {
+      // They only paid for themselves, so nobody owes them anything.
+      await openWith(tester, [expenseOf('gone', {'gone': 10000})]);
+      final l = l10nOf(tester);
+
+      await tester.tap(find.byType(DropdownButtonFormField<String>).last);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Ayşe'), findsWidgets); // the menu is open
+      expect(find.textContaining(l.deletedUser), findsNothing);
+    });
+  });
 }

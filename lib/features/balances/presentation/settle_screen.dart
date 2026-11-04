@@ -11,6 +11,7 @@ import '../../auth/data/auth_repository.dart';
 import '../../expenses/data/expense_repository.dart';
 import '../../expenses/domain/expense.dart';
 import '../../household/data/household_repository.dart';
+import '../../household/domain/household.dart';
 import '../data/balance_providers.dart';
 
 /// "Ödeme yapıldı": from, to, amount (suggested amount prefilled), IBAN copy.
@@ -88,7 +89,7 @@ class _SettleScreenState extends ConsumerState<SettleScreen> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final household = ref.watch(currentHouseholdProvider).value;
-    final members = ref.watch(activeMembersProvider);
+    final members = ref.watch(settleCandidatesProvider);
     final uid = ref.watch(currentUidProvider);
     // The suggested amount is filled once, so wait for balances to load.
     final loading = ref.watch(balancesLoadingProvider);
@@ -106,6 +107,11 @@ class _SettleScreenState extends ConsumerState<SettleScreen> {
     final recipient = ref.watch(memberMapProvider)[_to];
     final iban = recipient?.iban;
 
+    String nameOf(Member m) {
+      if (m.deleted) return l.deletedUser;
+      return m.id == uid ? l.youSuffix(m.displayName) : m.displayName;
+    }
+
     DropdownButtonFormField<String> picker(String label, String? value, ValueChanged<String?> onChanged) =>
         DropdownButtonFormField<String>(
           initialValue: value,
@@ -114,7 +120,7 @@ class _SettleScreenState extends ConsumerState<SettleScreen> {
             for (final m in members)
               DropdownMenuItem(
                 value: m.id,
-                child: Text('${m.avatarEmoji}  ${m.id == uid ? l.youSuffix(m.displayName) : m.displayName}'),
+                child: Text('${m.avatarEmoji}  ${nameOf(m)}'),
               ),
           ],
           onChanged: onChanged,
@@ -167,7 +173,7 @@ class _SettleScreenState extends ConsumerState<SettleScreen> {
                   ),
                 ),
               )
-            else if (recipient != null)
+            else if (recipient != null && !recipient.deleted)
               Text(l.noIbanYet(recipient.displayName), style: Theme.of(context).textTheme.bodySmall),
             const SizedBox(height: 16),
             TextFormField(

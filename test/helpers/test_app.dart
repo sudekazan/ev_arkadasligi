@@ -18,6 +18,11 @@ final testNow = DateTime(2026, 10, 27, 12);
 Member member(String id, String name, {String? iban}) =>
     Member(id: id, displayName: name, iban: iban, joinedAt: testNow);
 
+/// A person who deleted their account: detached from the household, with the
+/// profile blanked by the server.
+Member deletedMember(String id) =>
+    Member(id: id, displayName: '', active: false, deleted: true, joinedAt: testNow);
+
 Household household(List<String> memberIds, {String admin = 'a'}) => Household(
       id: 'h1',
       name: 'Test Evi',
@@ -52,6 +57,8 @@ class FakeExpenseRepository implements ExpenseRepository {
 
 /// Pumps [screen] on top of a placeholder home route, with the household
 /// data served from memory. A `/pro` route stands in for the paywall.
+/// [memberIds] defaults to every id in [members]; pass a shorter list to keep
+/// someone's member document around without being a current member.
 Future<void> pumpScreen(
   WidgetTester tester,
   Widget screen, {
@@ -59,6 +66,7 @@ Future<void> pumpScreen(
   required List<Member> members,
   required FakeExpenseRepository repo,
   List<Expense> expenses = const [],
+  List<String>? memberIds,
   Map<String, Object> prefs = const {},
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
@@ -87,7 +95,7 @@ Future<void> pumpScreen(
     currentUidProvider.overrideWithValue(uid),
     currentHouseholdIdProvider.overrideWithValue('h1'),
     currentHouseholdProvider
-        .overrideWith((ref) => Stream.value(household([for (final m in members) m.id]))),
+        .overrideWith((ref) => Stream.value(household(memberIds ?? [for (final m in members) m.id]))),
     membersProvider.overrideWith((ref) => Stream.value(members)),
     expensesProvider.overrideWith((ref) => Stream.value(expenses)),
     settlementsProvider.overrideWith((ref) => Stream.value(const [])),
