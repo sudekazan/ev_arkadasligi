@@ -288,7 +288,7 @@ HOW TO TEST THE MAIN FLOW
 EXTERNAL SERVICES USED
 - Firebase Authentication: email/password, Google and Apple sign-in.
 - Cloud Firestore and Firebase Cloud Storage: household, expense and receipt-photo data.
-- Firebase Cloud Functions: our own backend; also relays receipt photos to Google's Gemini API (gemini-2.5-flash) for text recognition only (amount, date, store). Photos are not used to train any model and are not shared further; see the privacy policy.
+- Firebase Cloud Functions: our own backend; also relays receipt photos through OpenRouter to Google's Gemini model (gemini-2.5-flash) for text recognition only (amount, date, store). Photos are not used to train any model and are not shared further; see the privacy policy.
 - Firebase Cloud Messaging: push notifications (payment reminders, chore turns).
 - RevenueCat: manages the auto-renewable subscription; the App Store (StoreKit/In-App Purchase) is the only payment processor. No separate payment processor is used and no bank transfers happen inside the app — the IBAN field is only copied for the user to pay their housemate outside the app.
 

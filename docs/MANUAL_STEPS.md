@@ -111,7 +111,7 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 
 ## 8. Abonelik (RevenueCat)
 
-- [ ] **Mağaza ürünleri:** (iOS tamam: aylık 29,99 ₺, yıllık 199,99 ₺ + 1 hafta deneme; Android bekliyor)
+- [ ] **Mağaza ürünleri:** (iOS tamam: aylık 79,99 ₺, yıllık 549,99 ₺ + 1 hafta deneme; Android bekliyor)
   - App Store Connect → Abonelikler: `odeselim_pro` grubu altında `odeselim_pro_monthly` ve `odeselim_pro_yearly`. Yıllık pakette 7 günlük ücretsiz deneme olsun.
   - Play Console → Abonelikler: aynı kimliklerle iki ürün; yıllıkta 7 günlük deneme teklifi.
   - Fiyat: Türkiye fiyat seviyesinden seç, yıllık ≈ aylık × 7. Uygulama fiyatı mağazadan okur.
@@ -148,3 +148,22 @@ Kodu ve `ios/Runner/Runner.entitlements` hazır. Gerekenler:
 - [ ] Hesap silme gerçek projede çalışıyor (Apple ve Google bunu zorunlu tutuyor).
 - [ ] Crashlytics'te bir test çökmesi görünüyor; Analytics'te `expense_added` olayı geliyor.
 - [ ] Bütçe uyarısı ve fiş okuma kotaları (ücretsiz 5, Pro 200) beklenen şekilde çalışıyor.
+
+## Analiz sonrası elle adımlar
+
+Analiz düzeltmeleri kodda bitince bunları sırayla yap.
+
+- [ ] **App Store Connect fiyatları:** `odeselim_pro_monthly` için aylık 79,99 ₺, `odeselim_pro_yearly` için yıllık 549,99 ₺ seç. Fiyat koda yazılmaz; uygulama mağazadan okur.
+- [ ] **Firebase → Authentication → Apple sağlayıcısı:** prod projede (`odeselimapp`) Services ID, Team ID, Key ID ve özel anahtarı gir (5. bölümdeki son madde).
+- [ ] **Prod App Check:** App Attest'i kaydet. Xcode'dan çalıştırdığında konsola yazılan hata ayıklama anahtarını (debug token) App Check → Uygulamalar → Debug token'ları yönet bölümüne ekle.
+- [ ] **Prod APNs anahtarı:** Firebase → Proje ayarları → Cloud Messaging bölümünde prod iOS uygulamasına APNs anahtarını yükle (3. bölüm).
+- [ ] **RevenueCat gizli API anahtarı:** RevenueCat'te gizli (secret) bir API anahtarı oluştur; sunucu Pro durumunu bununla sorar. Prod ve dev için ayrı ayrı kaydet:
+  ```bash
+  firebase functions:secrets:set REVENUECAT_API_KEY --project odeselimapp
+  ```
+  ```bash
+  firebase functions:secrets:set REVENUECAT_API_KEY --project odeselim-dev
+  ```
+- [ ] **RevenueCat → Firebase entegrasyonu:** RevenueCat → Integrations bölümünden Firebase'i bağla.
+- [ ] **Sandbox kontrolü:** Sandbox hesabıyla bir satın alma yap, sonra Firestore'da `users/{uid}.proUntil` alanının dolduğunu kontrol et.
+- [ ] **Ekran kaydı:** App Review için ekran kaydını yeni TestFlight sürümüyle çek (7. bölümdeki Guideline 2.1 maddesi).
