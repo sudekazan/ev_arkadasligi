@@ -1184,4 +1184,8 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noExpensesThisMonth => 'Bu ay gider yok.';
+
+  @override
+  String get currencyLockedHint =>
+      'Bu evde gider olduğu için para birimi değiştirilemez.';
 }

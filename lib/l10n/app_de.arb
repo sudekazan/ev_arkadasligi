@@ -334,5 +334,6 @@
   "reportsFreeLimit": "Der kostenlose Plan zeigt diesen Monat; frühere Monate gibt es mit Pro.",
   "householdTotal": "Gesamt der WG",
   "myShareTotal": "Dein Anteil",
-  "noExpensesThisMonth": "Keine Ausgaben in diesem Monat."
+  "noExpensesThisMonth": "Keine Ausgaben in diesem Monat.",
+  "currencyLockedHint": "Die Währung kann nicht mehr geändert werden, sobald es Ausgaben gibt."
 }

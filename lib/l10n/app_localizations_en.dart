@@ -1189,4 +1189,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noExpensesThisMonth => 'No expenses this month.';
+
+  @override
+  String get currencyLockedHint =>
+      'The currency can\'t be changed once the household has expenses.';
 }

@@ -1200,4 +1200,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noExpensesThisMonth => 'Keine Ausgaben in diesem Monat.';
+
+  @override
+  String get currencyLockedHint =>
+      'Die Währung kann nicht mehr geändert werden, sobald es Ausgaben gibt.';
 }

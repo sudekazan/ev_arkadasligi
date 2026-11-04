@@ -334,5 +334,6 @@
   "reportsFreeLimit": "The free plan shows this month; past months are in Pro.",
   "householdTotal": "Household total",
   "myShareTotal": "Your share",
-  "noExpensesThisMonth": "No expenses this month."
+  "noExpensesThisMonth": "No expenses this month.",
+  "currencyLockedHint": "The currency can't be changed once the household has expenses."
 }

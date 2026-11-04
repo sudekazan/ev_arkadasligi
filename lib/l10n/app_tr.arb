@@ -802,5 +802,6 @@
   "reportsFreeLimit": "Ücretsiz planda bu ay görünür; geçmiş aylar Pro'da.",
   "householdTotal": "Ev toplamı",
   "myShareTotal": "Senin payın",
-  "noExpensesThisMonth": "Bu ay gider yok."
+  "noExpensesThisMonth": "Bu ay gider yok.",
+  "currencyLockedHint": "Bu evde gider olduğu için para birimi değiştirilemez."
 }

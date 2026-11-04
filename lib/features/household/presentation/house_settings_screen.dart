@@ -8,6 +8,7 @@ import '../../../core/widgets/common_widgets.dart';
 import '../../../core/widgets/feedback.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../balances/data/balance_providers.dart';
+import '../../expenses/data/expense_repository.dart';
 import '../data/household_repository.dart';
 import '../domain/household.dart';
 import 'invite_share_screen.dart';
@@ -38,7 +39,7 @@ class _Body extends ConsumerWidget {
 
   final Household household;
 
-  Future<void> _edit(BuildContext context, WidgetRef ref) async {
+  Future<void> _edit(BuildContext context, WidgetRef ref, {required bool currencyLocked}) async {
     final l = context.l10n;
     final name = TextEditingController(text: household.name);
     var currency = household.currency;
@@ -57,12 +58,17 @@ class _Body extends ConsumerWidget {
               ),
               DropdownButtonFormField<String>(
                 initialValue: currency,
-                decoration: InputDecoration(labelText: l.currency),
+                decoration: InputDecoration(
+                  labelText: l.currency,
+                  helperText: currencyLocked ? l.currencyLockedHint : null,
+                  helperMaxLines: 3,
+                ),
                 items: [
                   for (final c in Money.supportedCurrencies)
                     DropdownMenuItem(value: c, child: Text('$c (${Money.symbolFor(c)})')),
                 ],
-                onChanged: (v) => setState(() => currency = v ?? currency),
+                onChanged:
+                    currencyLocked ? null : (v) => setState(() => currency = v ?? currency),
               ),
             ],
           ),
@@ -167,6 +173,9 @@ class _Body extends ConsumerWidget {
     final members = ref.watch(activeMembersProvider);
     final households = ref.watch(myHouseholdsProvider).value ?? const [];
     final repo = ref.read(householdRepositoryProvider);
+    // Amounts are stored in the household currency, so it can't change once
+    // there is an expense.
+    final currencyLocked = ref.watch(expensesProvider).value?.isNotEmpty ?? false;
 
     return ListView(
       padding: const EdgeInsets.only(bottom: 32),
@@ -179,7 +188,7 @@ class _Body extends ConsumerWidget {
               ? IconButton(
                   tooltip: l.editHousehold,
                   icon: const Icon(Icons.edit_outlined),
-                  onPressed: () => _edit(context, ref),
+                  onPressed: () => _edit(context, ref, currencyLocked: currencyLocked),
                 )
               : null,
         ),

@@ -2118,6 +2118,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu ay gider yok.'**
   String get noExpensesThisMonth;
+
+  /// No description provided for @currencyLockedHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu evde gider olduğu için para birimi değiştirilemez.'**
+  String get currencyLockedHint;
 }
 
 class _AppLocalizationsDelegate
