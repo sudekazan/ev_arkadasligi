@@ -166,4 +166,6 @@ Analiz düzeltmeleri kodda bitince bunları sırayla yap.
   ```
 - [ ] **RevenueCat → Firebase entegrasyonu:** RevenueCat → Integrations bölümünden Firebase'i bağla.
 - [ ] **Sandbox kontrolü:** Sandbox hesabıyla bir satın alma yap, sonra Firestore'da `users/{uid}.proUntil` alanının dolduğunu kontrol et.
+- [ ] **Demo hesabın e-postası:** Bir sonraki gönderimden önce Firebase Console → Authentication bölümünde App Review demo hesabının e-postasını doğrulanmış olarak işaretle. Yoksa uygulamada "E-postanı doğrula" satırı görünür.
+- [ ] **Eski görevler:** Bu düzeltmeden önce açılan görevlerde evden ayrılmış kişiler hâlâ sırada olabilir. Böyle her görevi düzenleyicide aç ve bir kez kaydet (düzenleyici evde olmayanları çıkarır); "Tamamlandı" yeniden çalışır.
 - [ ] **Ekran kaydı:** App Review için ekran kaydını yeni TestFlight sürümüyle çek (7. bölümdeki Guideline 2.1 maddesi).

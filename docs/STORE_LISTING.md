@@ -288,7 +288,7 @@ HOW TO TEST THE MAIN FLOW
 EXTERNAL SERVICES USED
 - Firebase Authentication: email/password, Google and Apple sign-in.
 - Cloud Firestore and Firebase Cloud Storage: household, expense and receipt-photo data.
-- Firebase Cloud Functions: our own backend; also relays receipt photos through OpenRouter to Google's Gemini model (gemini-2.5-flash) for text recognition only (amount, date, store). Photos are not used to train any model and are not shared further; see the privacy policy.
+- Firebase Cloud Functions: our own backend; also relays receipt photos through OpenRouter to Google's Gemini model (gemini-2.5-flash) for text recognition only (amount, date, store). Photos are not used to train any model and are not shared with anyone else; see the privacy policy.
 - Firebase Cloud Messaging: push notifications (payment reminders, chore turns).
 - RevenueCat: manages the auto-renewable subscription; the App Store (StoreKit/In-App Purchase) is the only payment processor. No separate payment processor is used and no bank transfers happen inside the app — the IBAN field is only copied for the user to pay their housemate outside the app.
 
@@ -296,7 +296,7 @@ SUBSCRIPTION (Ödeşelim Pro)
 Open Account tab > "Ödeşelim Pro" to see the paid tier. Two auto-renewable subscriptions: monthly and yearly (yearly has a 1-week free trial). "Restore purchases" is on the same screen. One member's subscription unlocks Pro for everyone in that household. Adding expenses is free and unlimited on every plan; Pro adds unlimited households and recurring expenses, 200 receipt scans a month, full-history reports and CSV export.
 
 ACCOUNT DELETION
-Account tab > Delete account. The account and profile are deleted permanently; past shared expenses show "Deleted user" so housemates' balances stay correct. Required because the app supports account creation.
+Account tab > Delete account. The account and profile are deleted permanently; past shared expenses show "Deleted user" so housemates' balances stay correct. If the user still has an open balance in a household, the app first lists those households and offers "Delete anyway". Required because the app supports account creation.
 
 USER-GENERATED CONTENT
 Expenses, shopping-list items and chores are visible only to the members of one household, who join with a private 6-character invite code. There is no public feed, profile search or messaging between strangers. A member can leave a household at any time (House tab > settings > Leave household), and the household admin can remove a member (House tab > settings > the remove icon next to that member).
