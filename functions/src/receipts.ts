@@ -31,6 +31,7 @@ async function callModel(mime: string, base64: string): Promise<string> {
       body: JSON.stringify({
         model: model.value(),
         response_format: { type: "json_object" },
+        provider: { data_collection: "deny" },
         messages: [
           {
             role: "user",
