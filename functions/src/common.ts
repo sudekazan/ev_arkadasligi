@@ -8,6 +8,8 @@ if (getApps().length === 0) initializeApp();
 export const db = getFirestore();
 
 export const REGION = "europe-west1";
+// Çağrılabilir fonksiyonların ortak ayarı: App Check zorunlu (emülatörde kapalı).
+export const CALLABLE = { region: REGION, enforceAppCheck: process.env.FUNCTIONS_EMULATOR !== "true" };
 export const TIME_ZONE = "Europe/Istanbul";
 export const MAX_MEMBERS = 12;
 export const FREE_HOUSEHOLD_LIMIT = 1;

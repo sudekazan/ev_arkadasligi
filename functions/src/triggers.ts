@@ -2,7 +2,7 @@ import { Timestamp } from "firebase-admin/firestore";
 import { onDocumentWritten } from "firebase-functions/v2/firestore";
 import { logger } from "firebase-functions/v2";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
-import { REGION, db, loadHousehold, requireAuth, requireMember, requireString } from "./common.js";
+import { CALLABLE, REGION, db, loadHousehold, requireAuth, requireMember, requireString } from "./common.js";
 import { dayKey } from "./dates.js";
 import { balanceOf } from "./household.js";
 import { ExpenseLike, isBalancedExpense } from "./money.js";
@@ -80,7 +80,7 @@ export const onSettlementWritten = onDocumentWritten(
   },
 );
 
-export const sendReminder = onCall({ region: REGION }, async (req) => {
+export const sendReminder = onCall(CALLABLE, async (req) => {
   const uid = requireAuth(req);
   const hid = requireString(req.data?.hid, "hid");
   const toUid = requireString(req.data?.toUid, "toUid");

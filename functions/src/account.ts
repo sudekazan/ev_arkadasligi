@@ -1,7 +1,7 @@
 import { getAuth } from "firebase-admin/auth";
 import { logger } from "firebase-functions/v2";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
-import { REGION, db, requireAuth } from "./common.js";
+import { CALLABLE, db, requireAuth } from "./common.js";
 import { balanceOf, detachMember } from "./household.js";
 import { deleteSubscriber, revenueCatApiKey } from "./revenuecat.js";
 
@@ -24,7 +24,7 @@ export function blockingBalances(rows: HouseholdBalance[]): HouseholdBalance[] {
  * there is only logged: the account is already gone by then.
  */
 export const deleteAccount = onCall(
-  { region: REGION, secrets: [revenueCatApiKey] },
+  { ...CALLABLE, secrets: [revenueCatApiKey] },
   async (req) => {
     const uid = requireAuth(req);
     const force = req.data?.force === true;

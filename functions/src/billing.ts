@@ -2,7 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { defineSecret } from "firebase-functions/params";
 import { logger } from "firebase-functions/v2";
 import { onCall, onRequest } from "firebase-functions/v2/https";
-import { REGION, requireAuth } from "./common.js";
+import { CALLABLE, REGION, requireAuth } from "./common.js";
 import { RevenueCatEvent, revenueCatApiKey, syncUserPro, uidsFromEvent } from "./revenuecat.js";
 
 const webhookSecret = defineSecret("REVENUECAT_WEBHOOK_SECRET");
@@ -47,7 +47,7 @@ export const revenueCatWebhook = onRequest(
 );
 
 /** Called by the app right after a purchase or restore. */
-export const syncPro = onCall({ region: REGION, secrets: [revenueCatApiKey] }, async (req) => {
+export const syncPro = onCall({ ...CALLABLE, secrets: [revenueCatApiKey] }, async (req) => {
   const uid = requireAuth(req);
   const date = await syncUserPro(uid);
   return { proUntil: date?.toISOString() ?? null };

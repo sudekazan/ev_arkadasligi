@@ -6,8 +6,8 @@ import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
   FAILED_SCANS_PER_DAY,
   FREE_RECEIPT_SCANS,
+  CALLABLE,
   PRO_RECEIPT_SCANS,
-  REGION,
   db,
   isActivePro,
   loadHousehold,
@@ -80,9 +80,8 @@ export function scanDecision(p: {
 
 export const scanReceipt = onCall(
   {
-    region: REGION,
+    ...CALLABLE,
     secrets: [apiKey, revenueCatApiKey],
-    enforceAppCheck: process.env.FUNCTIONS_EMULATOR !== "true",
     timeoutSeconds: 60,
     memory: "512MiB",
   },

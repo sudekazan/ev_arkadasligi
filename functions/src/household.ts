@@ -5,8 +5,8 @@ import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
   FREE_HOUSEHOLD_LIMIT,
   JOIN_FAILURES_PER_HOUR,
+  CALLABLE,
   MAX_MEMBERS,
-  REGION,
   activityDoc,
   db,
   generateInviteCode,
@@ -122,7 +122,7 @@ async function purgeHousehold(hid: string) {
   await getStorage().bucket().deleteFiles({ prefix: `receipts/${hid}/` });
 }
 
-export const createHousehold = onCall({ region: REGION, secrets: [revenueCatApiKey] }, async (req) => {
+export const createHousehold = onCall({ ...CALLABLE, secrets: [revenueCatApiKey] }, async (req) => {
   const uid = requireAuth(req);
   const name = requireString(req.data?.name, "name").slice(0, 60);
   const currency = String(req.data?.currency ?? "TRY");
@@ -166,7 +166,7 @@ export const createHousehold = onCall({ region: REGION, secrets: [revenueCatApiK
   return { householdId: hRef.id, inviteCode };
 });
 
-export const joinHousehold = onCall({ region: REGION, secrets: [revenueCatApiKey] }, async (req) => {
+export const joinHousehold = onCall({ ...CALLABLE, secrets: [revenueCatApiKey] }, async (req) => {
   const uid = requireAuth(req);
   const code = requireString(req.data?.code, "code").toUpperCase();
   const usageRef = db.collection("usage").doc(uid);
@@ -227,7 +227,7 @@ export const joinHousehold = onCall({ region: REGION, secrets: [revenueCatApiKey
   return { householdId: hid };
 });
 
-export const leaveHousehold = onCall({ region: REGION }, async (req) => {
+export const leaveHousehold = onCall(CALLABLE, async (req) => {
   const uid = requireAuth(req);
   const hid = requireString(req.data?.hid, "hid");
   const { data: h } = await loadHousehold(hid);
@@ -240,7 +240,7 @@ export const leaveHousehold = onCall({ region: REGION }, async (req) => {
   return { ok: true };
 });
 
-export const removeMember = onCall({ region: REGION }, async (req) => {
+export const removeMember = onCall(CALLABLE, async (req) => {
   const uid = requireAuth(req);
   const hid = requireString(req.data?.hid, "hid");
   const target = requireString(req.data?.uid, "uid");
@@ -256,7 +256,7 @@ export const removeMember = onCall({ region: REGION }, async (req) => {
   return { ok: true };
 });
 
-export const regenerateInviteCode = onCall({ region: REGION }, async (req) => {
+export const regenerateInviteCode = onCall(CALLABLE, async (req) => {
   const uid = requireAuth(req);
   const hid = requireString(req.data?.hid, "hid");
   const { ref: hRef, data: h } = await loadHousehold(hid);
