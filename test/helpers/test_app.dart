@@ -79,6 +79,7 @@ Future<void> pumpScreen(
   bool withAppTheme = false,
   List<String>? memberIds,
   Map<String, Object> prefs = const {},
+  List<Override> overrides = const [],
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
   final sharedPrefs = await SharedPreferences.getInstance();
@@ -100,7 +101,7 @@ Future<void> pumpScreen(
       GoRoute(path: '/pro', builder: (_, _) => const Scaffold(body: Text('PRO'))),
     ],
   );
-  final overrides = <Override>[
+  final allOverrides = <Override>[
     sharedPreferencesProvider.overrideWithValue(sharedPrefs),
     clockProvider.overrideWithValue(() => testNow),
     currentUidProvider.overrideWithValue(uid),
@@ -112,10 +113,11 @@ Future<void> pumpScreen(
     settlementsProvider.overrideWith((ref) => Stream.value(const [])),
     choresProvider.overrideWith((ref) => Stream.value(chores)),
     expenseRepositoryProvider.overrideWithValue(repo),
+    ...overrides,
   ];
   await tester.pumpWidget(
     ProviderScope(
-      overrides: overrides,
+      overrides: allOverrides,
       child: MaterialApp.router(
         theme: withAppTheme ? lightTheme : null,
         locale: const Locale('tr'),

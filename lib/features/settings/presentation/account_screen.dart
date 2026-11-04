@@ -7,7 +7,9 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/router.dart';
+import '../../../core/firebase/app_error.dart';
 import '../../../core/firebase/firebase_env.dart';
+import '../../../core/money/money.dart';
 import '../../../core/utils/iban.dart';
 import '../../../core/widgets/common_widgets.dart';
 import '../../../core/widgets/feedback.dart';
@@ -27,6 +29,27 @@ String get _hostingBase =>
     'https://${FirebaseEnv.isDemo ? FirebaseEnv.demoProjectId : FirebaseEnv.projectId}.web.app';
 String get _privacyUrl => '$_hostingBase/privacy';
 String get _termsUrl => '$_hostingBase/terms';
+
+class _OpenBalance {
+  const _OpenBalance(this.name, this.currency, this.balanceMinor);
+  final String name;
+  final String currency;
+  final int balanceMinor;
+}
+
+/// Reads the server's `households` list; entries that do not parse are skipped.
+List<_OpenBalance> _openBalances(Map<String, Object?>? details) {
+  final raw = details?['households'];
+  if (raw is! List) return const [];
+  return [
+    for (final item in raw)
+      if (item is Map &&
+          item['name'] is String &&
+          item['currency'] is String &&
+          item['balanceMinor'] is int)
+        _OpenBalance(item['name'] as String, item['currency'] as String, item['balanceMinor'] as int),
+  ];
+}
 
 /// Profile, language, theme, notifications, Pro, export, sign out, deletion.
 class AccountScreen extends ConsumerWidget {
@@ -63,6 +86,56 @@ class AccountScreen extends ConsumerWidget {
     if (!ok || !context.mounted) return;
     try {
       await ref.read(accountRepositoryProvider).deleteAccount();
+    } catch (e, s) {
+      if (!context.mounted) return;
+      final rows = e is AppException && e.code == AppErrorCode.balanceNotZero
+          ? _openBalances(e.details)
+          : const <_OpenBalance>[];
+      if (rows.isEmpty) {
+        showError(context, e, s);
+        return;
+      }
+      await _confirmDeleteWithBalances(context, ref, rows);
+    }
+  }
+
+  /// Second warning: the user still has open balances, delete only if they insist.
+  Future<void> _confirmDeleteWithBalances(
+      BuildContext context, WidgetRef ref, List<_OpenBalance> rows) async {
+    final l = context.l10n;
+    final insist = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l.deleteAccountBalanceTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l.deleteAccountBalanceBody),
+            const SizedBox(height: 12),
+            for (final row in rows)
+              Text(
+                '${row.name}: ${row.balanceMinor < 0 ? l.statusOwe : l.statusOwed} '
+                '${Money.format(row.balanceMinor.abs(), currency: row.currency, locale: l.localeName)}',
+              ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l.cancel)),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l.deleteAnyway),
+          ),
+        ],
+      ),
+    );
+    if (insist != true || !context.mounted) return;
+    try {
+      await ref.read(accountRepositoryProvider).deleteAccount(force: true);
     } catch (e, s) {
       if (context.mounted) showError(context, e, s);
     }

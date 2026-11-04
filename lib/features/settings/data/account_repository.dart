@@ -1,6 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/firebase/app_error.dart';
 import '../../../core/firebase/firebase_providers.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../pro/data/pro_service.dart';
@@ -22,8 +23,20 @@ class AccountRepository {
   }
 
   /// Store requirement: removes the user from households and deletes the account.
-  Future<void> deleteAccount() async {
-    await _functions.httpsCallable('deleteAccount').call<Object?>();
+  /// Without [force] the server refuses while the user has an open balance and
+  /// the households come back in `AppException.details['households']`.
+  Future<void> deleteAccount({bool force = false}) async {
+    try {
+      await _functions.httpsCallable('deleteAccount').call<Object?>({'force': force});
+    } on FirebaseFunctionsException catch (e) {
+      if (e.message == 'balance-not-zero') {
+        throw AppException(
+          AppErrorCode.balanceNotZero,
+          details: e.details is Map ? Map<String, Object?>.from(e.details as Map) : null,
+        );
+      }
+      rethrow;
+    }
     await _pro.logOut();
     await _auth.signOut();
   }

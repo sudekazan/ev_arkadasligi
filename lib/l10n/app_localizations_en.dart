@@ -1064,6 +1064,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your account and profile are permanently deleted and you leave all households. Past expenses will show \"Deleted user\". This cannot be undone.';
 
   @override
+  String get deleteAccountBalanceTitle => 'You have open balances';
+
+  @override
+  String get deleteAccountBalanceBody =>
+      'You haven\'t settled up in these households yet. If you delete your account, your housemates will have to close these balances themselves.';
+
+  @override
+  String get deleteAnyway => 'Delete anyway';
+
+  @override
   String get goPro => 'Go Ödeşelim Pro';
 
   @override

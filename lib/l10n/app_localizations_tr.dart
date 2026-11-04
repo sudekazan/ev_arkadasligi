@@ -1060,6 +1060,16 @@ class AppLocalizationsTr extends AppLocalizations {
       'Hesabın ve profil bilgilerin kalıcı olarak silinir, evlerden çıkarılırsın. Geçmiş giderlerde adın \"Silinmiş kullanıcı\" olarak görünür. Bu işlem geri alınamaz.';
 
   @override
+  String get deleteAccountBalanceTitle => 'Açık bakiyen var';
+
+  @override
+  String get deleteAccountBalanceBody =>
+      'Bu evlerde henüz ödeşmediğin tutarlar var. Hesabını silersen ev arkadaşların bu bakiyeyi kendileri kapatmak zorunda kalır.';
+
+  @override
+  String get deleteAnyway => 'Yine de sil';
+
+  @override
   String get goPro => 'Ödeşelim Pro\'ya geç';
 
   @override

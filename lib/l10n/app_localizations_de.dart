@@ -1074,6 +1074,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dein Konto und Profil werden endgültig gelöscht und du verlässt alle WGs. Frühere Ausgaben zeigen „Gelöschter Nutzer“. Das kann nicht rückgängig gemacht werden.';
 
   @override
+  String get deleteAccountBalanceTitle => 'Du hast offene Salden';
+
+  @override
+  String get deleteAccountBalanceBody =>
+      'In diesen Haushalten hast du noch nicht abgerechnet. Wenn du dein Konto löschst, müssen deine Mitbewohner diese Salden selbst ausgleichen.';
+
+  @override
+  String get deleteAnyway => 'Trotzdem löschen';
+
+  @override
   String get goPro => 'Ödeşelim Pro holen';
 
   @override

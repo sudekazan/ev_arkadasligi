@@ -1897,6 +1897,24 @@ abstract class AppLocalizations {
   /// **'Hesabın ve profil bilgilerin kalıcı olarak silinir, evlerden çıkarılırsın. Geçmiş giderlerde adın \"Silinmiş kullanıcı\" olarak görünür. Bu işlem geri alınamaz.'**
   String get deleteAccountBody;
 
+  /// No description provided for @deleteAccountBalanceTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Açık bakiyen var'**
+  String get deleteAccountBalanceTitle;
+
+  /// No description provided for @deleteAccountBalanceBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu evlerde henüz ödeşmediğin tutarlar var. Hesabını silersen ev arkadaşların bu bakiyeyi kendileri kapatmak zorunda kalır.'**
+  String get deleteAccountBalanceBody;
+
+  /// No description provided for @deleteAnyway.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yine de sil'**
+  String get deleteAnyway;
+
   /// No description provided for @goPro.
   ///
   /// In tr, this message translates to:
