@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:evarkadasligi/core/money/split_calculator.dart';
 import 'package:evarkadasligi/features/balances/presentation/settle_screen.dart';
 import 'package:evarkadasligi/features/expenses/domain/expense.dart';
+import 'package:evarkadasligi/features/household/domain/household.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -189,6 +190,55 @@ void main() {
 
       expect(find.textContaining('Ayşe'), findsWidgets); // the menu is open
       expect(find.textContaining(l.deletedUser), findsNothing);
+    });
+  });
+
+  group('departed member', () {
+    // Cem left the household (not deleted): the profile stays, only the
+    // membership ends.
+    final left = Member(id: 'left', displayName: 'Cem', active: false, joinedAt: testNow);
+    // An old expense Cem paid, shared with Burak, so Burak owes Cem 100,00 ₺.
+    final owedToCem = Expense(
+      id: 'l1',
+      description: 'Fatura',
+      amountMinor: 20000,
+      paidBy: 'left',
+      date: testNow,
+      splitType: SplitType.equal,
+      shares: const {'left': 10000, 'b': 10000},
+      createdBy: 'a',
+      createdAt: testNow,
+      updatedAt: testNow,
+    );
+
+    testWidgets('departed member with a balance can be picked as recipient by name', (tester) async {
+      final repo = FakeExpenseRepository();
+      await pumpScreen(
+        tester,
+        const SettleScreen(),
+        uid: 'b',
+        members: [...members, left],
+        memberIds: ['a', 'b'],
+        repo: repo,
+        expenses: [owedToCem],
+      );
+      final l = l10nOf(tester);
+
+      await tester.tap(find.byType(DropdownButtonFormField<String>).last);
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Cem'), findsWidgets);
+      expect(find.textContaining(l.deletedUser), findsNothing);
+
+      await tester.tap(find.textContaining('Cem').last);
+      await tester.pumpAndSettle();
+      await tester.enterText(amountField(), '100');
+      await tester.tap(find.widgetWithText(FilledButton, l.markAsPaid));
+      await tester.pumpAndSettle();
+
+      final s = repo.settlements.single;
+      expect(s.fromUid, 'b');
+      expect(s.toUid, 'left');
+      expect(s.amountMinor, 10000);
     });
   });
 }

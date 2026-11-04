@@ -20,17 +20,17 @@ final netBalancesProvider = Provider<Map<String, int>>((ref) {
   return {for (final uid in memberIds) uid: 0, ...nets};
 });
 
-/// Who can take part in a recorded payment: current members, plus people who
-/// deleted their account but still have a balance with the household (their
-/// past expenses stay, so the others must be able to settle up with them).
-/// Members who merely left always have a zero balance, so they never show up.
+/// Who can take part in a recorded payment: current members, plus anyone who
+/// is no longer in the household (left, removed or deleted their account) but
+/// still has a balance with it. Their past expenses stay, and editing one can
+/// change their balance, so the others must be able to settle up with them.
 final settleCandidatesProvider = Provider<List<Member>>((ref) {
   final nets = ref.watch(netBalancesProvider);
   final ids = ref.watch(currentHouseholdProvider).value?.memberIds ?? const [];
   final members = ref.watch(membersProvider).value ?? const [];
   return [
     for (final m in members)
-      if (ids.contains(m.id) || (m.deleted && (nets[m.id] ?? 0) != 0)) m,
+      if (ids.contains(m.id) || (nets[m.id] ?? 0) != 0) m,
   ];
 });
 

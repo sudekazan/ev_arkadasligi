@@ -268,16 +268,20 @@ describe("deleted members", () => {
       { ...payment, fromUid: "gone", toUid: "alice" }));
   });
 
-  it("settlement to a departed (not deleted) member fails", async () => {
+  it("settlement to a departed member succeeds", async () => {
+    // Left (not deleted): an edit of an old shared expense can still give
+    // them a balance, so it must be settleable.
     await seedGone({ active: false });
-    await assertFails(setDoc(doc(as("alice"), "households/h1/settlements/d1"), payment));
-    await assertFails(setDoc(doc(as("alice"), "households/h1/settlements/d2"),
+    await assertSucceeds(setDoc(doc(as("alice"), "households/h1/settlements/d1"), payment));
+    await assertSucceeds(setDoc(doc(as("alice"), "households/h1/settlements/d2"),
       { ...payment, fromUid: "gone", toUid: "alice" }));
   });
 
-  it("settlement to someone who never belonged to the household fails", async () => {
-    await seedGone({ active: false, deleted: true });
+  it("settlement to a uid with no member doc fails", async () => {
+    await seedGone({ active: false });
     await assertFails(setDoc(doc(as("alice"), "households/h1/settlements/d1"), { ...payment, toUid: "eve" }));
+    await assertFails(setDoc(doc(as("alice"), "households/h1/settlements/d2"),
+      { ...payment, fromUid: "eve", toUid: "alice" }));
   });
 
   it("settlement between two deleted members is only recorded by an admin", async () => {

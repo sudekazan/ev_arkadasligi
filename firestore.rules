@@ -25,12 +25,12 @@ service cloud.firestore {
       return signedIn() && me() in householdData(hid).adminIds;
     }
 
-    // Someone who deleted their account: no longer in memberIds, but their old
-    // expenses stay, so the others still need to settle the balance with them.
-    // Members who merely left or were removed always have a zero balance and
-    // are not accepted here.
-    function isDeletedMember(hid, uid) {
-      return get(/databases/$(database)/documents/households/$(hid)/members/$(uid)).data.get('deleted', false) == true;
+    // Someone who was ever in the household keeps a member document (left,
+    // removed or deleted their account). Their old expenses stay, and an edit
+    // of one can change their balance, so the others must still be able to
+    // settle with them. A uid without a member document is a stranger.
+    function hasMemberDoc(hid, uid) {
+      return exists(/databases/$(database)/documents/households/$(hid)/members/$(uid));
     }
 
     function changesOnly(keys) {
@@ -137,9 +137,9 @@ service cloud.firestore {
           && request.resource.data.amountMinor is int
           && request.resource.data.amountMinor > 0
           && (request.resource.data.fromUid in householdData(hid).memberIds
-            || isDeletedMember(hid, request.resource.data.fromUid))
+            || hasMemberDoc(hid, request.resource.data.fromUid))
           && (request.resource.data.toUid in householdData(hid).memberIds
-            || isDeletedMember(hid, request.resource.data.toUid))
+            || hasMemberDoc(hid, request.resource.data.toUid))
           && request.resource.data.fromUid != request.resource.data.toUid
           && (me() in [request.resource.data.fromUid, request.resource.data.toUid]
             || isAdmin(hid));
