@@ -664,7 +664,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get receiptAiConsentBody =>
-      'Um Betrag, Datum und Geschäft auszufüllen, wird das Foto des Belegs über unseren Server an einen KI-Texterkennungsdienst gesendet. Das Foto wird nur zum Lesen verwendet und nicht zum Training von Modellen. Details findest du in der Datenschutzerklärung.';
+      'Um Betrag, Datum und Geschäft auszufüllen, wird das Foto des Belegs über unseren Server an OpenRouter und von dort an Googles KI-Modell Gemini gesendet. Das Foto wird nur zum Lesen verwendet und nicht zum Training von Modellen. Details findest du in der Datenschutzerklärung.';
 
   @override
   String get receiptAiConsentAccept => 'Zustimmen und weiter';

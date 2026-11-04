@@ -657,7 +657,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get receiptAiConsentBody =>
-      'To fill in the amount, date and store, the receipt photo is sent through our server to an AI text-recognition service. The photo is only used to read it and is not used to train models. See the privacy policy for details.';
+      'To fill in the amount, date and store, the receipt photo is sent through our server to OpenRouter and from there to Google\'s Gemini AI model. The photo is only used to read it and is not used to train models. See the privacy policy for details.';
 
   @override
   String get receiptAiConsentAccept => 'Accept and continue';

@@ -658,7 +658,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get receiptAiConsentBody =>
-      'Tutarı, tarihi ve mağazayı doldurmak için fişin fotoğrafı sunucumuz üzerinden bir yapay zekâ metin okuma servisine gönderilir. Fotoğraf yalnızca okumak için kullanılır, model eğitiminde kullanılmaz. Ayrıntılar gizlilik politikasında.';
+      'Tutarı, tarihi ve mağazayı doldurmak için fişin fotoğrafı sunucumuz üzerinden OpenRouter\'a, oradan Google\'ın Gemini yapay zekâ modeline gönderilir. Fotoğraf yalnızca okumak için kullanılır, model eğitiminde kullanılmaz. Ayrıntılar gizlilik politikasında.';
 
   @override
   String get receiptAiConsentAccept => 'Kabul et ve devam et';

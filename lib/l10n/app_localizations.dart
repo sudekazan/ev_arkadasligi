@@ -1255,7 +1255,7 @@ abstract class AppLocalizations {
   /// No description provided for @receiptAiConsentBody.
   ///
   /// In tr, this message translates to:
-  /// **'Tutarı, tarihi ve mağazayı doldurmak için fişin fotoğrafı sunucumuz üzerinden bir yapay zekâ metin okuma servisine gönderilir. Fotoğraf yalnızca okumak için kullanılır, model eğitiminde kullanılmaz. Ayrıntılar gizlilik politikasında.'**
+  /// **'Tutarı, tarihi ve mağazayı doldurmak için fişin fotoğrafı sunucumuz üzerinden OpenRouter\'a, oradan Google\'ın Gemini yapay zekâ modeline gönderilir. Fotoğraf yalnızca okumak için kullanılır, model eğitiminde kullanılmaz. Ayrıntılar gizlilik politikasında.'**
   String get receiptAiConsentBody;
 
   /// No description provided for @receiptAiConsentAccept.

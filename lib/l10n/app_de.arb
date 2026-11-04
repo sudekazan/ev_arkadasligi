@@ -192,7 +192,7 @@
   "percentTotal": "Gesamt {percent} % (muss 100 sein)",
   "scanReceipt": "Beleg scannen",
   "receiptAiConsentTitle": "Belege werden per KI gelesen",
-  "receiptAiConsentBody": "Um Betrag, Datum und Geschäft auszufüllen, wird das Foto des Belegs über unseren Server an einen KI-Texterkennungsdienst gesendet. Das Foto wird nur zum Lesen verwendet und nicht zum Training von Modellen. Details findest du in der Datenschutzerklärung.",
+  "receiptAiConsentBody": "Um Betrag, Datum und Geschäft auszufüllen, wird das Foto des Belegs über unseren Server an OpenRouter und von dort an Googles KI-Modell Gemini gesendet. Das Foto wird nur zum Lesen verwendet und nicht zum Training von Modellen. Details findest du in der Datenschutzerklärung.",
   "receiptAiConsentAccept": "Zustimmen und weiter",
   "takePhoto": "Foto aufnehmen",
   "chooseFromGallery": "Aus Galerie wählen",
