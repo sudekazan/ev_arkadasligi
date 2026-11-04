@@ -60,6 +60,10 @@ class AccountScreen extends ConsumerStatefulWidget {
 }
 
 class _AccountScreenState extends ConsumerState<AccountScreen> {
+  /// Set after the server copy is fetched; until then the signed-in user from
+  /// [authStateProvider] decides whether the verify row shows.
+  bool? _needsVerification;
+
   @override
   void initState() {
     super.initState();
@@ -67,16 +71,21 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
   }
 
   /// The verified flag only changes on the server, so ask for a fresh copy
-  /// once when the screen opens. Failures (offline) keep the old state.
+  /// once when the screen opens. `reload()` swaps in a new current user and
+  /// does not re-emit the auth state, so the answer is read from the
+  /// repository (the fresh current user) afterwards. Offline failures are
+  /// silent (reportError skips network errors); the old state stays.
   Future<void> _refreshVerification() async {
     final user = ref.read(authStateProvider).value;
     if (!userNeedsEmailVerification(user)) return;
     try {
       await user!.reload();
-    } catch (_) {
+    } catch (e, s) {
+      reportError(e, s);
       return;
     }
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    setState(() => _needsVerification = ref.read(authRepositoryProvider).needsEmailVerification);
   }
 
   Future<void> _resendVerification(BuildContext context) async {
@@ -197,7 +206,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 32),
         children: [
-          if (userNeedsEmailVerification(authUser))
+          if (_needsVerification ?? userNeedsEmailVerification(authUser))
             ListTile(
               leading: Icon(Icons.warning_amber_rounded, color: Theme.of(context).colorScheme.error),
               title: Text(l.verifyEmailTitle),
