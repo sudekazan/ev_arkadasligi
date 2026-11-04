@@ -52,6 +52,7 @@
   "errorBalanceNotZero": "Bakiye sıfır değil. Önce ödeşmeniz gerekiyor.",
   "errorReceiptQuota": "Bu ayki fiş okuma hakkın doldu.",
   "errorReceiptUnreadable": "Fiş okunamadı.",
+  "errorReceiptFailures": "Bugün çok fazla okunamayan fiş gönderildi. Yarın tekrar dene ya da tutarı elle gir.",
   "errorReminderAlreadySent": "Bugün bu kişiye zaten hatırlatma gönderdin.",
   "errorNothingOwed": "Bu kişinin borcu yok.",
   "errorUnknown": "Bir şeyler ters gitti, tekrar dene.",

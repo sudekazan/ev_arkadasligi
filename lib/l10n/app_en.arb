@@ -45,6 +45,7 @@
   "errorBalanceNotZero": "The balance is not zero. Settle up first.",
   "errorReceiptQuota": "You've used this month's receipt scans.",
   "errorReceiptUnreadable": "The receipt couldn't be read.",
+  "errorReceiptFailures": "Too many receipts couldn't be read today. Try again tomorrow or enter the amount by hand.",
   "errorReminderAlreadySent": "You already sent this person a reminder today.",
   "errorNothingOwed": "This person doesn't owe anything.",
   "errorUnknown": "Something went wrong, please try again.",

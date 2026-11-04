@@ -4,6 +4,7 @@ import { defineSecret, defineString } from "firebase-functions/params";
 import { logger } from "firebase-functions/v2";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import {
+  FAILED_SCANS_PER_DAY,
   FREE_RECEIPT_SCANS,
   PRO_RECEIPT_SCANS,
   REGION,
@@ -14,7 +15,7 @@ import {
   requireMember,
   requireString,
 } from "./common.js";
-import { monthKey } from "./dates.js";
+import { dayKey, monthKey } from "./dates.js";
 import { RECEIPT_PROMPT, parseReceiptJson } from "./receipt_parser.js";
 import { revenueCatApiKey, userIsProFresh } from "./revenuecat.js";
 
@@ -66,6 +67,17 @@ async function callModel(mime: string, base64: string): Promise<string> {
   return json.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 }
 
+/** Decides whether a scan may start; the monthly quota is checked first. */
+export function scanDecision(p: {
+  used: number;
+  limit: number;
+  failures: number;
+}): "ok" | "receipt-quota" | "receipt-failures" {
+  if (p.used >= p.limit) return "receipt-quota";
+  if (p.failures >= FAILED_SCANS_PER_DAY) return "receipt-failures";
+  return "ok";
+}
+
 export const scanReceipt = onCall(
   {
     region: REGION,
@@ -85,6 +97,7 @@ export const scanReceipt = onCall(
     requireMember(h, uid);
 
     const key = monthKey(new Date());
+    const today = dayKey(new Date());
     const usageRef = db.collection("usage").doc(uid);
     let limit = isActivePro(h.proUntil) ? PRO_RECEIPT_SCANS : FREE_RECEIPT_SCANS;
     if (limit === FREE_RECEIPT_SCANS) {
@@ -96,8 +109,13 @@ export const scanReceipt = onCall(
     await db.runTransaction(async (tx) => {
       const snap = await tx.get(usageRef);
       const used = (snap.get(`receiptScans.${key}`) as number) ?? 0;
-      if (used >= limit) {
+      const failures = (snap.get(`receiptFailures.${today}`) as number) ?? 0;
+      const decision = scanDecision({ used, limit, failures });
+      if (decision === "receipt-quota") {
         throw new HttpsError("resource-exhausted", "receipt-quota", { limit, used });
+      }
+      if (decision === "receipt-failures") {
+        throw new HttpsError("resource-exhausted", "receipt-failures");
       }
       tx.set(usageRef, { receiptScans: { [key]: used + 1 } }, { merge: true });
     });
@@ -110,9 +128,13 @@ export const scanReceipt = onCall(
       return parseReceiptJson(text);
     } catch (err) {
       logger.warn("scanReceipt failed", { err: String(err) });
-      // Failed reads do not consume the monthly quota.
+      // Failed reads do not consume the monthly quota, but they count
+      // towards the daily limit on unreadable scans.
       await usageRef.set(
-        { receiptScans: { [key]: FieldValue.increment(-1) } },
+        {
+          receiptScans: { [key]: FieldValue.increment(-1) },
+          receiptFailures: { [today]: FieldValue.increment(1) },
+        },
         { merge: true },
       );
       throw new HttpsError("unavailable", "receipt-unreadable");

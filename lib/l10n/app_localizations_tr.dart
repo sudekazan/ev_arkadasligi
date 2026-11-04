@@ -151,6 +151,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get errorReceiptUnreadable => 'Fiş okunamadı.';
 
   @override
+  String get errorReceiptFailures =>
+      'Bugün çok fazla okunamayan fiş gönderildi. Yarın tekrar dene ya da tutarı elle gir.';
+
+  @override
   String get errorReminderAlreadySent =>
       'Bugün bu kişiye zaten hatırlatma gönderdin.';
 

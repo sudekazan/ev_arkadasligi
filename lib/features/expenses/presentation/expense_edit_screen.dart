@@ -216,6 +216,9 @@ class _ExpenseEditScreenState extends ConsumerState<ExpenseEditScreen> {
       if (errorCodeOf(e) == AppErrorCode.receiptQuota) {
         analytics.limitReached('receipt_scans');
         await context.push('${Routes.pro}?source=receipt_limit');
+      } else if (errorCodeOf(e) == AppErrorCode.receiptFailures) {
+        // The daily limit on unreadable scans is reached; the photo stays attached.
+        showMessage(context, l.errorReceiptFailures);
       } else if (_receiptPath != null) {
         // The photo stays attached; the user fills the form by hand.
         showMessage(context, l.receiptScanFailed);

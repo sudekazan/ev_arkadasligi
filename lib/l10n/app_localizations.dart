@@ -370,6 +370,12 @@ abstract class AppLocalizations {
   /// **'Fiş okunamadı.'**
   String get errorReceiptUnreadable;
 
+  /// No description provided for @errorReceiptFailures.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bugün çok fazla okunamayan fiş gönderildi. Yarın tekrar dene ya da tutarı elle gir.'**
+  String get errorReceiptFailures;
+
   /// No description provided for @errorReminderAlreadySent.
   ///
   /// In tr, this message translates to:

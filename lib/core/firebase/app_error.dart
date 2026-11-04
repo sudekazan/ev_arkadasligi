@@ -24,6 +24,7 @@ enum AppErrorCode {
   balanceNotZero,
   receiptQuota,
   receiptUnreadable,
+  receiptFailures,
   reminderAlreadySent,
   nothingOwed,
   unknown,
@@ -56,6 +57,7 @@ AppErrorCode errorCodeOf(Object error) {
       'balance-not-zero' => AppErrorCode.balanceNotZero,
       'receipt-quota' => AppErrorCode.receiptQuota,
       'receipt-unreadable' => AppErrorCode.receiptUnreadable,
+      'receipt-failures' => AppErrorCode.receiptFailures,
       'reminder-already-sent' => AppErrorCode.reminderAlreadySent,
       'nothing-owed' => AppErrorCode.nothingOwed,
       _ => switch (error.code) {

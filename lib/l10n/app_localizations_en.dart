@@ -150,6 +150,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorReceiptUnreadable => 'The receipt couldn\'t be read.';
 
   @override
+  String get errorReceiptFailures =>
+      'Too many receipts couldn\'t be read today. Try again tomorrow or enter the amount by hand.';
+
+  @override
   String get errorReminderAlreadySent =>
       'You already sent this person a reminder today.';
 

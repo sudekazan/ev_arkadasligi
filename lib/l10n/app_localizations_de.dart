@@ -155,6 +155,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get errorReceiptUnreadable => 'Der Beleg konnte nicht gelesen werden.';
 
   @override
+  String get errorReceiptFailures =>
+      'Heute konnten zu viele Belege nicht gelesen werden. Versuch es morgen wieder oder gib den Betrag von Hand ein.';
+
+  @override
   String get errorReminderAlreadySent =>
       'Du hast dieser Person heute schon eine Erinnerung geschickt.';
 

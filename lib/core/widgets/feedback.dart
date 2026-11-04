@@ -24,6 +24,7 @@ String errorMessage(AppLocalizations l, Object error) => switch (errorCodeOf(err
       AppErrorCode.balanceNotZero => l.errorBalanceNotZero,
       AppErrorCode.receiptQuota => l.errorReceiptQuota,
       AppErrorCode.receiptUnreadable => l.errorReceiptUnreadable,
+      AppErrorCode.receiptFailures => l.errorReceiptFailures,
       AppErrorCode.reminderAlreadySent => l.errorReminderAlreadySent,
       AppErrorCode.nothingOwed => l.errorNothingOwed,
       AppErrorCode.unknown => l.errorUnknown,

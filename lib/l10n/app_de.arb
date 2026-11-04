@@ -45,6 +45,7 @@
   "errorBalanceNotZero": "Der Saldo ist nicht null. Rechnet zuerst ab.",
   "errorReceiptQuota": "Du hast die Belegscans für diesen Monat aufgebraucht.",
   "errorReceiptUnreadable": "Der Beleg konnte nicht gelesen werden.",
+  "errorReceiptFailures": "Heute konnten zu viele Belege nicht gelesen werden. Versuch es morgen wieder oder gib den Betrag von Hand ein.",
   "errorReminderAlreadySent": "Du hast dieser Person heute schon eine Erinnerung geschickt.",
   "errorNothingOwed": "Diese Person schuldet nichts.",
   "errorUnknown": "Etwas ist schiefgelaufen, bitte versuch es erneut.",
