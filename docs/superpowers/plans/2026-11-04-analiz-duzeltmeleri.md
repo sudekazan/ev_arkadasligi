@@ -25,7 +25,7 @@
 - Pro fiyatı **79,99 ₺ aylık, 549,99 ₺ yıllık**. App Store Connect'te Sude ayarlar; koda fiyat yazılmaz.
 - Fiş okuma **OpenRouter** üzerinden kalır; gizlilik metni ve inceleme notu OpenRouter ile Google'ı açıkça yazar.
 - Sunucu Pro durumunu RevenueCat'e sorar; Sude gizli bir API anahtarı oluşturur (`REVENUECAT_API_KEY`).
-- **Onay bekleyen değerler:** başarısız davet kodu denemesi saatte 10 (Görev 6), okunamayan fiş günde 20 (Görev 7).
+- Başarısız davet kodu denemesi saatte en çok 10 (Görev 6), okunamayan fiş günde en çok 20 (Görev 7).
 
 ## Dikkat edilecek durumlar
 
@@ -146,7 +146,7 @@
 
 **Arayüzler:**
 - Üretir: `export function hourKey(date: Date): string` → UTC `"2026-11-04T09"`.
-- Üretir: `export const JOIN_FAILURES_PER_HOUR = 10` (Sude onaylayacak).
+- Üretir: `export const JOIN_FAILURES_PER_HOUR = 10`.
 - Üretir: `MESSAGES.memberJoined` — tr `${actor} eve katıldı`, en `${actor} joined the household`, de `${actor} ist dem Haushalt beigetreten`.
 
 - [ ] **Adım 1: Test** — `hourKey(new Date(Date.UTC(2026, 10, 4, 9, 59)))` → `"2026-11-04T09"`.
@@ -162,7 +162,7 @@
 - Test: `functions/test/unit/receipts.test.ts` (yeni)
 
 **Arayüzler:**
-- Üretir: `export const FAILED_SCANS_PER_DAY = 20` (Sude onaylayacak).
+- Üretir: `export const FAILED_SCANS_PER_DAY = 20`.
 - Üretir: `export function scanDecision(p: { used: number; limit: number; failures: number }): "ok" | "receipt-quota" | "receipt-failures"`.
 - Yeni `AppErrorCode.receiptFailures` ve ARB anahtarı `errorReceiptFailures`.
 

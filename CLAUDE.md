@@ -36,3 +36,6 @@ GitHub'a her gönderimde testler Actions'ta çalışır (`.github/workflows/test
 - 2026-10-31: Fiş yapay zekâya gitmeden önce bir kez izin isteniyor (App Store 5.1.2).
 - 2026-10-31: Almanca eklendi. iOS'ta şimdilik yalnızca iPhone.
 - 2026-11-03: App Review notları Guideline 2.1 yanıtı için genişletildi (`docs/`).
+- 2026-11-04: Pro fiyatı aylık 79,99 ₺, yıllık 549,99 ₺ (mağaza panelinden; koda yazılmaz).
+- 2026-11-04: Fiş okuma OpenRouter üzerinden Gemini ile kalıyor; gizlilik metni ve inceleme notu bunu açıkça yazar.
+- 2026-11-04: Sunucu Pro durumunu RevenueCat REST API'sine sorar (`REVENUECAT_API_KEY`); webhook yalnızca tetikleyicidir.
