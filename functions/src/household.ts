@@ -16,6 +16,7 @@ import {
   requireString,
   userIsPro,
 } from "./common.js";
+import { dropFromRotation } from "./chores.js";
 import { ExpenseLike, SettlementLike, computeNets } from "./money.js";
 
 const SUPPORTED_CURRENCIES = ["TRY", "EUR", "USD", "GBP"];
@@ -67,10 +68,24 @@ export async function detachMember(
   const emptied = await db.runTransaction(async (tx) => {
     const snap = await tx.get(hRef);
     if (!snap.exists) return false;
+    // Transactions need every read before the first write.
+    const chores = await tx.get(
+      hRef.collection("chores").where("rotation", "array-contains", uid),
+    );
     const memberIds = (snap.get("memberIds") as string[]).filter((m) => m !== uid);
     let adminIds = (snap.get("adminIds") as string[]).filter((m) => m !== uid);
     if (adminIds.length === 0 && memberIds.length > 0) adminIds = [memberIds[0]];
     tx.update(hRef, { memberIds, adminIds });
+    for (const chore of chores.docs) {
+      tx.update(
+        chore.ref,
+        dropFromRotation(
+          (chore.get("rotation") as string[]) ?? [],
+          (chore.get("currentIndex") as number) ?? 0,
+          uid,
+        ),
+      );
+    }
     if (memberIds.length === 0) {
       tx.delete(db.collection("inviteCodes").doc(snap.get("inviteCode") as string));
     }
