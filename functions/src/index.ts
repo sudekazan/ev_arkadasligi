@@ -14,5 +14,5 @@ export { onExpenseWritten, onSettlementWritten, sendReminder } from "./triggers.
 export { runRecurring } from "./recurring.js";
 export { choreReminders } from "./chores.js";
 export { scanReceipt } from "./receipts.js";
-export { revenueCatWebhook } from "./billing.js";
+export { revenueCatWebhook, syncPro } from "./billing.js";
 export { deleteAccount } from "./account.js";

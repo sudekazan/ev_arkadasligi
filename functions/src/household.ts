@@ -14,9 +14,9 @@ import {
   requireAuth,
   requireMember,
   requireString,
-  userIsPro,
 } from "./common.js";
 import { dropFromRotation } from "./chores.js";
+import { revenueCatApiKey, userIsProFresh } from "./revenuecat.js";
 import { ExpenseLike, SettlementLike, computeNets } from "./money.js";
 
 const SUPPORTED_CURRENCIES = ["TRY", "EUR", "USD", "GBP"];
@@ -37,7 +37,7 @@ async function reserveInviteCode(tx: Transaction, hid: string): Promise<string> 
 async function assertCanJoinAnother(uid: string) {
   const user = await db.collection("users").doc(uid).get();
   const count = ((user.get("householdIds") as string[]) ?? []).length;
-  if (count >= FREE_HOUSEHOLD_LIMIT && !(await userIsPro(uid))) {
+  if (count >= FREE_HOUSEHOLD_LIMIT && !(await userIsProFresh(uid))) {
     throw new HttpsError("failed-precondition", "household-limit");
   }
   return user;
@@ -118,7 +118,7 @@ async function purgeHousehold(hid: string) {
   await getStorage().bucket().deleteFiles({ prefix: `receipts/${hid}/` });
 }
 
-export const createHousehold = onCall({ region: REGION }, async (req) => {
+export const createHousehold = onCall({ region: REGION, secrets: [revenueCatApiKey] }, async (req) => {
   const uid = requireAuth(req);
   const name = requireString(req.data?.name, "name").slice(0, 60);
   const currency = String(req.data?.currency ?? "TRY");
@@ -162,7 +162,7 @@ export const createHousehold = onCall({ region: REGION }, async (req) => {
   return { householdId: hRef.id, inviteCode };
 });
 
-export const joinHousehold = onCall({ region: REGION }, async (req) => {
+export const joinHousehold = onCall({ region: REGION, secrets: [revenueCatApiKey] }, async (req) => {
   const uid = requireAuth(req);
   const code = requireString(req.data?.code, "code").toUpperCase();
   const codeSnap = await db.collection("inviteCodes").doc(code).get();

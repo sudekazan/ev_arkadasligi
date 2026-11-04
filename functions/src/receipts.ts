@@ -16,6 +16,7 @@ import {
 } from "./common.js";
 import { monthKey } from "./dates.js";
 import { RECEIPT_PROMPT, parseReceiptJson } from "./receipt_parser.js";
+import { revenueCatApiKey, userIsProFresh } from "./revenuecat.js";
 
 const apiKey = defineSecret("RECEIPT_API_KEY");
 const provider = defineString("RECEIPT_PROVIDER", { default: "gemini" });
@@ -68,7 +69,7 @@ async function callModel(mime: string, base64: string): Promise<string> {
 export const scanReceipt = onCall(
   {
     region: REGION,
-    secrets: [apiKey],
+    secrets: [apiKey, revenueCatApiKey],
     enforceAppCheck: process.env.FUNCTIONS_EMULATOR !== "true",
     timeoutSeconds: 60,
     memory: "512MiB",
@@ -83,9 +84,15 @@ export const scanReceipt = onCall(
     const { data: h } = await loadHousehold(hid);
     requireMember(h, uid);
 
-    const limit = isActivePro(h.proUntil) ? PRO_RECEIPT_SCANS : FREE_RECEIPT_SCANS;
     const key = monthKey(new Date());
     const usageRef = db.collection("usage").doc(uid);
+    let limit = isActivePro(h.proUntil) ? PRO_RECEIPT_SCANS : FREE_RECEIPT_SCANS;
+    if (limit === FREE_RECEIPT_SCANS) {
+      // Only ask RevenueCat when the free quota would reject the scan:
+      // a purchase may not have reached Firestore through the webhook yet.
+      const used = ((await usageRef.get()).get(`receiptScans.${key}`) as number) ?? 0;
+      if (used >= FREE_RECEIPT_SCANS && (await userIsProFresh(uid))) limit = PRO_RECEIPT_SCANS;
+    }
     await db.runTransaction(async (tx) => {
       const snap = await tx.get(usageRef);
       const used = (snap.get(`receiptScans.${key}`) as number) ?? 0;

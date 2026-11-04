@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/firebase/app_error.dart';
 import '../../../core/firebase/firebase_env.dart';
+import '../../../core/firebase/firebase_providers.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/data/user_repository.dart';
 import '../../household/data/household_repository.dart';
@@ -26,6 +28,9 @@ abstract final class ProLimits {
 /// Thin wrapper over RevenueCat. Prices always come from the store via
 /// RevenueCat; the app never hard-codes them.
 class ProService {
+  ProService(this._functions);
+
+  final FirebaseFunctions _functions;
   bool _configured = false;
   final _active = StreamController<bool>.broadcast();
 
@@ -84,6 +89,7 @@ class ProService {
       final result = await Purchases.purchase(PurchaseParams.package(package));
       final active = _isActive(result.customerInfo);
       _active.add(active);
+      if (active) await _syncServer();
       return active;
     } on PlatformException catch (e) {
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.purchaseCancelledError) {
@@ -97,11 +103,25 @@ class ProService {
     if (!_configured) throw const AppException(AppErrorCode.network);
     final active = _isActive(await Purchases.restorePurchases());
     _active.add(active);
+    if (active) await _syncServer();
     return active;
+  }
+
+  /// Asks the server to read Pro from RevenueCat now, so limits lift before
+  /// the webhook arrives. A failure only gets reported; the webhook still
+  /// catches up later.
+  Future<void> _syncServer() async {
+    try {
+      await _functions.httpsCallable('syncPro').call<Object?>();
+    } catch (e, s) {
+      reportError(e, s);
+    }
   }
 }
 
-final proServiceProvider = Provider<ProService>((ref) => ProService());
+final proServiceProvider = Provider<ProService>(
+  (ref) => ProService(ref.watch(functionsProvider)),
+);
 
 /// The device user's own RevenueCat entitlement.
 final ownEntitlementProvider = StreamProvider<bool>((ref) {
