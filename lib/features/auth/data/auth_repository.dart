@@ -7,6 +7,13 @@ import '../../../core/firebase/app_error.dart';
 import '../../../core/firebase/firebase_env.dart';
 import '../../../core/firebase/firebase_providers.dart';
 
+/// Signed in with an e-mail and password and has not confirmed the address.
+/// Google and Apple sign-ins arrive verified and never match.
+bool userNeedsEmailVerification(User? user) =>
+    user != null &&
+    !user.emailVerified &&
+    user.providerData.any((p) => p.providerId == 'password');
+
 class AuthRepository {
   AuthRepository(this._auth);
 
@@ -17,6 +24,8 @@ class AuthRepository {
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
   User? get currentUser => _auth.currentUser;
+
+  bool get needsEmailVerification => userNeedsEmailVerification(_auth.currentUser);
 
   /// Google needs a real OAuth client, so it is hidden against the demo project.
   bool get googleAvailable => !FirebaseEnv.isDemo;
@@ -37,7 +46,15 @@ class AuthRepository {
       password: password,
     );
     await cred.user?.updateDisplayName(name.trim());
+    // Registration is already done; a failed e-mail can be resent later.
+    try {
+      await cred.user?.sendEmailVerification();
+    } catch (e, s) {
+      reportError(e, s);
+    }
   }
+
+  Future<void> resendVerification() async => _auth.currentUser?.sendEmailVerification();
 
   Future<void> sendPasswordReset(String email) =>
       _auth.sendPasswordResetEmail(email: email.trim());

@@ -52,10 +52,44 @@ List<_OpenBalance> _openBalances(Map<String, Object?>? details) {
 }
 
 /// Profile, language, theme, notifications, Pro, export, sign out, deletion.
-class AccountScreen extends ConsumerWidget {
+class AccountScreen extends ConsumerStatefulWidget {
   const AccountScreen({super.key});
 
-  Future<void> _exportCsv(BuildContext context, WidgetRef ref) async {
+  @override
+  ConsumerState<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends ConsumerState<AccountScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _refreshVerification();
+  }
+
+  /// The verified flag only changes on the server, so ask for a fresh copy
+  /// once when the screen opens. Failures (offline) keep the old state.
+  Future<void> _refreshVerification() async {
+    final user = ref.read(authStateProvider).value;
+    if (!userNeedsEmailVerification(user)) return;
+    try {
+      await user!.reload();
+    } catch (_) {
+      return;
+    }
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _resendVerification(BuildContext context) async {
+    final l = context.l10n;
+    try {
+      await ref.read(authRepositoryProvider).resendVerification();
+      if (context.mounted) showMessage(context, l.verificationSent);
+    } catch (e, s) {
+      if (context.mounted) showError(context, e, s);
+    }
+  }
+
+  Future<void> _exportCsv(BuildContext context) async {
     final l = context.l10n;
     if (!ref.read(householdIsProProvider)) {
       await context.push('${Routes.pro}?source=csv_export');
@@ -78,7 +112,7 @@ class AccountScreen extends ConsumerWidget {
     ));
   }
 
-  Future<void> _deleteAccount(BuildContext context, WidgetRef ref) async {
+  Future<void> _deleteAccount(BuildContext context) async {
     final l = context.l10n;
     final ok = await confirm(context,
         title: l.deleteAccount, message: l.deleteAccountBody, confirmLabel: l.deleteAccount,
@@ -95,13 +129,12 @@ class AccountScreen extends ConsumerWidget {
         showError(context, e, s);
         return;
       }
-      await _confirmDeleteWithBalances(context, ref, rows);
+      await _confirmDeleteWithBalances(context, rows);
     }
   }
 
   /// Second warning: the user still has open balances, delete only if they insist.
-  Future<void> _confirmDeleteWithBalances(
-      BuildContext context, WidgetRef ref, List<_OpenBalance> rows) async {
+  Future<void> _confirmDeleteWithBalances(BuildContext context, List<_OpenBalance> rows) async {
     final l = context.l10n;
     final insist = await showDialog<bool>(
       context: context,
@@ -142,11 +175,12 @@ class AccountScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l = context.l10n;
+    final authUser = ref.watch(authStateProvider).value;
     final profile = ref.watch(userProfileProvider).value;
     final settings = ref.watch(settingsProvider);
-    final email = ref.watch(authStateProvider).value?.email;
+    final email = authUser?.email;
     final isPro = ref.watch(householdIsProProvider);
     final hasHousehold = ref.watch(currentHouseholdIdProvider) != null;
     if (profile == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -163,6 +197,16 @@ class AccountScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 32),
         children: [
+          if (userNeedsEmailVerification(authUser))
+            ListTile(
+              leading: Icon(Icons.warning_amber_rounded, color: Theme.of(context).colorScheme.error),
+              title: Text(l.verifyEmailTitle),
+              subtitle: Text(l.verifyEmailBody(authUser?.email ?? '')),
+              trailing: TextButton(
+                onPressed: () => _resendVerification(context),
+                child: Text(l.resendVerification),
+              ),
+            ),
           ListTile(
             leading: MemberAvatar(emoji: profile.avatarEmoji, radius: 24),
             title: Text(profile.displayName),
@@ -247,7 +291,7 @@ class AccountScreen extends ConsumerWidget {
               leading: const Icon(Icons.file_download_outlined),
               title: Text(l.exportCsv),
               subtitle: isPro ? null : Text(l.proFeature),
-              onTap: () => _exportCsv(context, ref),
+              onTap: () => _exportCsv(context),
             ),
           ],
           ListTile(
@@ -269,7 +313,7 @@ class AccountScreen extends ConsumerWidget {
           ListTile(
             leading: Icon(Icons.delete_forever_outlined, color: Theme.of(context).colorScheme.error),
             title: Text(l.deleteAccount, style: TextStyle(color: Theme.of(context).colorScheme.error)),
-            onTap: () => _deleteAccount(context, ref),
+            onTap: () => _deleteAccount(context),
           ),
         ],
       ),

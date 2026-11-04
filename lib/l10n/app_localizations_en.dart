@@ -1193,4 +1193,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get currencyLockedHint =>
       'The currency can\'t be changed once the household has expenses.';
+
+  @override
+  String get verifyEmailTitle => 'Verify your email';
+
+  @override
+  String verifyEmailBody(String email) {
+    return 'We sent a verification link to $email.';
+  }
+
+  @override
+  String get resendVerification => 'Resend';
+
+  @override
+  String get verificationSent => 'Verification email sent.';
 }

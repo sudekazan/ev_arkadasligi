@@ -335,5 +335,9 @@
   "householdTotal": "Gesamt der WG",
   "myShareTotal": "Dein Anteil",
   "noExpensesThisMonth": "Keine Ausgaben in diesem Monat.",
-  "currencyLockedHint": "Die Währung kann nicht mehr geändert werden, sobald es Ausgaben gibt."
+  "currencyLockedHint": "Die Währung kann nicht mehr geändert werden, sobald es Ausgaben gibt.",
+  "verifyEmailTitle": "Bestätige deine E-Mail",
+  "verifyEmailBody": "Wir haben einen Bestätigungslink an {email} geschickt.",
+  "resendVerification": "Erneut senden",
+  "verificationSent": "Bestätigungs-E-Mail gesendet."
 }

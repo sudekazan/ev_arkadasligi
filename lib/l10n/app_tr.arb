@@ -803,5 +803,16 @@
   "householdTotal": "Ev toplamı",
   "myShareTotal": "Senin payın",
   "noExpensesThisMonth": "Bu ay gider yok.",
-  "currencyLockedHint": "Bu evde gider olduğu için para birimi değiştirilemez."
+  "currencyLockedHint": "Bu evde gider olduğu için para birimi değiştirilemez.",
+  "verifyEmailTitle": "E-postanı doğrula",
+  "verifyEmailBody": "{email} adresine bir doğrulama bağlantısı gönderdik.",
+  "@verifyEmailBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "resendVerification": "Tekrar gönder",
+  "verificationSent": "Doğrulama e-postası gönderildi."
 }

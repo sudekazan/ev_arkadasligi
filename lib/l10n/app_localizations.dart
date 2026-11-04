@@ -2124,6 +2124,30 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu evde gider olduğu için para birimi değiştirilemez.'**
   String get currencyLockedHint;
+
+  /// No description provided for @verifyEmailTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'E-postanı doğrula'**
+  String get verifyEmailTitle;
+
+  /// No description provided for @verifyEmailBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'{email} adresine bir doğrulama bağlantısı gönderdik.'**
+  String verifyEmailBody(String email);
+
+  /// No description provided for @resendVerification.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tekrar gönder'**
+  String get resendVerification;
+
+  /// No description provided for @verificationSent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Doğrulama e-postası gönderildi.'**
+  String get verificationSent;
 }
 
 class _AppLocalizationsDelegate

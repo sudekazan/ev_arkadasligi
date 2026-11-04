@@ -335,5 +335,9 @@
   "householdTotal": "Household total",
   "myShareTotal": "Your share",
   "noExpensesThisMonth": "No expenses this month.",
-  "currencyLockedHint": "The currency can't be changed once the household has expenses."
+  "currencyLockedHint": "The currency can't be changed once the household has expenses.",
+  "verifyEmailTitle": "Verify your email",
+  "verifyEmailBody": "We sent a verification link to {email}.",
+  "resendVerification": "Resend",
+  "verificationSent": "Verification email sent."
 }

@@ -1204,4 +1204,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get currencyLockedHint =>
       'Die Währung kann nicht mehr geändert werden, sobald es Ausgaben gibt.';
+
+  @override
+  String get verifyEmailTitle => 'Bestätige deine E-Mail';
+
+  @override
+  String verifyEmailBody(String email) {
+    return 'Wir haben einen Bestätigungslink an $email geschickt.';
+  }
+
+  @override
+  String get resendVerification => 'Erneut senden';
+
+  @override
+  String get verificationSent => 'Bestätigungs-E-Mail gesendet.';
 }

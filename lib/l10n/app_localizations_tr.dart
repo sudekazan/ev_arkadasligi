@@ -1188,4 +1188,18 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get currencyLockedHint =>
       'Bu evde gider olduğu için para birimi değiştirilemez.';
+
+  @override
+  String get verifyEmailTitle => 'E-postanı doğrula';
+
+  @override
+  String verifyEmailBody(String email) {
+    return '$email adresine bir doğrulama bağlantısı gönderdik.';
+  }
+
+  @override
+  String get resendVerification => 'Tekrar gönder';
+
+  @override
+  String get verificationSent => 'Doğrulama e-postası gönderildi.';
 }
