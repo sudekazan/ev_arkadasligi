@@ -76,9 +76,11 @@ class _ShoppingTabState extends ConsumerState<ShoppingTab> {
           child: TextField(
             controller: _input,
             focusNode: _focus,
+            maxLength: 100,
             textCapitalization: TextCapitalization.sentences,
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
+              counterText: '',
               hintText: l.addShoppingItemHint,
               suffixIcon: IconButton(
                 tooltip: l.add,

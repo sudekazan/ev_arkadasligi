@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -97,6 +98,12 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             TextFormField(
               controller: _iban,
               textCapitalization: TextCapitalization.characters,
+              // The rules store at most 34 characters; spaces are display only.
+              inputFormatters: [
+                TextInputFormatter.withFunction(
+                  (old, next) => Iban.normalize(next.text).length > 34 ? old : next,
+                ),
+              ],
               decoration: InputDecoration(
                 labelText: l.ibanOptional,
                 hintText: 'TR00 0000 0000 0000 0000 0000 00',
