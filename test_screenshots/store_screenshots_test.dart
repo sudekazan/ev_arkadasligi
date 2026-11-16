@@ -181,6 +181,17 @@ final _theme = lightTheme.copyWith(
   primaryTextTheme: lightTheme.primaryTextTheme.apply(fontFamilyFallback: _fallback),
 );
 
+/// Draws a floating action button with no fill, content or shadow.
+const _hiddenFab = FloatingActionButtonThemeData(
+  backgroundColor: Colors.transparent,
+  foregroundColor: Colors.transparent,
+  elevation: 0,
+  focusElevation: 0,
+  hoverElevation: 0,
+  highlightElevation: 0,
+  disabledElevation: 0,
+);
+
 Future<void> _pump(WidgetTester tester, StoreData data, Widget frame) async {
   // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({
@@ -218,7 +229,12 @@ Future<void> _pump(WidgetTester tester, StoreData data, Widget frame) async {
 /// The app showing [shot], phone-sized with a status bar.
 Widget _app(StoreData data, _Shot shot) {
   final Widget screen = switch (shot) {
-    _Shot.home => const HomeScreen(),
+    // The add button floats over the recent activity rows at this height;
+    // hide it here (shots 2 and 6 already show adding an expense).
+    _Shot.home => Theme(
+      data: _theme.copyWith(floatingActionButtonTheme: _hiddenFab),
+      child: const HomeScreen(),
+    ),
     _Shot.rent => ExpenseEditScreen(
       draft: ExpenseDraft(category: ExpenseCategory.rent, description: data.texts[0]),
     ),
