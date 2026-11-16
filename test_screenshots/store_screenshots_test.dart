@@ -26,6 +26,7 @@ import 'package:evarkadasligi/features/expenses/presentation/expenses_screen.dar
 import 'package:evarkadasligi/features/household/data/household_repository.dart';
 import 'package:evarkadasligi/features/household/presentation/house_screen.dart';
 import 'package:evarkadasligi/features/pro/data/pro_service.dart';
+import 'package:evarkadasligi/features/pro/presentation/pro_screen.dart';
 import 'package:evarkadasligi/features/settings/data/settings_controller.dart';
 import 'package:evarkadasligi/features/shopping/data/shopping_repository.dart';
 import 'package:evarkadasligi/l10n/app_localizations.dart';
@@ -37,6 +38,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'store_data.dart';
@@ -118,6 +120,18 @@ void main() {
             await _prepare(tester, shot, data);
           },
         );
+      });
+    }
+    if (data == storeData.first) {
+      // App Review screenshot for the subscriptions: the bare paywall.
+      testWidgets('review pro paywall', (tester) async {
+        await _shoot(tester, _canvas * 3, 'out/review/pro_paywall.png', () async {
+          await _pump(
+            tester,
+            data,
+            _PlainFrame(child: _appWith(data, const ProScreen(source: 'review'), null)),
+          );
+        });
       });
     }
     testWidgets('${data.locale} play feature graphic', (tester) async {
@@ -217,6 +231,7 @@ Future<void> _pump(WidgetTester tester, StoreData data, Widget frame) async {
         choresProvider.overrideWith((ref) => Stream.value(data.choreList)),
         ownEntitlementProvider.overrideWith((ref) => Stream.value(false)),
         // Screens read these in build; nothing is written while screenshotting.
+        proServiceProvider.overrideWithValue(_FakePro()),
         shoppingRepositoryProvider.overrideWithValue(_FakeShopping()),
         choreRepositoryProvider.overrideWithValue(_FakeChores()),
       ],
@@ -249,7 +264,11 @@ Widget _app(StoreData data, _Shot shot) {
     _Shot.shopping || _Shot.chores => 2,
     _Shot.rent || _Shot.receipt => null,
   };
+  return _appWith(data, screen, tab);
+}
 
+/// [screen] in the app shell, with the bottom navigation when [tab] is set.
+Widget _appWith(StoreData data, Widget screen, int? tab) {
   final router = GoRouter(
     routes: [
       GoRoute(
@@ -274,6 +293,26 @@ Widget _app(StoreData data, _Shot shot) {
       routerConfig: router,
     ),
   );
+}
+
+/// The store's plans as RevenueCat returns them. Sample prices for the review
+/// screenshot only; they match the store panel (CLAUDE.md, 2026-11-04).
+class _FakePro implements ProService {
+  static Package _plan(String id, PackageType type, double price, String label) => Package(
+    id,
+    type,
+    StoreProduct(id, '', 'Ödeşelim Pro', price, label, 'TRY'),
+    const PresentedOfferingContext('default', null, null),
+  );
+
+  @override
+  Future<List<Package>> packages() async => [
+    _plan(r'$rc_annual', PackageType.annual, 549.99, '₺549,99'),
+    _plan(r'$rc_monthly', PackageType.monthly, 79.99, '₺79,99'),
+  ];
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _FakeShopping implements ShoppingRepository {
@@ -411,6 +450,22 @@ class _StoreFrame extends StatelessWidget {
       child: RepaintBoundary(key: _frameKey, child: content),
     );
   }
+}
+
+/// The phone screen alone, no headline or brand colour, at 1320×2868.
+class _PlainFrame extends StatelessWidget {
+  const _PlainFrame({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Directionality(
+    textDirection: TextDirection.ltr,
+    child: RepaintBoundary(
+      key: _frameKey,
+      child: FittedBox(child: SizedBox.fromSize(size: _canvas, child: child)),
+    ),
+  );
 }
 
 /// Pads [child] (already [size.height] tall, narrower than [size.width]) with
