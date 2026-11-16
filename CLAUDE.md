@@ -39,3 +39,6 @@ GitHub'a her gönderimde testler Actions'ta çalışır (`.github/workflows/test
 - 2026-11-04: Pro fiyatı aylık 79,99 ₺, yıllık 549,99 ₺ (mağaza panelinden; koda yazılmaz).
 - 2026-11-04: Fiş okuma OpenRouter üzerinden Gemini ile kalıyor; gizlilik metni ve inceleme notu bunu açıkça yazar.
 - 2026-11-04: Sunucu Pro durumunu RevenueCat REST API'sine sorar (`REVENUECAT_API_KEY`); webhook yalnızca tetikleyicidir.
+- 2026-11-16: App Store'da ad, alt başlık, anahtar kelimeler ve tanıtım metni paneldeki haliyle kalır; açıklama ve inceleme notu `docs/STORE_LISTING.md`'den gelir.
+- 2026-11-16: Abonelikler tüm ülkelerde satışta, yeni ülkeler otomatik eklenir.
+- 2026-11-16: Ömür boyu satın alma 1.1'e kaldı (sunucu süresiz satın almayı zaten Pro sayıyor; Pro ekranı yalnızca aylık/yıllık gösteriyor).
