@@ -267,10 +267,10 @@ Nutzungsbedingungen: https://odeselimapp.web.app/terms
 
 ```
 SCREEN RECORDING
-Recorded on a physical iPhone, attached to this submission (Attachment field). It starts at the Home Screen, launches the app and shows sign-in, the main features, the Pro subscription screen, sign-out, registering a new account and deleting that account.
+Recorded on a physical iPhone and attached to this submission. It starts at the Home Screen and shows sign-in, the main features, the Pro screen, sign-out, registering a new account and deleting it.
 
 PURPOSE AND AUDIENCE
-Ödeşelim is for housemates (students and young professionals sharing a flat) who currently track shared costs by hand in chat threads and notebooks. It splits rent, utility bills and groceries fairly and shows who owes whom at a glance, so nothing is forgotten or miscounted and debts are simplified to the fewest transfers.
+Ödeşelim is for housemates (students and young professionals sharing a flat) who track shared costs by hand in chats and notebooks. It splits rent, bills and groceries fairly, shows who owes whom at a glance and simplifies debts to the fewest transfers.
 
 DEMO ACCOUNT AND SETUP
 Sign in with "Email" on the first screen:
@@ -290,7 +290,7 @@ EXTERNAL SERVICES USED
 - Cloud Firestore and Firebase Cloud Storage: household, expense and receipt-photo data.
 - Firebase Cloud Functions: our own backend; also relays receipt photos through OpenRouter to Google's Gemini model (gemini-2.5-flash) for text recognition only (amount, date, store). Photos are not used to train any model and are not shared with anyone else; see the privacy policy.
 - Firebase Cloud Messaging: push notifications (payment reminders, chore turns).
-- RevenueCat: manages the auto-renewable subscription; the App Store (StoreKit/In-App Purchase) is the only payment processor. No separate payment processor is used and no bank transfers happen inside the app — the IBAN field is only copied for the user to pay their housemate outside the app.
+- RevenueCat: manages the auto-renewable subscription; App Store In-App Purchase is the only payment method. No money moves inside the app; the IBAN field is only copied so users can pay housemates outside the app.
 
 SUBSCRIPTION (Ödeşelim Pro)
 Open Account tab > "Ödeşelim Pro" to see the paid tier. Two auto-renewable subscriptions: monthly and yearly (yearly has a 1-week free trial). "Restore purchases" is on the same screen. One member's subscription unlocks Pro for everyone in that household. Adding expenses is free and unlimited on every plan; Pro adds unlimited households and recurring expenses, 200 receipt scans a month, full-history reports and CSV export.
@@ -302,10 +302,10 @@ USER-GENERATED CONTENT
 Expenses, shopping-list items and chores are visible only to the members of one household, who join with a private 6-character invite code. There is no public feed, profile search or messaging between strangers. A member can leave a household at any time (House tab > settings > Leave household), and the household admin can remove a member (House tab > settings > the remove icon next to that member).
 
 REGIONAL DIFFERENCES
-The app functions identically in every region and language (Turkish, English, German). The only thing that varies by App Store territory is the subscription price, set through App Store Connect's standard pricing tiers; no feature or content is region-locked.
+The app works identically in every region and language (Turkish, English, German); only the subscription price varies by territory. Nothing is region-locked.
 
 REGULATED INDUSTRY / THIRD-PARTY MATERIAL
-Not applicable. The app only tracks who owes whom between housemates; it never moves money, holds funds, or integrates a payment/banking API, and it includes no licensed or third-party protected material.
+Not applicable. The app never moves money, holds funds or uses a payment/banking API, and includes no licensed third-party material.
 
 The app has no ads and does no tracking.
 ```
